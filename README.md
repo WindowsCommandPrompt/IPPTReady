@@ -6,7 +6,7 @@ This will be the repository where we will be making commits for our MAD Assignme
 <br> 
 
 ## Collaborators 
-Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher
+Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher.
 
 <br> 
 <hr> 
