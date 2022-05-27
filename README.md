@@ -6,28 +6,7 @@ This will be the repository where we will be making commits for our MAD Assignme
 <br> 
 
 ## Collaborators 
-<table> 
-  <tr> 
-    <th> Member S/N </th> 
-    <th> Member Name </th> 
-  </tr> 
-  <tr> 
-    <td> 1 </td> 
-    <td> Li Zhe Yun </td> 
-  </tr> 
-  <tr> 
-    <td> 2 </td> 
-    <td> Joshua Ng </td> 
-  </tr> 
-  <tr> 
-    <td> 3 </td> 
-    <td> Bryan Koh </td> 
-  </tr> 
-  <tr> 
-    <td> 4 </td> 
-    <td> Kuan Zher </td> 
-  </tr> 
-</table> 
+Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher
 
 <br> 
 <hr> 
