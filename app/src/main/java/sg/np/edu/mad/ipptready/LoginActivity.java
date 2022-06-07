@@ -1,5 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -14,10 +15,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class LoginActivity extends AppCompatActivity {
-
+    private static final String DEBUG = "DEBUG";
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
 
@@ -71,14 +78,39 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.d("Message", e.toString());
+            Log.d(DEBUG, e.toString());
             updateUI(null);
         }
     }
 
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Google Login Success", Toast.LENGTH_SHORT).show();
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+            String personEmail = acct.getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            DocumentReference userRef = db.collection("IPPTuser").document(personEmail);
+            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            User user = document.toObject(User.class);
+                            Toast.makeText(LoginActivity.this, user.getName(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Nothing", Toast.LENGTH_SHORT).show();
+                            Log.d(DEBUG, "No such document");
+                        }
+                    } else {
+                        Log.d(DEBUG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
+
+            Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+            Bundle loginBundle = new Bundle();
         }
         else Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
     }
