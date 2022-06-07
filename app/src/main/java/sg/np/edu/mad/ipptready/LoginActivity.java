@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
             String personEmail = acct.getEmail();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference userRef = db.collection("IPPTuser").document(personEmail);
+            DocumentReference userRef = db.collection("IPPTUser").document(personEmail);
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             User user = document.toObject(User.class);
-                            Toast.makeText(LoginActivity.this, user.getName(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, user.Name, Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(LoginActivity.this, "Nothing", Toast.LENGTH_SHORT).show();
                             Log.d(DEBUG, "No such document");
@@ -110,7 +110,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
             Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
-            Bundle loginBundle = new Bundle();
         }
         else Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
     }
