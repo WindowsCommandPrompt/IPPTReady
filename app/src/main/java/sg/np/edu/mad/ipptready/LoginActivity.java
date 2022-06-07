@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.nio.BufferUnderflowException;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String DEBUG = "DEBUG";
     GoogleSignInClient mGoogleSignInClient;
@@ -97,10 +99,18 @@ public class LoginActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             User user = document.toObject(User.class);
-                            Toast.makeText(LoginActivity.this, user.Name, Toast.LENGTH_SHORT).show();
+                            Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                            loginIntent.putExtra("Email", personEmail);
+                            Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
+                            startActivity(loginIntent);
                         } else {
-                            Toast.makeText(LoginActivity.this, "Nothing", Toast.LENGTH_SHORT).show();
-                            Log.d(DEBUG, "No such document");
+                            Toast.makeText(LoginActivity.this, "New user detected", Toast.LENGTH_SHORT).show();
+                            String personName = acct.getDisplayName();
+                            Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                            Bundle userDetails = new Bundle();
+                            userDetails.putString("Email", personEmail);
+                            userDetails.putString("Name", personName);
+                            startActivity(createAccountIntent);
                         }
                     } else {
                         Log.d(DEBUG, "get failed with ", task.getException());
