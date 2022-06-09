@@ -99,17 +99,21 @@ public class LoginActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             User user = document.toObject(User.class);
+
                             Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             loginIntent.putExtra("Email", personEmail);
+
                             Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
                             startActivity(loginIntent);
                         } else {
                             Toast.makeText(LoginActivity.this, "New user detected", Toast.LENGTH_SHORT).show();
                             String personName = acct.getDisplayName();
                             Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+
                             Bundle userDetails = new Bundle();
                             userDetails.putString("Email", personEmail);
                             userDetails.putString("Name", personName);
+
                             startActivity(createAccountIntent);
                         }
                     } else {
