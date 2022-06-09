@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class IPPTCycle {
     public String Name;
-    Date DateCreated;
+    public Date DateCreated;
 
     public void getRoutineList(String EmailAddress,
                           OnCompleteListener<QuerySnapshot> onCompleteQuerySnapshotListener) {

@@ -23,6 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.BufferUnderflowException;
 
 public class LoginActivity extends AppCompatActivity {
@@ -102,6 +105,20 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             loginIntent.putExtra("Email", personEmail);
+
+                            // Serialize User to Home
+                            try {
+                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                ObjectOutputStream oos = new ObjectOutputStream(bos);
+                                oos.writeObject(user);
+                                loginIntent.putExtra("User", bos.toByteArray());
+                            } catch (IOException e) {
+                                // If error occurred, display friendly message to user
+
+                                Toast.makeText(LoginActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                                return;
+                            }
 
                             Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
                             startActivity(loginIntent);

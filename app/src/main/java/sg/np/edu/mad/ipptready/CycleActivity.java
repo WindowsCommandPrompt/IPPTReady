@@ -5,20 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class HomeActivity extends AppCompatActivity {
+public class CycleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_cycle);
 
-        // Input to :
-        // "Email" : Email Address of the user
+        // Input from Home Activity:
+        // "Email Address" : Email Address of the user.
         // "User" : string Object to serialize back to User Object, contains
-        //      info about the user
+        //      info about the user.
 
-        // Output to CycleActivity:
-        // "Email" : Email Address of the user
+        // Output to RoutineActivity:
+        // "Email Address" : Email Address of the user.
+        // "IPPTName" : Name of the IPPT Cycle
         // "User" : serialized form of User Object
 
         // Note:        Make sure to save the Input data using the onSaveInstanceState(android.os.Bundle),
