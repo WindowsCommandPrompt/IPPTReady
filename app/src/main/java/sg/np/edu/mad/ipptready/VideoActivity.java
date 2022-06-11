@@ -41,13 +41,12 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference videoRef = db.collection("IPPTVideo");
 
-        DocumentReference runRef = videoRef.document("2.4km Run");
-        DocumentReference cooldownRef = videoRef.document("Cool down");
-        DocumentReference pushupRef = videoRef.document("Push-ups");
-        DocumentReference situpRef = videoRef.document("Sit-ups");
-        DocumentReference warmupRef = videoRef.document("Warm up");
+        DocumentReference runRef = db.collection("IPPTVideo").document("2.4km Run");
+        DocumentReference cooldownRef = db.collection("IPPTVideo").document("Cool down");
+        DocumentReference pushupRef = db.collection("IPPTVideo").document("Push-ups");
+        DocumentReference situpRef = db.collection("IPPTVideo").document("Sit-ups");
+        DocumentReference warmupRef = db.collection("IPPTVideo").document("Warm up");
 
         runRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
