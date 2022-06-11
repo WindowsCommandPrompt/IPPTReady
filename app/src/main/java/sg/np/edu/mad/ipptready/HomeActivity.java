@@ -81,6 +81,16 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(CycleIntent);
                 }
             });
+            findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent ProfileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+
+                    ProfileIntent.putExtra("Email", EmailAddress);
+                    ProfileIntent.putExtra("User", SerializedUser);
+                    startActivity(ProfileIntent);
+                }
+            });
         }
 
         TextView name = findViewById(R.id.nameTextHome);

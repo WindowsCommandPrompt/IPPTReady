@@ -13,6 +13,9 @@
             android:name=".ProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".VideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreateCycleActivity"
             android:exported="false" />
         <activity
