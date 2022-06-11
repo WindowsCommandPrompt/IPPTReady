@@ -141,9 +141,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             });
-
-
-            Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
         }
         else Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
     }

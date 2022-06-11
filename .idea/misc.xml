@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/kzgre/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/kzgre/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.19947916666666668" />
-        <entry key="..\:/Users/kzgre/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/kzgre/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_profile.xml" value="0.38697916666666665" />
-        <entry key="..\:/Users/kzgre/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.38697916666666665" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.25416666666666665" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.19537037037037036" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle_recycleview.xml" value="0.19537037037037036" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.264" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_video.xml" value="0.176" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/video_recyclerview.xml" value="0.264" />
       </map>
     </option>
   </component>

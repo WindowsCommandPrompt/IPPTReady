@@ -91,6 +91,13 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(ProfileIntent);
                 }
             });
+            findViewById(R.id.videoButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent VideoIntent = new Intent(HomeActivity.this, VideoActivity.class);
+                    startActivity(VideoIntent);
+                }
+            });
         }
 
         TextView name = findViewById(R.id.nameTextHome);
