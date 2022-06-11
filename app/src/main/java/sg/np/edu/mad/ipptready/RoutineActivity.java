@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class RoutineActivity extends AppCompatActivity {
+    private String Email,
+        IPPTCycleId;
+    private byte[] SerializedIPPTCycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,11 +16,15 @@ public class RoutineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routine);
 
         // Input to RoutineActivity:
-        // "Email Address" : Email Address of the user.
-        // "IPPTName" : Name of the IPPT Cycle
-        // "User" : serialized form of User Object
+        // "Email", String : Email Address of the user.
+        // "IPPTCycle", byteArray : Serialized IPPTCycle Object
+        // "IPPTCycleId", String : Id of the IPPTCycle
         //
         // Output to RecordActivity:
+        // "Email" : Email Address of the user.
+        // "IPPTCycle" : Serialized IPPTCycle Object
+        // "IPPTCycleId" : Id of the IPPTCycle
+        // "IPPTRoutineId" : Id of the IPPTRoutine
         // List of Records in the form of key-value pairs:
         // RecordName -> Serialized Object of Record
 
@@ -25,6 +32,8 @@ public class RoutineActivity extends AppCompatActivity {
         //                  so that we don't need to retrieve the data again!
         //
         // Extra Note: Check saveInstanceState if Intent is empty!
+
+
     }
 
     @Override

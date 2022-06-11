@@ -10,13 +10,10 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="153dp"
-        android:text="Welcome, user"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="24dp"
+        android:text="Welcome,"
         android:textSize="35dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,17 +21,16 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginTop="93dp"
         android:text="Tap on one of these actions to begin"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/videoButton"
         android:layout_width="137dp"
         android:layout_height="137dp"
         android:layout_marginTop="48dp"
@@ -42,41 +38,41 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageButton4"
+        app:layout_constraintStart_toEndOf="@+id/cycleButton"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:srcCompat="@drawable/multimedia" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/cycleButton"
         android:layout_width="137dp"
         android:layout_height="137dp"
         android:layout_marginTop="48dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintEnd_toStartOf="@+id/videoButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:srcCompat="@drawable/runner" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/profileButton"
         android:layout_width="137dp"
         android:layout_height="137dp"
         android:layout_marginTop="68dp"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintStart_toEndOf="@+id/infoButton"
         app:layout_constraintTop_toBottomOf="@+id/textView13"
         app:srcCompat="@drawable/user" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/infoButton"
         android:layout_width="137dp"
         android:layout_height="137dp"
         android:layout_marginTop="68dp"
         android:scaleType="fitCenter"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton5"
+        app:layout_constraintEnd_toStartOf="@+id/profileButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10"
@@ -90,7 +86,7 @@
         android:layout_marginTop="24dp"
         android:text="IPPT Info"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+        app:layout_constraintTop_toBottomOf="@+id/infoButton" />
 
     <TextView
         android:id="@+id/textView12"
@@ -100,7 +96,7 @@
         android:layout_marginEnd="92dp"
         android:text="Profile"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton5" />
+        app:layout_constraintTop_toBottomOf="@+id/profileButton" />
 
     <TextView
         android:id="@+id/textView13"
@@ -110,7 +106,7 @@
         android:layout_marginEnd="96dp"
         android:text="Video"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/videoButton" />
 
     <TextView
         android:id="@+id/textView10"
@@ -120,6 +116,15 @@
         android:layout_marginTop="28dp"
         android:text="IPPT Cycle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
+        app:layout_constraintTop_toBottomOf="@+id/cycleButton" />
+
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="33dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
