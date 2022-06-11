@@ -6,8 +6,9 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.4" />
-        <entry key="app/src/main/res/layout/activity_cycle.xml" value="0.16" />
-        <entry key="app/src/main/res/layout/activity_cycle_recycleview.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/activity_create_cycle.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/layout/activity_cycle.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_cycle_recycleview.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.22" />
       </map>
     </option>

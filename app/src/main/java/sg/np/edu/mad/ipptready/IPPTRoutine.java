@@ -14,7 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IPPTRoutine {
-    Date DateCreated;
+    public Date DateCreated;
+    public int IPPTScore;
 
     // for determining which IPPTRoutine goes into the RecyclerView
     public boolean isFinished;

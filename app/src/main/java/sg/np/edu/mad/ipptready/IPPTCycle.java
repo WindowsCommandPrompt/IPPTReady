@@ -65,6 +65,7 @@ public class IPPTCycle {
 
                                 Map<String, Object> Dat = new HashMap<>();
                                 Dat.put("DateCreated", ipptRoutine.DateCreated);
+                                Dat.put("IPPTScore", ipptRoutine.IPPTScore);
                                 Dat.put("isFinished", ipptRoutine.isFinished);
 
                                 db.collection("IPPTUser")
