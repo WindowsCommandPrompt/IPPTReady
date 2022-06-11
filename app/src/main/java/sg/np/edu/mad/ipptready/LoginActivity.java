@@ -122,15 +122,18 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
                             startActivity(loginIntent);
+
                         } else {
-                            Toast.makeText(LoginActivity.this, "New user detected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Welcome to IPPTReady!", Toast.LENGTH_SHORT).show();
                             String personName = acct.getDisplayName();
+
                             Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
 
                             Bundle userDetails = new Bundle();
                             userDetails.putString("Email", personEmail);
                             userDetails.putString("Name", personName);
 
+                            createAccountIntent.putExtras(userDetails);
                             startActivity(createAccountIntent);
                         }
                     } else {

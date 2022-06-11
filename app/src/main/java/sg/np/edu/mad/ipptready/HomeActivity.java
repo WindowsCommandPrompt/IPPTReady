@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
@@ -52,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
                 GenericErrorToast.show();
             }
         }
+
         User user = null;
         ByteArrayInputStream bis = new ByteArrayInputStream(SerializedUser);
         try {
@@ -65,6 +68,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
             finish();
         }
+
         if (null != EmailAddress &&
             null != user) {
             findViewById(R.id.cycleButton).setOnClickListener(new View.OnClickListener() {
@@ -78,6 +82,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
         }
+
+        TextView name = findViewById(R.id.nameTextHome);
+        name.setText(user.Name);
     }
 
     @Override
