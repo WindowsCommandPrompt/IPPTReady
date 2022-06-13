@@ -7,9 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> {
     public List<IPPTCycle> ipptCycleList;
@@ -22,7 +20,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
     @Override
     public IPPTCycleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View cycleView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_cycle_recycleview,
+                .inflate(R.layout.cycle_recycleview,
                         parent,
                         false);
         return new IPPTCycleViewHolder(cycleView);

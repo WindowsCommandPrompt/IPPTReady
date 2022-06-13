@@ -9,12 +9,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IPPTCycle {
+public class IPPTCycle implements Serializable {
     public Date DateCreated;
     public String Name;
 
@@ -32,19 +33,16 @@ public class IPPTCycle {
     public IPPTCycle() { }
 
     public void getRoutineList(String EmailAddress,
+                          String IPPTCycleId,
                           OnCompleteListener<QuerySnapshot> onCompleteQuerySnapshotListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("IPPTUser")
                 .document(EmailAddress)
                 .collection("IPPTCycle")
-                .whereEqualTo("Name", this.Name)
+                .document(IPPTCycleId)
+                .collection("IPPTRoutine")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                    }
-                });
+                .addOnCompleteListener(onCompleteQuerySnapshotListener);
     }
 
     public void addNewIPPTRoutineToDatabase(String EmailAddress,

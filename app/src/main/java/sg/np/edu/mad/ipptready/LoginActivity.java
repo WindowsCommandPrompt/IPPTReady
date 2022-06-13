@@ -107,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                             loginIntent.putExtra("Email", personEmail);
 
                             // Serialize User to Home
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
                             try {
-                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
                                 ObjectOutputStream oos = new ObjectOutputStream(bos);
                                 oos.writeObject(user);
                                 loginIntent.putExtra("User", bos.toByteArray());

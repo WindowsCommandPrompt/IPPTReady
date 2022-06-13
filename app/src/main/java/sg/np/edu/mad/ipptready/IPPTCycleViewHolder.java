@@ -11,7 +11,7 @@ public class IPPTCycleViewHolder extends RecyclerView.ViewHolder {
 
     public IPPTCycleViewHolder(View v) {
         super(v);
-        nameTextView = v.findViewById(R.id.Name);
-        DateCreatedTextView = v.findViewById(R.id.DateCreated);
+        nameTextView = v.findViewById(R.id.cycleName);
+        DateCreatedTextView = v.findViewById(R.id.cycleDateCreated);
     }
 }

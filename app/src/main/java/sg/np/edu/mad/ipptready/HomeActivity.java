@@ -22,9 +22,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toast GenericErrorToast = Toast.makeText(this,
-                "Unexpected error occurred",
-                Toast.LENGTH_SHORT);
 
         // Input from LoginActivity:
         // "Email", String : Email Address of the user
@@ -39,7 +36,9 @@ public class HomeActivity extends AppCompatActivity {
         //                  so that we don't need to retrieve the data again!
         //
         // Extra Note: Check saveInstanceState if Intent is empty!
-
+        Toast GenericErrorToast = Toast.makeText(this,
+                "Unexpected error occurred",
+                Toast.LENGTH_SHORT);
         Intent intent = getIntent();
         EmailAddress = intent.getStringExtra("Email");
         SerializedUser = intent.getByteArrayExtra("User");
