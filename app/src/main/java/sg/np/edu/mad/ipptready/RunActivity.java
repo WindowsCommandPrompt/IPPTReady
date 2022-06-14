@@ -19,8 +19,8 @@ import android.text.Layout;
 import android.util.Log;
 import android.widget.*;
 
-import com.google.android.gms.location.*;
-import com.google.android.gms.tasks.*;
+//import com.google.android.gms.location.*;
+//import com.google.android.gms.tasks.*;
 
 import java.io.IOException;
 import java.util.*;
