@@ -108,7 +108,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                 ((TextView)findViewById(R.id.pushuprecordrepstarget)).setText(String.valueOf(pushupRecord.RepsTarget));
                                                             }
                                                         }
-                                                        if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
+                                                        /*if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
                                                             findViewById(R.id.runrecordButton).setOnClickListener(new View.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(View v) {
@@ -152,7 +152,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                     startActivity(recordIntent);
                                                                 }
                                                             });
-                                                        }
+                                                        }*/
                                                     }
                                                 }
                                             }

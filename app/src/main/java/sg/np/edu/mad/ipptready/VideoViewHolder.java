@@ -3,6 +3,7 @@ package sg.np.edu.mad.ipptready;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
     protected TextView videoName;
     // protected Button playButton;
     protected ImageView thumbnail;
+    protected LinearLayout videoEntry;
 
     public VideoViewHolder(View v) {
         super(v);
@@ -19,5 +21,6 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
         // playButton = v.findViewById(R.id.recyclerPlayButton);
         videoName = v.findViewById(R.id.recyclerVideoName);
         thumbnail = v.findViewById(R.id.recyclerThumbnail);
+        videoEntry = v.findViewById(R.id.videoEntry);
     }
 }

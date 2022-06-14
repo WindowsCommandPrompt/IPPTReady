@@ -11,15 +11,20 @@
         android:layout_height="wrap_content"
         android:text="videoType"
         android:fontFamily="@font/carter_one"
-        android:textSize="40dp"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="28dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="-10dp"
         android:layout_marginLeft="15dp"
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/videoEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,11 +44,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="7dp"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="7dp">
+            android:orientation="vertical">
 
 
             <TextView
@@ -51,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="videoName"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
         </LinearLayout>
     </LinearLayout>
