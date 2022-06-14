@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.*;
 import android.location.*;
 import android.os.*;
@@ -25,7 +26,11 @@ import android.widget.*;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.*;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -89,11 +94,24 @@ public class RunActivity extends AppCompatActivity {
                 //display the error message when the database is unable to fetch the required data and return it back to the user
                 //dataFetchFail.create().show();
             });
+    }
 
-        RESTdb.collection("IPPTUser").document().get()
-                .addOnSuccessListener(function -> {
-                    Log.d("TAG", "" );
-                });
+    private JSONObject calculateTotalScore(){
+        InputStream is = getResources().openRawResource(R.raw.ipptscore);
+        JSONObject jObject = null;
+        try {
+            byte[] resbytes = new byte[is.available()];
+            is.read(resbytes);
+            jObject = new JSONObject(new String(resbytes));
+        } catch (IOException | JSONException e) {
+            Toast.makeText(this, "JSONException", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        return jObject;
+    }
+
+    private void calculate2Point4KMScore(){
+
     }
 
     @Override
@@ -105,6 +123,8 @@ public class RunActivity extends AppCompatActivity {
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
         getAndWriteToFirebase();
+
+        Log.d("TAG", "" + calculateTotalScore());
 
         //Build the countdown
         mainStopwatch = new CountDownTimer(1000, 1000){
