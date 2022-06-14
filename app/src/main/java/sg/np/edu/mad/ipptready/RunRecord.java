@@ -2,17 +2,19 @@ package sg.np.edu.mad.ipptready;
 
 import java.util.Date;
 
-public class RunRecord extends IPPTRecord {
+public class RunRecord implements IPPTRecord {
 
     // Total distance taken (can exceed 2.4km)
     public float TotalDistanceTravelled;
 
-    // Date and time that the run record ends.
-    public Date TimeTakenTotal;
+    // time taken to finish the entire total distance in seconds
+    public int TimeTakenTotal;
 
-    // Date and time that 2.4km is reached.
-    public Date TimeFinished;
+    // time taken to finsih the 2.4km
+    public int TimeTakenFinished;
 
     @Override
-    public String getName() { return "2.4km"; }
+    public int getIPPTRecordScore() {
+        return 0;
+    }
 }

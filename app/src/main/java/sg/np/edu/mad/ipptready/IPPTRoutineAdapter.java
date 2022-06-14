@@ -1,6 +1,9 @@
 package sg.np.edu.mad.ipptready;
 
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHolder> {
-    public List<IPPTRoutine> ipptRoutineList;
+    private List<IPPTRoutine> ipptRoutineList;
+    private Context ipptRoutineContext;
 
-    public IPPTRoutineAdapter(List<IPPTRoutine> ipptRoutineList) {
+    public IPPTRoutineAdapter(List<IPPTRoutine> ipptRoutineList,
+                              Context currentContext) {
         this.ipptRoutineList = ipptRoutineList;
+        this.ipptRoutineContext = currentContext;
     }
 
     @NonNull
@@ -30,6 +36,18 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     @Override
     public void onBindViewHolder(@NonNull IPPTRoutineViewHolder holder, int position) {
         IPPTRoutine ipptRoutine = ipptRoutineList.get(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recordIntent = new Intent(IPPTRoutineAdapter.this.ipptRoutineContext, RecordActivity.class);
+
+
+
+                IPPTRoutineAdapter.this.ipptRoutineContext.startActivity(recordIntent);
+            }
+        });
+
         holder.ipptScoreTextView.setText(String.valueOf(ipptRoutine.IPPTScore));
         holder.DateCreatedTextView.setText(ipptRoutine.DateCreated.toString());
     }
