@@ -50,7 +50,7 @@
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".RunActivity"
+            android:name=".LoginActivity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
             <intent-filter>
