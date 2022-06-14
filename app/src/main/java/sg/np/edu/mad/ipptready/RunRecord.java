@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Date;
 
+import com.google.firebase.firestore.*;
+
 public class RunRecord extends AppCompatActivity implements IPPTRecord {
 
     // Total distance taken (can exceed 2.4km)
@@ -17,15 +19,11 @@ public class RunRecord extends AppCompatActivity implements IPPTRecord {
     // time taken to finsih the 2.4km
     public int TimeTakenFinished;
 
-    public void getRecord(){
-        Intent whiteHole = getIntent();
-        String dataToBeSent = whiteHole.getStringExtra("TimeTakenForTheRun");
-
-    }
-
     private void writeToFirebase(){
         //IPPTRecord -> collection
         //RunRecord -> document
+        Intent whiteHole = getIntent();
+        String dataToBeSent = whiteHole.getStringExtra("TimeTakenForTheRun");
 
     }
 
