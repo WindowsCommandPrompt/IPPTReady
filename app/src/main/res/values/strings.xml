@@ -9,4 +9,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="_2_4km_run">2.4km Run</string>
+    <string name="total_distance_ran">Total Distance Ran:</string>
+    <string name="time_taken_in_total">Time Taken in Total:</string>
+    <string name="time_taken_to_run_2_4km">Time Taken to run 2.4km:</string>
+    <string name="sit_up">Sit-Up</string>
+    <string name="record">Record</string>
+    <string name="target_repetitions">Target Repetitions:</string>
+    <string name="number_of_repetitions">Number of Repetitions:</string>
+    <string name="push_up">Push-Up</string>
 </resources>
