@@ -99,6 +99,9 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    Intent intent = new Intent();
+                    intent.setClassName("sg.np.edu.mad.ipptready.RunActivity", "sg.np.edu.mad.ipptready.RunRecord");
+                    intent.putExtra("TimeTakenForTheRun", capturedTiming);
                     finish();
                 }
             )
