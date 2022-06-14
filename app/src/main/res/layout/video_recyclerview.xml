@@ -72,6 +72,12 @@
                 android:layout_height="wrap_content"
                 android:text="videoid" />
 
+            <TextView
+                android:id="@+id/videoDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="description" />
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

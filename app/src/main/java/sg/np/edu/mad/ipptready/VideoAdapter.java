@@ -42,6 +42,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     String videoTitle = "";
     String videoId = "";
     String videoType = "";
+    String videoDescription = "";
     int actualPosition = 0;
 
     public VideoAdapter(Map<String, List<String>> VideosList, String JsonString, ArrayList<Integer> NoOfVideos, Context context) {
@@ -107,6 +108,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             videoTitle = snippet.getString("title");
             holder.videoName.setText(videoTitle);
 
+            videoDescription = snippet.getString("description");
+            holder.videoDescription.setText(videoDescription);
+            holder.videoDescription.setVisibility(View.GONE);
+
             String imageURL = snippet.getJSONObject("thumbnails").getJSONObject("medium").getString("url");
             Picasso.with(ctx).load(imageURL).into(holder.thumbnail);
 
@@ -117,6 +122,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                     Bundle bundle = new Bundle();
                     bundle.putString("Title", holder.videoName.getText().toString());
                     bundle.putString("Video Id", holder.videoIDTextView.getText().toString());
+                    bundle.putString("Description", holder.videoDescription.getText().toString());
                     watchVideoIntent.putExtras(bundle);
                     view.getContext().startActivity(watchVideoIntent);
                 }
