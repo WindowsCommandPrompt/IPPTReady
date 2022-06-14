@@ -22,6 +22,8 @@ import android.widget.*;
 //import com.google.android.gms.location.*;
 //import com.google.android.gms.tasks.*;
 
+import com.google.firebase.firestore.*;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,6 +36,21 @@ public class RunActivity extends AppCompatActivity {
 
     AtomicReference<CountDownTimer> arcdt = new AtomicReference<>(null);
 
+    private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
+
+    private void getAndWriteToFirebase(){
+        RESTdb.collection("IPPTRecord").document("RunRecord")
+                .get()
+                .addOnSuccessListener(function -> {
+                    Log.d("ReturnResult", "" + function.getData());
+                })
+                .addOnFailureListener(function -> {
+                    Log.d("ERROR", "FAILED TO RETRIEVE THE REQUIRED RESULTS!!!");
+                });
+    }
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +58,8 @@ public class RunActivity extends AppCompatActivity {
 
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
+
+        getAndWriteToFirebase();
 
         //Build the countdown
         mainStopwatch = new CountDownTimer(1000, 1000){
@@ -99,9 +118,6 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
-                    Intent intent = new Intent();
-                    intent.setClassName("sg.np.edu.mad.ipptready.RunActivity", "sg.np.edu.mad.ipptready.RunRecord");
-                    intent.putExtra("TimeTakenForTheRun", capturedTiming);
                     finish();
                 }
             )
