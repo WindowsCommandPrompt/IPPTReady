@@ -94,6 +94,18 @@ public class RunActivity extends AppCompatActivity {
                 //display the error message when the database is unable to fetch the required data and return it back to the user
                 //dataFetchFail.create().show();
             });
+
+        RESTdb.collection("IPPTUser").get()
+                .addOnCompleteListener(function -> {
+                    for (DocumentSnapshot ds : function.getResult().getDocuments()){
+                        Log.d("DocumentSnapshot", "" + ds.getId()); //this field actually returns the email addresses
+                        //get which account the user was logged in through the ProfileActivity.java
+                        Intent whiteHole = getIntent();
+                        if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())){
+
+                        }
+                    }
+                });
     }
 
     private JSONObject calculateTotalScore(){
@@ -152,8 +164,6 @@ public class RunActivity extends AppCompatActivity {
                 }
                 else if(arrayListCleaningStep2.get(i + 1).contains("]")){
                     //check if the character before the second last character exist
-                    A:
-                    for (;;) {
                         subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
                         //Check for any sandwiched elements....
                         if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
@@ -161,14 +171,6 @@ public class RunActivity extends AppCompatActivity {
                         }
                         subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
                         scoringCriteriaRaw.add(subArray);
-                        Log.d("Executing", "YES");
-                        if (scoringCriteriaRaw.size() == timingListRaw.size()){
-                            break;
-                        }
-                        else {
-                            break A;
-                        }
-                    }
                 }
             }
         }
