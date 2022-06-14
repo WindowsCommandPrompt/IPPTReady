@@ -50,6 +50,14 @@ public class RunActivity extends AppCompatActivity {
                 "OK",
                 (DialogInterface di, int i) -> {
                     di.dismiss();
+                    new CountDownTimer(3000, 1000){
+                        @Override
+                        public void onTick(long l) { }
+                        @Override
+                        public void onFinish() {
+                            getAndWriteToFirebase();
+                        }
+                    }.start();
                 }
             )
             .setCancelable(false);
@@ -78,8 +86,14 @@ public class RunActivity extends AppCompatActivity {
 
             })
             .addOnFailureListener(function -> {
-                 dataFetchFail.create().show();
+                //display the error message when the database is unable to fetch the required data and return it back to the user
+                //dataFetchFail.create().show();
             });
+
+        RESTdb.collection("IPPTUser").document().get()
+                .addOnSuccessListener(function -> {
+                    Log.d("TAG", "" );
+                });
     }
 
     @Override
