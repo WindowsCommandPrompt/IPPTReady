@@ -199,7 +199,7 @@ public class RunActivity extends AppCompatActivity {
                 Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "The timer has been paused", Toast.LENGTH_SHORT);
             });
         });
-
+//
         ((LinearLayout) findViewById(R.id.lapCycle)).setOnClickListener(andThenFunction -> {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first", Toast.LENGTH_SHORT).show();
         });
