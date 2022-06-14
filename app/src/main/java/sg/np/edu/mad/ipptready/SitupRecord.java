@@ -1,9 +1,11 @@
 package sg.np.edu.mad.ipptready;
 
-public class SitupRecord extends IPPTRecord {
+public class SitupRecord implements IPPTRecord {
     public int RepsTarget;
     public int NumsReps;
 
     @Override
-    public String getName() { return "Sit-up"; }
+    public int getIPPTRecordScore() {
+        return 0;
+    }
 }

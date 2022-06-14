@@ -75,7 +75,7 @@ public class CreateCycleActivity extends AppCompatActivity {
             dateCreatedView.setText(dateFormat.format(currentDate));
 
             User finalUser = user;
-            findViewById(R.id.createcycleButton).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.createcyclecreatenewcycleButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String IPPTCycleName = ((TextView)findViewById(R.id.createnewcycleName)).getText().toString();

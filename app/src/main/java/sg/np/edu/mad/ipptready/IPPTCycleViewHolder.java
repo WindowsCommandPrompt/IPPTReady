@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class IPPTCycleViewHolder extends RecyclerView.ViewHolder {
     protected TextView nameTextView;
     protected TextView DateCreatedTextView;
+    protected View parentView;
 
     public IPPTCycleViewHolder(View v) {
         super(v);

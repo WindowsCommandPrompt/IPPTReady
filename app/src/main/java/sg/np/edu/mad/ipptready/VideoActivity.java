@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.w3c.dom.Document;
 
@@ -39,106 +41,52 @@ public class VideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        DocumentReference runRef = db.collection("IPPTVideo").document("2.4km Run");
-        DocumentReference cooldownRef = db.collection("IPPTVideo").document("Cool down");
-        DocumentReference pushupRef = db.collection("IPPTVideo").document("Push-ups");
-        DocumentReference situpRef = db.collection("IPPTVideo").document("Sit-ups");
-        DocumentReference warmupRef = db.collection("IPPTVideo").document("Warm up");
-
-        runRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("IPPTVideo").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        run = (List<String>) document.get("video");
-                    } else {
-                        Log.d(DEBUG, "Unable to retrieve 2.4km run videos");
-                        Toast.makeText(VideoActivity.this, "Unable to retrieve 2.4km run videos", Toast.LENGTH_SHORT).show();
+                    QuerySnapshot snapshot = task.getResult();
+                    if (!snapshot.isEmpty()) {
+                        for (DocumentSnapshot document : snapshot) {
+                            List<String> videoArray = document.toObject(Video.class).video;
+                            if (document.getId().equals("2.4km Run")) {
+                                run = videoArray;
+                            }
+                            else if ((document.getId()).equals("Cool down")) {
+                                cooldown = videoArray;
+                            }
+                            else if ((document.getId()).equals("Push-ups")) {
+                                pushup = videoArray;
+                            }
+                            else if ((document.getId()).equals("Sit-ups")) {
+                                situp = videoArray;
+                            }
+                            else if ((document.getId()).equals("Warm up")) {
+                                warmup = videoArray;
+                            }
+                        }
+
+                        VideoAdapter adapter = new VideoAdapter(run, cooldown, pushup, situp, warmup, VideoActivity.this);
+
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+                        RecyclerView recyclerView = findViewById(R.id.videoRecyclerView);
+                        recyclerView.setLayoutManager(layoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.setAdapter(adapter);
                     }
-                } else {
-                    Log.d(DEBUG, "get failed with ", task.getException());
                 }
             }
         });
-
-        cooldownRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        cooldown = (List<String>) document.get("video");
-                    } else {
-                        Log.d(DEBUG, "Unable to retrieve Cool Down videos");
-                        Toast.makeText(VideoActivity.this, "Unable to retrieve Cool Down videos", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(DEBUG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        pushupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        pushup = (List<String>) document.get("video");
-                    } else {
-                        Log.d(DEBUG, "Unable to retrieve Push-Ups videos");
-                        Toast.makeText(VideoActivity.this, "Unable to retrieve Push-Ups videos", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(DEBUG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        situpRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        situp = (List<String>) document.get("video");
-                    } else {
-                        Log.d(DEBUG, "Unable to retrieve Sit-Ups videos");
-                        Toast.makeText(VideoActivity.this, "Unable to retrieve Sit-Ups videos", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(DEBUG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        warmupRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        warmup = (List<String>) document.get("video");
-                    } else {
-                        Log.d(DEBUG, "Unable to retrieve Warm Up videos");
-                        Toast.makeText(VideoActivity.this, "Unable to retrieve Warm Up videos", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Log.d(DEBUG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        RecyclerView recyclerView = findViewById(R.id.videoRecyclerView);
-        VideoAdapter adapter = new VideoAdapter(run, cooldown, pushup, situp, warmup, this);
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
     }
 }

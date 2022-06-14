@@ -9,11 +9,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IPPTRoutine {
+public class IPPTRoutine implements Serializable {
     public Date DateCreated;
     public int IPPTScore;
 
@@ -22,30 +23,31 @@ public class IPPTRoutine {
 
     public void getRecordsList(String EmailAddress,
                           String IPPTCycleId,
-                          OnCompleteListener<DocumentSnapshot> onCompleteDocumentSnapshotListener) {
+                          OnCompleteListener<QuerySnapshot> onCompleteQuerySnapshotListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("IPPTUser")
                 .document(EmailAddress)
                 .collection("IPPTCycle")
                 .document(IPPTCycleId)
                 .collection("IPPTRoutine")
-                .whereEqualTo("DateCreated", DateCreated.toString())
+                .whereEqualTo("DateCreated", DateCreated)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
-                                QueryDocumentSnapshot documentSnapshot = task.getResult().iterator().next();
+                                String documentId = task.getResult().iterator().next().getId();
 
                                 db.collection("IPPTUser")
                                         .document(EmailAddress)
                                         .collection("IPPTCycle")
                                         .document(IPPTCycleId)
                                         .collection("IPPTRoutine")
-                                        .document(documentSnapshot.getId())
+                                        .document(documentId)
+                                        .collection("IPPTRecord")
                                         .get()
-                                        .addOnCompleteListener(onCompleteDocumentSnapshotListener);
+                                        .addOnCompleteListener(onCompleteQuerySnapshotListener);
                             }
                         }
                     }

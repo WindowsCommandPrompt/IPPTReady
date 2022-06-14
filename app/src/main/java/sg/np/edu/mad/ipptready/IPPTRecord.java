@@ -1,7 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
-public abstract class IPPTRecord {
-    public boolean isCompleted;
+public interface IPPTRecord {
+    public boolean isCompleted = false;
 
-    public abstract String getName();
+    public int getIPPTRecordScore();
 }
