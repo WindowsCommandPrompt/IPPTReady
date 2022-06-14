@@ -9,4 +9,58 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string-array name="information_name">
+        <item>Guidelines</item>
+        <item>Passing Criteria</item>
+        <item>Failing/Defaulting</item>
+        <item>Exemption</item>
+        <item>IPPT Test Stations</item>
+        <item>Scoring/Calculation</item>
+        <item>Awards/Incentives</item>
+        <item>Location/Schedules</item>
+    </string-array>
+
+    <string-array name="information_description">
+        <item>IPPT requirements and window</item>
+        <item>Passing criteria for the IPPT</item>
+        <item>What happens if you fail or default on your IPPT</item>
+        <item>Exemptions from IPPT</item>
+        <item>The three stations that IPPT consists of</item>
+        <item>Scoring and Calculation for IPPT</item>
+        <item>Potential awards and incentives you can receive from taking your IPPT</item>
+        <item>IPPT locations and timings</item>
+    </string-array>
+
+    <string-array name="information_details">
+        <item>IPPT is a mandatory annual (within a 12-month period, i.e. your IPPT window)
+            requirement for all eligible NSmen with PES A, B/ B1/ B2/ C1 status. Your first IPPT
+            window starts on your birthday after your Operationally Ready Date (ORD) and ends a day
+            before your next birthday. </item>
+        <item>You need to take and pass your annual IPPT within your IPPT window. The IPPT
+            comprises 3 stations – Push-Ups, Sit-Ups and 2.4km Run. To pass, you need to score a
+            minimum of 1 point in each station, and achieve a total score of at least 51 out of
+            100 points. The IPPT scoring system is calibrated to your age, and you will receive
+            different incentive awards depending on the total score.</item>
+        <item>If you fail your IPPT, you may retake it multiple times within your IPPT window.
+            Once your current IPPT window has closed and you still have not passed your IPPT, you
+            will need to complete 10 sessions of mandatory NS Fitness Improvement Training (FIT)
+            in your next IPPT window. If you are not exempted and did not take your annual IPPT
+            within your IPPT window, you will be considered an IPPT defaulter. You will be called
+            back for investigation and may be subjected to disciplinary action. In addition, you
+            are required to complete 10 mandatory NS FIT sessions in your next window.</item>
+        <item>You can be exempted from your annual fitness requirements once you have been
+            disrupted from your Operationally Ready National Service (ORNS) duties.</item>
+        <item>To measure the major components of physical fitness, your IPPT will consist of
+            3 stations. Push-Ups, Sit-Ups and 2.4km Run.</item>
+        <item>You will earn points that are calibrated to your age group at each IPPT station.
+            These age groups are adjusted within 3-year bands.</item>
+        <item>NSmen who achieve a gold award for their IPPT receive $500, $300 for a silver award,
+            and $200 for a pass with incentive.</item>
+        <item>You can take your IPPT at any of the FCCs that best suits your schedule. Reporting
+            time is 15 minutes before each IPPT session, i.e. 1645 hrs / 1845hrs for the weekday
+            session and 0715 hrs / 1645 hrs / 1745 hrs for the Saturday session respectively.</item>
+    </string-array>
+
+    <color name="whitesmoke">#F5F5F5</color>
 </resources>
