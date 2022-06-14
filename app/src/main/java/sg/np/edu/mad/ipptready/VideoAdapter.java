@@ -64,9 +64,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-        if (position == totalVideos - 1) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.videoEntry.getLayoutParams();
-            params.bottomMargin = 100;
+        ViewGroup.MarginLayoutParams videoEntryParams = (ViewGroup.MarginLayoutParams) holder.videoEntry.getLayoutParams();
+        if (holder.getAdapterPosition() == totalVideos - 1) {
+            videoEntryParams.bottomMargin = 100;
+        }
+        else {
+            videoEntryParams.bottomMargin = 0;
         }
 
         if (position < noOfVideos.get(0)) {

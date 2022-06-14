@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="25dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="5dp"
         android:fontFamily="@font/carter_one"
         android:text="Videos"
         android:textColor="@color/black"
@@ -23,5 +23,5 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/videoRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="618dp" />
+        android:layout_height="639dp" />
 </LinearLayout>
