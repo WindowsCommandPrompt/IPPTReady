@@ -97,7 +97,9 @@ public class RunActivity extends AppCompatActivity {
             .setPositiveButton(
                 "YES",
                 (DialogInterface di, int i) -> {
-                    //take note of the
+                    //take note of the timing that is within the TextView
+                    String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    finish();
                 }
             )
             .setNegativeButton(
@@ -112,11 +114,11 @@ public class RunActivity extends AppCompatActivity {
             .setTitle("Terminate cycle?")
             .setMessage("Are you sure you want to terminate this run cycle?")
             .setPositiveButton(
-                    "YES",
-                    (DialogInterface di, int i) -> {
-                        //If the user presses yes THEN STOP THE TIMER
-                        saveCycleData.create().show();
-                    }
+                "YES",
+                (DialogInterface di, int i) -> {
+                    //If the user presses yes THEN STOP THE TIMER
+                    saveCycleData.create().show();
+                }
             )
             .setNegativeButton(
                 "NO",
@@ -196,10 +198,10 @@ public class RunActivity extends AppCompatActivity {
             ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
                 mainStopwatch.cancel();
                 confirmTerminateCycle.create().show();
-                Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "The timer has been paused", Toast.LENGTH_SHORT);
+                Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "The timer has been paused", Toast.LENGTH_SHORT).show();
             });
         });
-//
+
         ((LinearLayout) findViewById(R.id.lapCycle)).setOnClickListener(andThenFunction -> {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first", Toast.LENGTH_SHORT).show();
         });
@@ -207,16 +209,6 @@ public class RunActivity extends AppCompatActivity {
         ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first before you can terminate the stopwatch. Common sense", Toast.LENGTH_SHORT).show();
         });
-
-        //idNumber and timing textView ids
-        RecyclerView rv = findViewById(R.id.timingRecyclerView); //locate the recycler view
-        //insert the data into the adapter...
-        timingRecyclerViewAdapter rva = new timingRecyclerViewAdapter(this, timings); //insert the data...
-        Log.d("TAG", "" + rva.getItemCount());
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setLayoutManager(llm);
-        rv.setAdapter(rva);
     }
 
     @Override
@@ -225,14 +217,16 @@ public class RunActivity extends AppCompatActivity {
         if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "landscape", Toast.LENGTH_SHORT).show();
             //pause the timer for a moment
-            if (arcdt.get() != null){
-                mainStopwatch.cancel();
-                arcdt.get().cancel();
-                arcdt.get().start();
-            }
-            else {
-                mainStopwatch.cancel();
-                mainStopwatch.start();
+            if (((LinearLayout) findViewById(R.id.startCycle)).isPressed())
+            {
+                if (arcdt.get() != null) {
+                    mainStopwatch.cancel();
+                    arcdt.get().cancel();
+                    arcdt.get().start();
+                } else {
+                    mainStopwatch.cancel();
+                    mainStopwatch.start();
+                }
             }
         }
         else if (config.orientation == Configuration.ORIENTATION_PORTRAIT){

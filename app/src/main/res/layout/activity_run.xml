@@ -183,11 +183,6 @@
                                 android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
-                    <!--Create a recycler's view to store all the timings-->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id = "@+id/timingRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent"></androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
