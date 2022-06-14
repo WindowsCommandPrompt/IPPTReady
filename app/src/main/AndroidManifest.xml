@@ -24,6 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IPPTReady">
         <activity
+            android:name=".WatchVideo"
+            android:exported="false"
+            android:configChanges="orientation|screenSize"/>
+        <activity
             android:name=".DetailedInformationActivity"
             android:parentActivityName=".InformationActivity"
             android:label="Details"
