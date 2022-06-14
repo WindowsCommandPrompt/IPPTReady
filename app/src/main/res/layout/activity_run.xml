@@ -11,181 +11,162 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="STATISTICS"
-            android:textSize="120px" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background='@color/sd'
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.185">
-                <!--First section consists of the time remaining and the distance travelled
-            TODO:
-             1) Create rounded corners for each of the box
-             2) Create a relative layout so as to stack drawables on top of one another
-            -->
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="TIMER"
+                android:textSize="120px" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                    android:layout_height="match_parent"
+                    android:background='@color/sd'
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.185">
+                    <!--First section consists of the time remaining and the distance travelled
+                         1) Create rounded corners for each of the box
+                         2) Create a relative layout so as to stack drawables on top of one another
+                    -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="750px"
-                            android:gravity="center">
-                            <!--android:elevation is set to 1 here by default-->
-                            <ImageView
-                                android:id="@+id/timing_indicator_base"
-                                android:layout_width="750px"
-                                android:layout_height="750px"
-                                android:src="@drawable/timing_indicator" />
-                            <!--android:elevation is set to 2 here by default-->
-                            <LinearLayout
-                                android:layout_width="700px"
-                                android:layout_height="700px">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
 
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:gravity="center">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="1500px"
+                                android:gravity="center">
+                                <!--android:elevation is set to 1 here by default-->
+                                <ImageView
+                                    android:id="@+id/timing_indicator_base"
+                                    android:layout_width="750px"
+                                    android:layout_height="750px"
+                                    android:src="@drawable/timing_indicator" />
+                                <!--android:elevation is set to 2 here by default-->
+                                <LinearLayout
+                                    android:layout_width="700px"
+                                    android:layout_height="700px">
 
-                                    <ImageView
-                                        android:layout_width="750px"
-                                        android:layout_height="750px"
-                                        android:src="@drawable/timing_indicator_overlay" />
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center">
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
+                                        <ImageView
+                                            android:layout_width="800px"
+                                            android:layout_height="800px"
+                                            android:src="@drawable/timing_indicator_overlay" />
 
                                         <LinearLayout
-                                            android:layout_width="350px"
-                                            android:layout_height="wrap_content"
-                                            android:orientation="horizontal">
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:gravity="center"
+                                            android:orientation="vertical">
 
-                                            <ImageView
-                                                android:layout_width="100px"
-                                                android:layout_height="100px"
-                                                android:src="@drawable/ic_baseline_timer_24" />
+                                            <LinearLayout
+                                                android:layout_width="350px"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal">
+
+                                                <ImageView
+                                                    android:layout_width="100px"
+                                                    android:layout_height="100px"
+                                                    android:src="@drawable/ic_baseline_timer_24" />
+
+                                                <TextView
+                                                    android:layout_width="fill_parent"
+                                                    android:layout_height="100px"
+                                                    android:gravity="center"
+                                                    android:text="Timer" />
+                                            </LinearLayout>
 
                                             <TextView
-                                                android:layout_width="fill_parent"
-                                                android:layout_height="100px"
+                                                android:id="@+id/timing_indicator_text"
+                                                android:layout_width="550px"
+                                                android:layout_height="wrap_content"
                                                 android:gravity="center"
-                                                android:text="Timer" />
+                                                android:text="00:00"
+                                                android:textSize="155px"
+                                                android:textStyle="bold" />
+
+                                            <TextView
+                                                android:id="@+id/timerStatus"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:text="Time Taken"
+                                                android:textSize="55px" />
                                         </LinearLayout>
+                                    </RelativeLayout>
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </LinearLayout>
 
-                                        <TextView
-                                            android:id="@+id/timing_indicator_text"
-                                            android:layout_width="550px"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="00:00"
-                                            android:textSize="155px"
-                                            android:textStyle="bold" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="150px"
+                            android:clickable="true"
+                            android:orientation="horizontal">
 
-                                        <TextView
-                                            android:id="@+id/timerStatus"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Time Taken"
-                                            android:textSize="55px" />
-                                    </LinearLayout>
-                                </RelativeLayout>
+                            <LinearLayout
+                                android:id="@+id/terminateCycle"
+                                android:layout_width="0px"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/red"
+                                android:clickable="true"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Stop"
+                                    android:textColor="@color/white"
+                                    android:textSize="45px"
+                                    android:textStyle="bold" />
                             </LinearLayout>
-                        </RelativeLayout>
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="150px"
-                        android:clickable="true"
-                        android:orientation="horizontal">
+                            <LinearLayout
+                                android:id="@+id/startCycle"
+                                android:layout_width="0px"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@color/green"
+                                android:clickable="true"
+                                android:gravity="center">
 
-                        <LinearLayout
-                            android:id="@+id/terminateCycle"
-                            android:layout_width="0px"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/red"
-                            android:clickable="true"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Stop"
-                                android:textColor="@color/white"
-                                android:textSize="45px"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/startCycle"
-                            android:layout_width="0px"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/green"
-                            android:clickable="true"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Start"
-                                android:textColor="@color/white"
-                                android:textSize="45px"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/lapCycle"
-                            android:layout_width="0px"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@color/orange"
-                            android:clickable="true"
-                            android:gravity="center">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Lap"
-                                android:textColor="@color/white"
-                                android:textSize="45px"
-                                android:textStyle="bold" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Start"
+                                    android:textColor="@color/white"
+                                    android:textSize="45px"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
