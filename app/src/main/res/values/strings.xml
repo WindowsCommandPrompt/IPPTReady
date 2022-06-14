@@ -18,4 +18,26 @@
     <string name="target_repetitions">Target Repetitions:</string>
     <string name="number_of_repetitions">Number of Repetitions:</string>
     <string name="push_up">Push-Up</string>
+
+    <string-array name="information_name">
+        <item>Guidelines</item>
+        <item>Passing Criteria</item>
+        <item>Failing/Defaulting</item>
+        <item>Exemption</item>
+        <item>IPPT Test Stations</item>
+        <item>Scoring/Calculation</item>
+        <item>Awards/Incentives</item>
+        <item>Location/Schedules</item>
+    </string-array>
+
+    <string-array name="information_description">
+        <item>IPPT requirements and window</item>
+        <item>Passing criteria for the IPPT</item>
+        <item>What happens if you fail or default on your IPPT</item>
+        <item>Exemptions from IPPT</item>
+        <item>The three stations that IPPT consists of</item>
+        <item>Scoring and Calculation for IPPT</item>
+        <item>Potential awards and incentives you can recieve from taking your IPPT</item>
+        <item>IPPT locations and timings</item>
+    </string-array>
 </resources>
