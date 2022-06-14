@@ -110,10 +110,12 @@ public class RunActivity extends AppCompatActivity {
         return jObject;
     }
 
-    private ArrayList<String> calculate2Point4KMScore() throws JSONException {
+    private HashMap<String, ArrayList<String>> unpackageJSON() throws JSONException {
         String timingPortionAll = "";
         String timingPortionFirst = "";
         String timingPortionSecond = "";
+
+        HashMap<String, ArrayList<String>> returnItem = new HashMap<>();
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayList<String> arrayListCleaningStep2 = new ArrayList<>();
         final ArrayList<String> timingListRaw = new ArrayList<>();
@@ -130,27 +132,28 @@ public class RunActivity extends AppCompatActivity {
         }
         Log.d("InitialLength", "" + arrayListCleaningStep2.size());
         for (int i = 0; i < arrayListCleaningStep2.size(); i++){
-            //Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
-            if (i + i < arrayListCleaningStep2.size()) {
-                if (arrayListCleaningStep2.get(i).contains("\"")) {
-                    if (arrayListCleaningStep2.get(i+1).contains("\"")){
-                        timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
-                        timingPortionSecond = (arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2));
-                        timingPortionAll = timingPortionFirst + ":" + timingPortionSecond;
-                        if (timingPortionAll.length() > 0){
-                            timingListRaw.add(timingPortionAll);
-                        }
-                        //Log.d("DataCleansingRemoval", "" + arrayListCleaningStep2.get(i));
+            Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
+            if (arrayListCleaningStep2.get(i).contains("\"")) {
+                if (arrayListCleaningStep2.get(i+1).contains("\"")){
+                    timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
+                    timingPortionSecond = (arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2));
+                    timingPortionAll = timingPortionFirst + ":" + timingPortionSecond;
+                    if (timingPortionAll.length() > 0){
+                        timingListRaw.add(timingPortionAll);
                     }
+                    //Log.d("DataCleansingRemoval", "" + arrayListCleaningStep2.get(i));
                 }
-                else if (arrayListCleaningStep2.get(i).contains("[")){
-                    int targetIndex = i;
-                    if (arrayListCleaningStep2.get(i).contains("]")){ //If both symbols are located on the same row....
-                        singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
-                        scoringCriteriaRaw.add(singleElement);
-                    }
-                    else if(arrayListCleaningStep2.get(i + 1).contains("]")){
-                        //check if the character before the second last character exist
+            }
+            else if (arrayListCleaningStep2.get(i).contains("[")){
+                int targetIndex = i;
+                if (arrayListCleaningStep2.get(i).contains("]")){ //If both symbols are located on the same row....
+                    singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
+                    scoringCriteriaRaw.add(singleElement);
+                }
+                else if(arrayListCleaningStep2.get(i + 1).contains("]")){
+                    //check if the character before the second last character exist
+                    A:
+                    for (;;) {
                         subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
                         //Check for any sandwiched elements....
                         if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
@@ -158,13 +161,26 @@ public class RunActivity extends AppCompatActivity {
                         }
                         subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
                         scoringCriteriaRaw.add(subArray);
+                        Log.d("Executing", "YES");
+                        if (scoringCriteriaRaw.size() == timingListRaw.size()){
+                            break;
+                        }
+                        else {
+                            break A;
+                        }
                     }
                 }
             }
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
-        Log.d("InitialLengthAfter", "" + arrayListCleaningStep2.size());
-        return arrayList;
+        Log.d("TIMINGINDICATORLENGTH", "" + timingListRaw);
+        Log.d("InitialLengthAfter", "" + scoringCriteriaRaw.size());
+        return returnItem;
+    }
+
+    private void calculation2Point4KMScore() throws JSONException{
+        HashMap<String, ArrayList<String>> a = unpackageJSON();
+
     }
 
     @Override
@@ -178,7 +194,7 @@ public class RunActivity extends AppCompatActivity {
         getAndWriteToFirebase();
 
         try {
-            Log.d("TAG", "" + calculate2Point4KMScore());
+            Log.d("TAG", "" + unpackageJSON());
         } catch (JSONException e) {
             e.printStackTrace();
         }
