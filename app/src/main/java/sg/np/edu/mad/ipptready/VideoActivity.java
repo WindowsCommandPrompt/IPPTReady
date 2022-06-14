@@ -95,7 +95,7 @@ public class VideoActivity extends AppCompatActivity {
 
                         videoIds = videoIds.substring(0, videoIds.length()-1);
 
-                        String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,thumbnails/medium/url),items/contentDetails/duration&key=AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58&id=" + videoIds;
+                        String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,description,thumbnails/medium/url),items/contentDetails/duration&key=AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58&id=" + videoIds;
                         Log.d(DEBUG, jsonLink);
                         String jsonString = "";
 

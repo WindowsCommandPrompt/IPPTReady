@@ -13,6 +13,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="76dp"
         android:text="Name:"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -23,6 +24,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/dobLabel"
         app:layout_constraintTop_toBottomOf="@+id/email" />
 
@@ -30,9 +32,10 @@
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="40dp"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/emailLabel"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -43,6 +46,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="76dp"
         android:text="TextView"
+        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/nameLabel3"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -53,6 +57,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:text="Date Of Birth:"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
 
@@ -63,6 +68,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="40dp"
         android:text="Email:"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameLabel3" />
 
@@ -83,12 +89,13 @@
         android:id="@+id/textView8"
         android:layout_width="130dp"
         android:layout_height="43dp"
-        android:layout_marginStart="140dp"
         android:layout_marginTop="32dp"
         android:text="Profile"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 

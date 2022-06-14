@@ -7,18 +7,22 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.19537037037037036" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle_recycleview.xml" value="0.19537037037037036" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.264" />
-        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.4" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.152" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_video.xml" value="0.176" />
-        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/video_recyclerview.xml" value="0.264" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/drawable/timing_indicator.xml" value="0.1285" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/drawable/timing_indicator_overlay.xml" value="0.129" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout-land/activity_cycle.xml" value="0.264" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.2" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.2368659420289855" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.2368659420289855" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_routine.xml" value="0.1" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_run.xml" value="0.12" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/timing_viewholder.xml" value="0.1160081053698075" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_watch_video.xml" value="0.25416666666666665" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/video_recyclerview.xml" value="0.4" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_detailed_information.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_information.xml" value="0.25" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/information_row.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/activity_create_cycle.xml" value="0.12" />
+        <entry key="app/src/main/res/layout/activity_cycle.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.225" />
+        <entry key="app/src/main/res/layout/activity_record.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_routine.xml" value="0.225" />
+        <entry key="app/src/main/res/layout/activity_video.xml" value="0.225" />
       </map>
     </option>
   </component>

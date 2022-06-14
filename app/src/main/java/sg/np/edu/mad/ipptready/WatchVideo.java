@@ -16,10 +16,10 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
 public class WatchVideo extends YouTubeBaseActivity {
-    Button playBtn;
     YouTubePlayerView youtubePlayerView;
     String youtubeAPIKEY = "AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58";
     TextView videoTitle;
+    TextView videoDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +29,20 @@ public class WatchVideo extends YouTubeBaseActivity {
         Bundle bundle = getIntent().getExtras();
         String title = bundle.getString("Title");
         String videoId = bundle.getString("Video Id");
+        String description = bundle.getString("Description");
 
-        playBtn = findViewById(R.id.watchVideoButton);
         youtubePlayerView = findViewById(R.id.youtubePlayerView);
         videoTitle = findViewById(R.id.videoPlayerTitle);
         videoTitle.setText(title);
+
+        videoDescription = findViewById(R.id.videoPlayerDescription);
+        videoDescription.setText(description);
 
         YouTubePlayer.OnInitializedListener initializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 youTubePlayer.loadVideo(videoId);
+                youTubePlayer.play();
             }
 
             @Override
@@ -47,11 +51,7 @@ public class WatchVideo extends YouTubeBaseActivity {
             }
         };
 
-        playBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                youtubePlayerView.initialize("AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU", initializedListener);
-            }
-        });
+        youtubePlayerView.initialize("AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU", initializedListener);
+
     }
 }
