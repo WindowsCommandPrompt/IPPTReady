@@ -60,6 +60,14 @@ public class ProfileActivity extends AppCompatActivity {
         email.setText(EmailAddress);
         dob.setText(user.DOB.toString());
 
+        //========================================================================================================//
+        //ADDED THE BELOW PART ON 15th June 2022 3:22AM
+        //SEND EMAILADDRESS DATA OVER TO RunActivity.java
+        Intent blackHole = new Intent();
+        blackHole.setClassName("sg.np.edu.mad.ipptready.ProfileActivity.this", "sg.np.edu.mad.ipptready.RunActivity.class");
+        blackHole.putExtra("EmailAddressVerifier", email.getText().toString());
+        //=======================================================================================================//
+
     }
 
 }
