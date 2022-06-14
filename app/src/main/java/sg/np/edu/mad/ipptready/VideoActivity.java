@@ -20,22 +20,38 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class VideoActivity extends AppCompatActivity {
     private static final String DEBUG = "DEBUG";
-    List<String> run;
-    List<String> cooldown;
-    List<String> pushup;
-    List<String> situp;
-    List<String> warmup;
+    Map<String, List<String>> videosList = new HashMap<String, List<String>>();
+    String videoIds = "";
+    ArrayList<String> orderOfActivities = new ArrayList<String>() {
+        {
+            add("Warm up");
+            add("2.4km Run");
+            add("Push-ups");
+            add("Sit-ups");
+            add("Cool down");
+        }
+    };
+    ArrayList<Integer> noOfVideos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,26 +74,57 @@ public class VideoActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     QuerySnapshot snapshot = task.getResult();
                     if (!snapshot.isEmpty()) {
-                        for (DocumentSnapshot document : snapshot) {
-                            List<String> videoArray = document.toObject(Video.class).video;
-                            if (document.getId().equals("2.4km Run")) {
-                                run = videoArray;
-                            }
-                            else if ((document.getId()).equals("Cool down")) {
-                                cooldown = videoArray;
-                            }
-                            else if ((document.getId()).equals("Push-ups")) {
-                                pushup = videoArray;
-                            }
-                            else if ((document.getId()).equals("Sit-ups")) {
-                                situp = videoArray;
-                            }
-                            else if ((document.getId()).equals("Warm up")) {
-                                warmup = videoArray;
+                        for (int i = 0; i < snapshot.size(); i++) {
+                            for (DocumentSnapshot document : snapshot) {
+                                List<String> videoArray = document.toObject(Video.class).video;
+                                int number = 0;
+                                if (document.getId().equals(orderOfActivities.get(i))) {
+                                    videosList.put(orderOfActivities.get(i), videoArray);
+                                    for (String videoId : videoArray) {
+                                        videoIds += videoId + ",";
+                                        number += 1;
+                                        Log.d(DEBUG, orderOfActivities.get(i) + ":" + videoId);
+                                    }
+                                    noOfVideos.add(number);
+                                    break;
+                                }
                             }
                         }
 
-                        VideoAdapter adapter = new VideoAdapter(run, cooldown, pushup, situp, warmup, VideoActivity.this);
+                        videoIds = videoIds.substring(0, videoIds.length()-1);
+
+                        String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,thumbnails/medium/url),items/contentDetails/duration&key=AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58&id=" + videoIds;
+                        Log.d(DEBUG, jsonLink);
+                        String jsonString = "";
+
+                        URL url = null;
+                        try {
+                            url = new URL(jsonLink);
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+                        HttpURLConnection conn = null;
+                        try {
+                            conn = (HttpURLConnection) url.openConnection();
+                            conn.setRequestMethod("GET");
+                            conn.connect();
+
+                            int responseCode = conn.getResponseCode();
+                            if (responseCode != 200) {
+                                throw new RuntimeException("HttpResponseCode: " + responseCode);
+                            } else {
+                                Scanner scanner = new Scanner(url.openStream());
+                                while (scanner.hasNext()) {
+                                    jsonString += scanner.nextLine();
+                                }
+                                scanner.close();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        VideoAdapter adapter = new VideoAdapter(videosList, jsonString, noOfVideos,VideoActivity.this);
 
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                         RecyclerView recyclerView = findViewById(R.id.videoRecyclerView);
