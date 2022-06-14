@@ -1,8 +1,8 @@
 package sg.np.edu.mad.ipptready;
 
 import android.content.Context;
-import android.os.StrictMode;
-import android.util.JsonReader;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,38 +17,38 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     private static final String DEBUG = "DEBUG";
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-    public List<String> run, cooldown, pushup, situp, warmup;
-    int totalVideos = 0;
-    ArrayList<Integer> noOfVideos;
+    public Map<String, List<String>> videosList;
+    String jsonString;
     Context ctx;
 
-    public VideoAdapter(List<String> Run, List<String> Cooldown, List<String> Pushup, List<String> Situp, List<String> Warmup, Context context) {
-        run = Run;
-        cooldown = Cooldown;
-        pushup = Pushup;
-        situp = Situp;
-        warmup = Warmup;
-        ctx = context;
+    ArrayList<String> orderOfActivities = new ArrayList<String>() {
+        {
+            add("Warm up");
+            add("2.4km Run");
+            add("Push-ups");
+            add("Sit-ups");
+            add("Cool down");
+        }
+    };
+    ArrayList<Integer> noOfVideos;
+    int totalVideos = 0;
+    String videoTitle = "";
+    String videoId = "";
+    String videoType = "";
+    int actualPosition = 0;
 
-        noOfVideos = new ArrayList<>();
-        noOfVideos.add(warmup.size());
-        noOfVideos.add(run.size());
-        noOfVideos.add(pushup.size());
-        noOfVideos.add(situp.size());
-        noOfVideos.add(cooldown.size());
+    public VideoAdapter(Map<String, List<String>> VideosList, String JsonString, ArrayList<Integer> NoOfVideos, Context context) {
+        videosList = VideosList;
+        jsonString = JsonString;
+        noOfVideos = NoOfVideos;
+        ctx = context;
 
         for (int v : noOfVideos) {
             totalVideos += v;
@@ -63,40 +63,34 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
-        String videoId = "";
-        String videoType = "";
-        int actualPosition = 0;
         if (position == totalVideos - 1) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) holder.videoEntry.getLayoutParams();
             params.bottomMargin = 100;
-
         }
 
         if (position < noOfVideos.get(0)) {
             actualPosition = position;
-            videoId = warmup.get(actualPosition);
-            videoType = "Warm Up";
+            videoType = orderOfActivities.get(0);
         }
         else if (position < noOfVideos.get(0) + noOfVideos.get(1)) {
             actualPosition = position - noOfVideos.get(0);
-            videoId = run.get(actualPosition);
-            videoType = "2.4km Run";
+            videoType = orderOfActivities.get(1);
         }
         else if (position < noOfVideos.get(0) + noOfVideos.get(1) + noOfVideos.get(2)) {
             actualPosition = position - noOfVideos.get(0) - noOfVideos.get(1);
-            videoId = pushup.get(actualPosition);
-            videoType = "Push-Ups";
+            videoType = orderOfActivities.get(2);
         }
         else if (position < noOfVideos.get(0) + noOfVideos.get(1) + noOfVideos.get(2) + noOfVideos.get(3)) {
             actualPosition = position - noOfVideos.get(0) - noOfVideos.get(1) - noOfVideos.get(2);
-            videoId = situp.get(actualPosition);
-            videoType = "Sit-Ups";
+            videoType = orderOfActivities.get(3);
         }
         else if (position < noOfVideos.get(0) + noOfVideos.get(1) + noOfVideos.get(2) + noOfVideos.get(3) + noOfVideos.get(4)) {
             actualPosition = position - noOfVideos.get(0) - noOfVideos.get(1) - noOfVideos.get(2) - noOfVideos.get(3);
-            videoId = situp.get(actualPosition);
-            videoType = "Cool Down";
+            videoType = orderOfActivities.get(4);
         }
+
+        holder.videoIDTextView.setText(videosList.get(videoType).get(actualPosition));
+        holder.videoIDTextView.setVisibility(View.GONE);
 
         if (actualPosition == 0) {
             holder.videoType.setText(videoType);
@@ -107,49 +101,30 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         }
 
         try {
-            String jsonString = "";
-            String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,thumbnails/medium/url),items/contentDetails/duration&key=AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58&id=" + videoId;
-
-            URL url = null;
-            try {
-                url = new URL(jsonLink);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-
-            HttpURLConnection conn = null;
-            try {
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.connect();
-
-                int responseCode = conn.getResponseCode();
-                if (responseCode != 200) {
-                    throw new RuntimeException("HttpResponseCode: " + responseCode);
-                } else {
-                    Scanner scanner = new Scanner(url.openStream());
-                    while (scanner.hasNext()) {
-                        jsonString += scanner.nextLine();
-                    }
-                    scanner.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
             JSONObject obj = new JSONObject(jsonString);
             JSONArray items = obj.getJSONArray("items");
-            JSONObject snippet = items.getJSONObject(0).getJSONObject("snippet");
-            holder.videoName.setText(snippet.getString("title"));
-            Log.d(DEBUG, snippet.getString("title"));
+            JSONObject snippet = items.getJSONObject(position).getJSONObject("snippet");
+            videoTitle = snippet.getString("title");
+            holder.videoName.setText(videoTitle);
 
             String imageURL = snippet.getJSONObject("thumbnails").getJSONObject("medium").getString("url");
             Picasso.with(ctx).load(imageURL).into(holder.thumbnail);
+
+            holder.playButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent watchVideoIntent = new Intent(view.getContext(), WatchVideo.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Title", holder.videoName.getText().toString());
+                    bundle.putString("Video Id", holder.videoIDTextView.getText().toString());
+                    watchVideoIntent.putExtras(bundle);
+                    view.getContext().startActivity(watchVideoIntent);
+                }
+            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public int getItemCount() { return totalVideos; }
-
 }

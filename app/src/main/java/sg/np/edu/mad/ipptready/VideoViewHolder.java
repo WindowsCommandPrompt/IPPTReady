@@ -14,6 +14,8 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
     // protected Button playButton;
     protected ImageView thumbnail;
     protected LinearLayout videoEntry;
+    protected Button playButton;
+    protected TextView videoIDTextView;
 
     public VideoViewHolder(View v) {
         super(v);
@@ -22,5 +24,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
         videoName = v.findViewById(R.id.recyclerVideoName);
         thumbnail = v.findViewById(R.id.recyclerThumbnail);
         videoEntry = v.findViewById(R.id.videoEntry);
+        playButton = v.findViewById(R.id.videoPlayButton);
+        videoIDTextView = v.findViewById(R.id.videoID);
     }
 }
