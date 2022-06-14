@@ -9,11 +9,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IPPTRoutine {
+public class IPPTRoutine implements Serializable {
     public Date DateCreated;
     public int IPPTScore;
 

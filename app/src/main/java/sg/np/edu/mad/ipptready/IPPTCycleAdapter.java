@@ -53,7 +53,6 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent routineIntent = new Intent(ipptCycleContext, RoutineActivity.class);
-
                 routineIntent.putExtra("Email", EmailAddress);
 
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -80,6 +79,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
                                             e.printStackTrace();
                                             return;
                                         }
+                                        routineIntent.putExtra("IPPTCycleId", documentSnapshot.getId());
 
                                         IPPTCycleAdapter.this.ipptCycleContext.startActivity(routineIntent);
                                     }
