@@ -111,8 +111,14 @@ public class RunActivity extends AppCompatActivity {
     }
 
     private ArrayList<String> calculate2Point4KMScore() throws JSONException {
+        String timingPortionAll = "";
+        String timingPortionFirst = "";
+        String timingPortionSecond = "";
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayList<String> arrayListCleaningStep2 = new ArrayList<>();
+        final ArrayList<String> timingListRaw = new ArrayList<>();
+        final ArrayList<String> scoringCriteriaRaw = new ArrayList<>();
+        ArrayList<String> subArray = new ArrayList<>();
         for (String s : calculateTotalScore().get("RunRecord").toString().split(",")){
             arrayList.add(s);
         }
@@ -123,20 +129,26 @@ public class RunActivity extends AppCompatActivity {
         }
         for (int i = 0; i < arrayListCleaningStep2.size(); i++){
             Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
-            String timingPortionAll = "";
-            String timingPortionFirst = "";
-            String timingPortionSecond = "";
             if (i + i < arrayListCleaningStep2.size()) {
                 if (arrayListCleaningStep2.get(i).contains("\"")) {
                     if (arrayListCleaningStep2.get(i+1).contains("\"")){
-                        timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() < arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
+                        timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
                         timingPortionSecond = (arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2));
                         timingPortionAll = timingPortionFirst + ":" + timingPortionSecond;
+                        if (timingPortionAll.length() > 0){
+                            timingListRaw.add(timingPortionAll);
+                        }
                     }
                 }
+                else if (arrayListCleaningStep2.get(i).contains("[")){
+                    if (arrayListCleaningStep2.get(i).contains("]")){ //If both symbols are located on the same row....
+                        scoringCriteriaRaw.add(arrayListCleaningStep2.get(i)); //This line of code only execute once....
+                    }
+
+                }
             }
-            Log.d("timingPortionFirst", timingPortionAll);
         }
+        Log.d("LENGTH", "" );
         return arrayList;
     }
 
