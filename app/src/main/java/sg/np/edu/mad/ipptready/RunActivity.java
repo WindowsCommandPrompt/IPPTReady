@@ -20,7 +20,10 @@ import android.util.Log;
 import android.widget.*;
 
 //import com.google.android.gms.location.*;
-import com.google.android.gms.tasks.*;
+//import com.google.android.gms.tasks.*;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,6 +37,51 @@ public class RunActivity extends AppCompatActivity {
 
     AtomicReference<CountDownTimer> arcdt = new AtomicReference<>(null);
 
+    private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
+
+    private void getAndWriteToFirebase(){
+        AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
+        AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
+
+        dataAppendFailed
+            .setTitle("Data append failed")
+            .setMessage("We are not able to save your timing into the databse")
+            .setPositiveButton(
+                "OK",
+                (DialogInterface di, int i) -> {
+                    di.dismiss();
+                }
+            )
+            .setCancelable(false);
+
+        dataFetchFail
+            .setTitle("Cannot fetch data from the database")
+            .setMessage("Failed to retrieve the required data from the database, do you want to retry this process again??")
+            .setPositiveButton(
+                "YES",
+                (DialogInterface di, int i) -> {
+                    di.dismiss();
+                    this.getAndWriteToFirebase();
+                }
+            )
+            .setNegativeButton(
+                "NO",
+                (DialogInterface di, int i) -> {
+                    dataAppendFailed.create().show();
+                }
+            )
+            .setCancelable(false);
+
+        RESTdb.collection("IPPTRecord").document("RunRecord")
+            .get()
+            .addOnSuccessListener(function ->{
+
+            })
+            .addOnFailureListener(function -> {
+                 dataFetchFail.create().show();
+            });
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +89,8 @@ public class RunActivity extends AppCompatActivity {
 
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
+
+        getAndWriteToFirebase();
 
         //Build the countdown
         mainStopwatch = new CountDownTimer(1000, 1000){
@@ -99,9 +149,6 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
-                    Intent intent = new Intent();
-                    intent.setClassName("sg.np.edu.mad.ipptready.RunActivity", "sg.np.edu.mad.ipptready.RunRecord");
-                    intent.putExtra("TimeTakenForTheRun", capturedTiming);
                     finish();
                 }
             )
