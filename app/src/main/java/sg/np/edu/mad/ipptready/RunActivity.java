@@ -128,8 +128,9 @@ public class RunActivity extends AppCompatActivity {
                 arrayListCleaningStep2.add(s);
             }
         }
+        Log.d("InitialLength", "" + arrayListCleaningStep2.size());
         for (int i = 0; i < arrayListCleaningStep2.size(); i++){
-            Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
+            //Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
             if (i + i < arrayListCleaningStep2.size()) {
                 if (arrayListCleaningStep2.get(i).contains("\"")) {
                     if (arrayListCleaningStep2.get(i+1).contains("\"")){
@@ -139,24 +140,30 @@ public class RunActivity extends AppCompatActivity {
                         if (timingPortionAll.length() > 0){
                             timingListRaw.add(timingPortionAll);
                         }
+                        //Log.d("DataCleansingRemoval", "" + arrayListCleaningStep2.get(i));
                     }
                 }
                 else if (arrayListCleaningStep2.get(i).contains("[")){
+                    int targetIndex = i;
                     if (arrayListCleaningStep2.get(i).contains("]")){ //If both symbols are located on the same row....
                         singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
                         scoringCriteriaRaw.add(singleElement);
                     }
                     else if(arrayListCleaningStep2.get(i + 1).contains("]")){
                         //check if the character before the second last character exist
-                        subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "" )); //head of the entire array
-                        subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3): "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
+                        subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
+                        //Check for any sandwiched elements....
+                        if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
+                            subArray.add(arrayListCleaningStep2.get(i + 1));
+                        }
+                        subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
                         scoringCriteriaRaw.add(subArray);
                     }
-
                 }
             }
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
+        Log.d("InitialLengthAfter", "" + arrayListCleaningStep2.size());
         return arrayList;
     }
 
