@@ -22,6 +22,7 @@ import android.widget.*;
 //import com.google.android.gms.location.*;
 //import com.google.android.gms.tasks.*;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.*;
 
 import java.io.IOException;
@@ -36,28 +37,56 @@ public class RunActivity extends AppCompatActivity {
 
     AtomicReference<CountDownTimer> arcdt = new AtomicReference<>(null);
 
+    AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
+    AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
+    AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
+    AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
+
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
     private void getAndWriteToFirebase(){
+
+        dataAppendFailed
+            .setTitle("Data append failed")
+            .setMessage("We are not able to save your timing into the databse")
+            .setPositiveButton(
+                "OK",
+                (DialogInterface di, int i) -> {
+                    di.dismiss();
+                }
+            );
+
+        dataFetchFail
+            .setTitle("Cannot fetch data from the database")
+            .setMessage("Failed to retrieve the required data from the database, do you want to retry this process again??")
+            .setPositiveButton(
+                "YES",
+                (DialogInterface di, int i) -> {
+
+                }
+            )
+            .setNegativeButton(
+                "NO",
+                (DialogInterface di, int i) -> {
+                    dataAppendFailed.create().show();
+                }
+            )
+            .setCancelable(false);
+
         RESTdb.collection("IPPTRecord").document("RunRecord")
-                .get()
-                .addOnSuccessListener(function -> {
-                    Log.d("ReturnResult", "" + function.getData());
-                })
-                .addOnFailureListener(function -> {
-                    Log.d("ERROR", "FAILED TO RETRIEVE THE REQUIRED RESULTS!!!");
-                });
+            .get()
+            .addOnSuccessListener(function ->{
+
+            })
+            .addOnFailureListener(function -> {
+
+            });
     }
-
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
-
-        AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
-        AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
         getAndWriteToFirebase();
 
