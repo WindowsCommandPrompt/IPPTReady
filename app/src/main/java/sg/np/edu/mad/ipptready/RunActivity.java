@@ -37,14 +37,11 @@ public class RunActivity extends AppCompatActivity {
 
     AtomicReference<CountDownTimer> arcdt = new AtomicReference<>(null);
 
-    AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
-    AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
-    AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
-    AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
-
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
     private void getAndWriteToFirebase(){
+        AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
+        AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
 
         dataAppendFailed
             .setTitle("Data append failed")
@@ -54,7 +51,8 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     di.dismiss();
                 }
-            );
+            )
+            .setCancelable(false);
 
         dataFetchFail
             .setTitle("Cannot fetch data from the database")
@@ -62,7 +60,8 @@ public class RunActivity extends AppCompatActivity {
             .setPositiveButton(
                 "YES",
                 (DialogInterface di, int i) -> {
-
+                    di.dismiss();
+                    this.getAndWriteToFirebase();
                 }
             )
             .setNegativeButton(
@@ -79,7 +78,7 @@ public class RunActivity extends AppCompatActivity {
 
             })
             .addOnFailureListener(function -> {
-
+                 dataFetchFail.create().show();
             });
     }
 
@@ -87,6 +86,9 @@ public class RunActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
+
+        AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
+        AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
         getAndWriteToFirebase();
 
