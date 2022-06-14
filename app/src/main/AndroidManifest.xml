@@ -18,6 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IPPTReady">
         <activity
+            android:name=".DetailedInformationActivity"
+            android:parentActivityName=".InformationActivity"
+            android:label="Details"
+            android:exported="false" />
+        <activity
             android:name=".InformationActivity"
             android:exported="false" />
         <activity
