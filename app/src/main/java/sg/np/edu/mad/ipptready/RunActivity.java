@@ -189,21 +189,12 @@ public class RunActivity extends AppCompatActivity {
             ((LinearLayout) findViewById(R.id.startCycle)).setClickable(false);
             ((LinearLayout) findViewById(R.id.startCycle)).setEnabled(false);
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Stop watch has been activated", Toast.LENGTH_SHORT).show();
-            //Add the relevant event listener to make a lap
-            ((LinearLayout) findViewById(R.id.lapCycle)).setOnClickListener(andThenFunction -> {
-                timings.add(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString());
-                Log.d("TIMINGARRAYLENGTH", "" + timings.size());
-            });
             //Add the relevant event listener to terminate cycle
             ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
                 mainStopwatch.cancel();
                 confirmTerminateCycle.create().show();
                 Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "The timer has been paused", Toast.LENGTH_SHORT).show();
             });
-        });
-
-        ((LinearLayout) findViewById(R.id.lapCycle)).setOnClickListener(andThenFunction -> {
-            Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first", Toast.LENGTH_SHORT).show();
         });
 
         ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
