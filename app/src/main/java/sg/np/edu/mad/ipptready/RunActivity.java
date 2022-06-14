@@ -123,22 +123,19 @@ public class RunActivity extends AppCompatActivity {
         }
         for (int i = 0; i < arrayListCleaningStep2.size(); i++){
             Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
-            String timingPortion = "";
+            String timingPortionAll = "";
+            String timingPortionFirst = "";
+            String timingPortionSecond = "";
             if (i + i < arrayListCleaningStep2.size()) {
                 if (arrayListCleaningStep2.get(i).contains("\"")) {
                     if (arrayListCleaningStep2.get(i+1).contains("\"")){
-                        /*
-                        timingPortion = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1))
-                                        +
-                                        (arrayListCleaningStep2.get(i).length() - 1 > arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2)
-                                                ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2)
-                                                : "a");
-
-                         */
+                        timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() < arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
+                        timingPortionSecond = (arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2));
+                        timingPortionAll = timingPortionFirst + ":" + timingPortionSecond;
                     }
                 }
             }
-            Log.d("timingPortion", timingPortion);
+            Log.d("timingPortionFirst", timingPortionAll);
         }
         return arrayList;
     }
