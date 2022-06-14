@@ -110,12 +110,41 @@ public class RunActivity extends AppCompatActivity {
         return jObject;
     }
 
-    private void calculate2Point4KMScore(){
+    private ArrayList<String> calculate2Point4KMScore() throws JSONException {
+        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<String> arrayListCleaningStep2 = new ArrayList<>();
+        for (String s : calculateTotalScore().get("RunRecord").toString().split(",")){
+            arrayList.add(s);
+        }
+        for (int i = 0; i < arrayList.size(); i++){
+            for (String s : arrayList.get(i).split(":")){
+                arrayListCleaningStep2.add(s);
+            }
+        }
+        for (int i = 0; i < arrayListCleaningStep2.size(); i++){
+            Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
+            String timingPortion = "";
+            if (i + i < arrayListCleaningStep2.size()) {
+                if (arrayListCleaningStep2.get(i).contains("\"")) {
+                    if (arrayListCleaningStep2.get(i+1).contains("\"")){
+                        /*
+                        timingPortion = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1))
+                                        +
+                                        (arrayListCleaningStep2.get(i).length() - 1 > arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2)
+                                                ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2)
+                                                : "a");
 
+                         */
+                    }
+                }
+            }
+            Log.d("timingPortion", timingPortion);
+        }
+        return arrayList;
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
 
@@ -124,7 +153,11 @@ public class RunActivity extends AppCompatActivity {
 
         getAndWriteToFirebase();
 
-        Log.d("TAG", "" + calculateTotalScore());
+        try {
+            Log.d("TAG", "" + calculate2Point4KMScore());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Build the countdown
         mainStopwatch = new CountDownTimer(1000, 1000){
