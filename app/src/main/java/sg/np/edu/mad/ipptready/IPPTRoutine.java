@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -82,7 +83,7 @@ public class IPPTRoutine implements Serializable {
                                         .document(IPPTCycleId)
                                         .collection("IPPTRoutine")
                                         .document(document.getId())
-                                        .set(mergeDat)
+                                        .set(mergeDat, SetOptions.merge())
                                         .addOnCompleteListener(onCompleteVoidListener);
                             }
                         }

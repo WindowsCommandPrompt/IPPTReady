@@ -20,12 +20,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> {
     private List<IPPTCycle> ipptCycleList;
     private Context ipptCycleContext;
     private String EmailAddress;
+    private static DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTCycleAdapter(List<IPPTCycle> ipptCycleList,
                             Context currentContext,
@@ -90,7 +93,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
         });
 
         holder.nameTextView.setText(ipptCycle.Name);
-        holder.DateCreatedTextView.setText(ipptCycle.DateCreated.toString());
+        holder.DateCreatedTextView.setText(dateFormat.format(ipptCycle.DateCreated));
     }
 
     @Override
