@@ -2,7 +2,6 @@ package sg.np.edu.mad.ipptready;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,14 +10,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
@@ -38,8 +36,7 @@ public class CycleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cycle);
-
+        setContentView(R.layout.activity_load_data);
         // Input from Home Activity:
         // "Email", String : Email Address of the user.
         // "User", byteArray : To serialize back to User Object, contains
@@ -97,6 +94,7 @@ public class CycleActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            setContentView(R.layout.activity_cycle);
                             if (!task.getResult().isEmpty()) {
                                 // do RecycleView and current Cycle initialization here
                                 List<DocumentSnapshot> docSnapshots = task.getResult().getDocuments();
@@ -114,6 +112,7 @@ public class CycleActivity extends AppCompatActivity {
 
                                         ((TextView)findViewById(R.id.cyclenameText)).setText(ipptCycle.Name);
                                         ((TextView)findViewById(R.id.cycledateCreatedText)).setText(ipptCycle.DateCreated.toString());
+                                        ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
 
                                         IPPTCycle finalIpptCycle = ipptCycle;
                                         String finalIPPTCycleId = IPPTCycleId;
@@ -145,31 +144,23 @@ public class CycleActivity extends AppCompatActivity {
                                                 startActivity(routineIntent);
                                             }
                                         });
-                                        findViewById(R.id.completecycleButton).setOnClickListener(new View.OnClickListener() {
+                                        findViewById(R.id.completecreatecycleButton).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 Log.d("CycleActivity", "Completing Cycle...");
+                                                findViewById(R.id.completecreatecycleButton).setOnClickListener(new CreateCycleOnClickListener());
+                                                ((Button)findViewById(R.id.completecreatecycleButton)).setText("Create a New Cycle");
                                                 finalIpptCycle.completeIPPTCycle(EmailAddress,
                                                         new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                Log.d("CycleActivity", "Completed Cycle, changing UI...");
-
-                                                                findViewById(R.id.constraintLayout2).setVisibility(View.INVISIBLE);
-
-                                                                findViewById(R.id.createcycleButton).setOnClickListener(new CreateCycleOnClickListener());
-                                                                findViewById(R.id.createcycleButton).setVisibility(View.VISIBLE);
                                                             }
                                                         });
                                             }
                                         });
-
-                                        // Make entire sub-view visible
-                                        findViewById(R.id.constraintLayout2).setVisibility(View.VISIBLE);
                                         break;
                                     }
                                 }
-
                                 if (!ipptCycleList.isEmpty()) {
                                     recyclerView = findViewById(R.id.cycleRecyclerView);
                                     IPPTCycleAdapter adapter = new IPPTCycleAdapter(ipptCycleList, CycleActivity.this,
@@ -183,13 +174,13 @@ public class CycleActivity extends AppCompatActivity {
 
                                 if (null == ipptCycle) {
                                     Log.d("CycleActivity", "No Active Cycles Found!");
-                                    findViewById(R.id.createcycleButton).setOnClickListener(new CreateCycleOnClickListener());
-                                    findViewById(R.id.createcycleButton).setVisibility(View.VISIBLE);
+                                    ((Button)findViewById(R.id.completecreatecycleButton)).setText("Create a New Cycle");
+                                    findViewById(R.id.completecreatecycleButton).setOnClickListener(new CreateCycleOnClickListener());
                                 }
                             }
                             else {
                                 Log.d("CycleActivity", "Collection is empty!");
-                                findViewById(R.id.createcycleButton).setVisibility(View.VISIBLE);
+                                ((Button)findViewById(R.id.completecreatecycleButton)).setText("Create a New Cycle");
                                 findViewById(R.id.createcycleButton).setOnClickListener(new CreateCycleOnClickListener());
                             }
                         }
