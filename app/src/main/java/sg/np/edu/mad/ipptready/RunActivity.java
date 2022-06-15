@@ -122,12 +122,12 @@ public class RunActivity extends AppCompatActivity {
         return jObject;
     }
 
-    private HashMap<String, ArrayList<String>> unpackageJSON() throws JSONException {
+    private HashMap<String, ArrayList<ArrayList<String>>> unpackageJSON() throws JSONException {
         String timingPortionAll = "";
         String timingPortionFirst = "";
         String timingPortionSecond = "";
 
-        HashMap<String, ArrayList<String>> returnItem = new HashMap<>();
+        HashMap<String, ArrayList<ArrayList<String>>> returnItem = new HashMap<>();
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayList<String> arrayListCleaningStep2 = new ArrayList<>();
         final ArrayList<String> timingListRaw = new ArrayList<>();
@@ -164,24 +164,26 @@ public class RunActivity extends AppCompatActivity {
                 }
                 else if(arrayListCleaningStep2.get(i + 1).contains("]")){
                     //check if the character before the second last character exist
-                        subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
-                        //Check for any sandwiched elements....
-                        if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
-                            subArray.add(arrayListCleaningStep2.get(i + 1));
-                        }
-                        subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
-                        scoringCriteriaRaw.add(subArray);
+                    subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
+                    //Check for any sandwiched elements....
+                    if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
+                        subArray.add(arrayListCleaningStep2.get(i + 1));
+                    }
+                    subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
+                    scoringCriteriaRaw.add(subArray);
                 }
             }
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
-        Log.d("TIMINGINDICATORLENGTH", "" + timingListRaw);
+        Log.d("TIMINGINDICATORLENGTH", "" + new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw))); //correct
         Log.d("InitialLengthAfter", "" + scoringCriteriaRaw.size());
+        returnItem.put("Timings", new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw)));
+        returnItem.put("ScoringSystem", scoringCriteriaRaw);
         return returnItem;
     }
 
     private void calculation2Point4KMScore() throws JSONException{
-        HashMap<String, ArrayList<String>> a = unpackageJSON();
+        HashMap<String, ArrayList<ArrayList<String>>> a = unpackageJSON();
 
     }
 
