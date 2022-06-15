@@ -251,8 +251,14 @@ public class CycleActivity extends AppCompatActivity {
                     new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            ipptCycleList.add(currentIpptCycle);
-                            ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() - 1);
+                            currentIpptCycle.completeIPPTCycle(EmailAddress,
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            ipptCycleList.add(currentIpptCycle);
+                                            ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() - 1);
+                                        }
+                                    });
                         }
                     });
         }
