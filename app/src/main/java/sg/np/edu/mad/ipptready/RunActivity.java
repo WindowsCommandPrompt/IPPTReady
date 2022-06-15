@@ -94,18 +94,21 @@ public class RunActivity extends AppCompatActivity {
         }
         for (int i = 0; i < arrayListCleaningStep2.size(); i++) {
             if (arrayListCleaningStep2.get(i).contains("[")) {
-                int targetIndex = i;
                 if (arrayListCleaningStep2.get(i).contains("]")) { //If both symbols are located on the same row....
+                    int j = i;
                     singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
                     scoringCriteriaRaw.add(singleElement);
-                    arrayListCleaningStep2.remove(targetIndex);
-                } else if (arrayListCleaningStep2.get(i + 1).contains("]")) {
+                    arrayListCleaningStep2.remove(j);
+                }
+                else if (arrayListCleaningStep2.get(i + 1).contains("]")) {
+                    int targetIndex = i;
                     //check if the character before the second last character exist
                     subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
                     //Check for any sandwiched elements....
                     if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
                         subArray.add(arrayListCleaningStep2.get(i + 1));
-                    } else {
+                    }
+                    else {
                         subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
                     }
                     scoringCriteriaRaw.add(subArray);
@@ -113,7 +116,6 @@ public class RunActivity extends AppCompatActivity {
                     arrayListCleaningStep2.remove(targetIndex + 1);
                 }
             }
-            subArray.clear();
             Log.d("Size", "" + arrayListCleaningStep2.size());
             Log.d("Size1", "" + scoringCriteriaRaw.size());
         }
