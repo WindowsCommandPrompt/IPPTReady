@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -189,8 +190,7 @@ public class RunActivity extends AppCompatActivity {
                 .addOnCompleteListener(function -> {
                     for (DocumentSnapshot ds : function.getResult().getDocuments()){
                         Log.d("EmailAddresses", "" + ds.getId()); //this field actually returns the email addresses
-                        Log.d("USERDOB", "" + ((Timestamp) ds.getData().values().iterator().next()).getSeconds()); //returns a Timestamp object
-                        Log.d("USERS", "" + ds);
+                        //Log.d("USERDOB", "" + ((Timestamp) ds.getData().values().iterator().next()).getSeconds()); //returns a Timestamp object
                         //get which account the user was logged in through the ProfileActivity.java
                         Intent whiteHole = getIntent();
                         Log.d("Code has reached here", "The code has reached here");
@@ -198,20 +198,52 @@ public class RunActivity extends AppCompatActivity {
                             if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())) {
                                 //update the relevant field within the same database under the same email address that the user has used in order to sign into the platform
                                 //Shift this chunk of code later
-                                RESTdb.collection("IPPTUser").document(whiteHole.getStringExtra("EmailAddressVerifier"))
-                                .get()
-                                .addOnSuccessListener(onDataReturn -> {
-                                    //get the age of the user....
-                                })
-                                .addOnFailureListener(onNoResponseFromServer -> {
-                                    //show the alert dialog that displays a message that the application cannot load the information off the database...
-                                    dataFetchFail.create().show();
-                                });
+                                //whiteHole.getStringExtra("EmailAddressVerifier")
+
                             }
                         }
                         else {
                             Log.e("UserNotSignedInError", "No user detected on this device..Please sign into the application first");
+                            RESTdb.collection("IPPTUser").document("bryanflee01@gmail.com")
+                            .get()
+                            .addOnCompleteListener(onServerResponse -> {
+                                if (onServerResponse.isSuccessful()){
+                                    //Once the server has provided us with the response, we need to get the DOB of the user that has signed into the application.
+                                    //extract the POSIX seconds from the so-called timestamp
+                                    int YEAR = ((Date) onServerResponse.getResult().get("DOB", Date.class)).getYear();
+                                    int correctedYEAR = YEAR + 1900;
+                                    Log.d("CorrectedYEAR", "" + correctedYEAR);
+                                    int ageGroup = 0;
+                                    if (correctedYEAR < 22){
+                                        ageGroup = 1;
+                                    }
+                                    else if (correctedYEAR >= 22 && correctedYEAR <= 24){
+                                        ageGroup = 2;
+                                    }
+                                    else if (correctedYEAR >= 25 && correctedYEAR <= 27){
+                                        ageGroup = 3;
+                                    }
+                                    else if (correctedYEAR >= 28 && correctedYEAR <= 30){
+                                        ageGroup = 4;
+                                    }
+                                    else if (correctedYEAR >= 31 && correctedYEAR <= 33){
+                                        ageGroup = 5;
+                                    }
+                                    else if (correctedYEAR >= 34 && correctedYEAR <= 36){
+                                        ageGroup = 6;
+                                    }
+                                    else if (correctedYEAR >= 37 && correctedYEAR <= 39){
+                                        ageGroup = 7;
+                                    }
+                                    else if (correctedYEAR >= 40 && correctedYEAR <= 42){
 
+                                    }
+                                }
+                                else {
+                                    //Once the server has not provided us with the response then
+                                    dataFetchFail.create().show();
+                                }
+                            });
                         }
                     }
                 })
