@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
@@ -34,12 +36,14 @@ public class RoutineActivity extends AppCompatActivity {
     private String EmailAddress,
         IPPTCycleId;
     private byte[] SerializedIPPTCycle;
+    ListenerRegistration registration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        setContentView(R.layout.activity_routine);
+        // set View temporary to a loading screen
+        setContentView(R.layout.activity_load_data);
 
         // Input to RoutineActivity:
         // "Email", String : Email Address of the user.
@@ -98,6 +102,7 @@ public class RoutineActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            setContentView(R.layout.activity_routine);
                             if (!task.getResult().isEmpty()) {
 
                                 List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
@@ -114,7 +119,7 @@ public class RoutineActivity extends AppCompatActivity {
 
                                         ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(ipptRoutine.IPPTScore));
                                         ((TextView)findViewById(R.id.routinedateCreatedText)).setText(ipptRoutine.DateCreated.toString());
-
+                                        ((Button)findViewById(R.id.completecreateroutineButton)).setText("Complete Routine");
                                         IPPTRoutine finalIpptRoutine = ipptRoutine;
                                         findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -147,7 +152,7 @@ public class RoutineActivity extends AppCompatActivity {
                                                 startActivity(routineIntent);
                                             }
                                         });
-                                        findViewById(R.id.completeroutineButton).setOnClickListener(new View.OnClickListener() {
+                                        findViewById(R.id.completecreateroutineButton).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
                                                 Log.d("CycleActivity", "Completing Cycle...");
@@ -157,18 +162,19 @@ public class RoutineActivity extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 Log.d("CycleActivity", "Completed Cycle, changing UI...");
-
-                                                                findViewById(R.id.constraintLayout2).setVisibility(View.INVISIBLE);
-
-                                                                findViewById(R.id.createroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
-                                                                findViewById(R.id.createroutineButton).setVisibility(View.VISIBLE);
+                                                                ((Button)findViewById(R.id.completecreateroutineButton)).setText("Create A New Routine");
+                                                                findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
+                                                                finalIpptRoutine.completeIPPTRoutine(EmailAddress,
+                                                                        IPPTCycleId,
+                                                                        new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                            }
+                                                                        });
                                                             }
                                                         });
                                             }
                                         });
-
-                                        // Make the entire sub-view visible
-                                        findViewById(R.id.constraintLayout2).setVisibility(View.VISIBLE);
                                         break;
                                     }
                                 }
@@ -186,14 +192,14 @@ public class RoutineActivity extends AppCompatActivity {
 
                                 if (null == ipptRoutine) {
                                     Log.d("CycleActivity", "No Active Routines Found!");
-                                    findViewById(R.id.createroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
-                                    findViewById(R.id.createroutineButton).setVisibility(View.VISIBLE);
+                                    ((Button)findViewById(R.id.completecreateroutineButton)).setText("Create A New Routine");
+                                    findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
                                 }
                             }
                             else {
                                 Log.d("RoutineActivity", "Routine Collection is empty!");
-                                findViewById(R.id.createroutineButton).setVisibility(View.VISIBLE);
-                                findViewById(R.id.createroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
+                                ((Button)findViewById(R.id.completecreateroutineButton)).setText("Create A New Routine");
+                                findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.GoRecordOnClickListener());
                             }
                         }
                         else {
