@@ -115,6 +115,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                user.DOB.setYear(user.DOB.getYear() + 3800);
                 addNewUserToDatabase(EmailAddress, user, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
