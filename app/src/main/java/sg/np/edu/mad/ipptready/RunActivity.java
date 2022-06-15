@@ -106,6 +106,8 @@ public class RunActivity extends AppCompatActivity {
                     subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
                     scoringCriteriaRaw.add(subArray);
                 }
+                arrayListCleaningStep2.remove(targetIndex);
+                arrayListCleaningStep2.remove(targetIndex + 1);
             }
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
@@ -177,7 +179,12 @@ public class RunActivity extends AppCompatActivity {
                         //get which account the user was logged in through the ProfileActivity.java
                         Intent whiteHole = getIntent();
                         Log.d("Code has reached here", "The code has reached here");
-                        if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())){
+                        if (whiteHole.getStringExtra("EmailAddressVerifier") != null) {
+                            if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())) {
+
+                            }
+                        }
+                        else {
 
                         }
                     }
@@ -187,6 +194,7 @@ public class RunActivity extends AppCompatActivity {
                 });
             }
             else {
+                //if the timing does not exist within the key
 
             }
         }
