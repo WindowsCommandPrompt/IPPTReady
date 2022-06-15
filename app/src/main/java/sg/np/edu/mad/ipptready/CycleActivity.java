@@ -115,13 +115,12 @@ public class CycleActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             setContentView(R.layout.activity_cycle);
+                            recyclerView = findViewById(R.id.cycleRecyclerView);
                             if (!task.getResult().isEmpty()) {
                                 // do RecycleView and current Cycle initialization here
                                 List<DocumentSnapshot> docSnapshots = task.getResult().getDocuments();
                                 ipptCycleList = task.getResult().toObjects(IPPTCycle.class);
                                 String IPPTCycleId = null;
-
-                                recyclerView = findViewById(R.id.cycleRecyclerView);
 
                                 for (IPPTCycle ipptCycleItem : ipptCycleList) {
                                     if (!ipptCycleItem.isFinished) {
@@ -185,6 +184,7 @@ public class CycleActivity extends AppCompatActivity {
                                 recyclerView.setAdapter(ipptCycleAdapter);
                             }
                             else {
+
                                 ipptCycleAdapter = new IPPTCycleAdapter(new ArrayList<IPPTCycle>(), CycleActivity.this,
                                         EmailAddress);
 
