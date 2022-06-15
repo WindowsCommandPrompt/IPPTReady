@@ -44,70 +44,6 @@ public class RunActivity extends AppCompatActivity {
 
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
-    private void getAndWriteToFirebase(){
-        AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
-        AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
-
-        dataAppendFailed
-            .setTitle("Data append failed")
-            .setMessage("We are not able to save your timing into the databse")
-            .setPositiveButton(
-                "OK",
-                (DialogInterface di, int i) -> {
-                    di.dismiss();
-                    new CountDownTimer(3000, 1000){
-                        @Override
-                        public void onTick(long l) { }
-                        @Override
-                        public void onFinish() {
-                            getAndWriteToFirebase();
-                        }
-                    }.start();
-                }
-            )
-            .setCancelable(false);
-
-        dataFetchFail
-            .setTitle("Cannot fetch data from the database")
-            .setMessage("Failed to retrieve the required data from the database, do you want to retry this process again??")
-            .setPositiveButton(
-                "YES",
-                (DialogInterface di, int i) -> {
-                    di.dismiss();
-                    this.getAndWriteToFirebase();
-                }
-            )
-            .setNegativeButton(
-                "NO",
-                (DialogInterface di, int i) -> {
-                    dataAppendFailed.create().show();
-                }
-            )
-            .setCancelable(false);
-
-        RESTdb.collection("IPPTRecord").document("RunRecord")
-            .get()
-            .addOnSuccessListener(function ->{
-
-            })
-            .addOnFailureListener(function -> {
-                //display the error message when the database is unable to fetch the required data and return it back to the user
-                //dataFetchFail.create().show();
-            });
-
-        RESTdb.collection("IPPTUser").get()
-                .addOnCompleteListener(function -> {
-                    for (DocumentSnapshot ds : function.getResult().getDocuments()){
-                        Log.d("DocumentSnapshot", "" + ds.getId()); //this field actually returns the email addresses
-                        //get which account the user was logged in through the ProfileActivity.java
-                        Intent whiteHole = getIntent();
-                        if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())){
-
-                        }
-                    }
-                });
-    }
-
     private JSONObject calculateTotalScore(){
         InputStream is = getResources().openRawResource(R.raw.ipptscore);
         JSONObject jObject = null;
@@ -143,48 +79,134 @@ public class RunActivity extends AppCompatActivity {
             }
         }
         Log.d("InitialLength", "" + arrayListCleaningStep2.size());
-        for (int i = 0; i < arrayListCleaningStep2.size(); i++){
+        for (int i = 0; i < arrayListCleaningStep2.size(); i++) {
             Log.d("DataCleansingStep2", "" + arrayListCleaningStep2.get(i));
             if (arrayListCleaningStep2.get(i).contains("\"")) {
-                if (arrayListCleaningStep2.get(i+1).contains("\"")){
-                    timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "" );
+                if (arrayListCleaningStep2.get(i + 1).contains("\"")) {
+                    timingPortionFirst = Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("\"") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("\"") + 2) : "");
                     timingPortionSecond = (arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2));
                     timingPortionAll = timingPortionFirst + ":" + timingPortionSecond;
-                    if (timingPortionAll.length() > 0){
+                    if (timingPortionAll.length() > 0) {
                         timingListRaw.add(timingPortionAll);
                     }
-                    //Log.d("DataCleansingRemoval", "" + arrayListCleaningStep2.get(i));
                 }
             }
-            else if (arrayListCleaningStep2.get(i).contains("[")){
-                int targetIndex = i;
-                if (arrayListCleaningStep2.get(i).contains("]")){ //If both symbols are located on the same row....
+        }
+        for (int i = 0; i < arrayListCleaningStep2.size(); i++) {
+            if (arrayListCleaningStep2.get(i).contains("[")) {
+                if (arrayListCleaningStep2.get(i).contains("]")) { //If both symbols are located on the same row....
+                    int j = i;
                     singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
                     scoringCriteriaRaw.add(singleElement);
+                    arrayListCleaningStep2.remove(j);
                 }
-                else if(arrayListCleaningStep2.get(i + 1).contains("]")){
+                else if (arrayListCleaningStep2.get(i + 1).contains("]")) {
+                    int targetIndex = i;
                     //check if the character before the second last character exist
                     subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
                     //Check for any sandwiched elements....
                     if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
                         subArray.add(arrayListCleaningStep2.get(i + 1));
                     }
-                    subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
+                    else {
+                        subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
+                    }
                     scoringCriteriaRaw.add(subArray);
+                    arrayListCleaningStep2.remove(targetIndex);
+                    arrayListCleaningStep2.remove(targetIndex + 1);
                 }
             }
+            Log.d("Size", "" + arrayListCleaningStep2.size());
+            Log.d("Size1", "" + scoringCriteriaRaw.size());
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
         Log.d("TIMINGINDICATORLENGTH", "" + new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw))); //correct
-        Log.d("InitialLengthAfter", "" + scoringCriteriaRaw.size());
+        Log.d("InitialLengthAfter", "" + arrayListCleaningStep2.size());
         returnItem.put("Timings", new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw)));
         returnItem.put("ScoringSystem", scoringCriteriaRaw);
         return returnItem;
     }
 
-    private void calculation2Point4KMScore() throws JSONException{
-        HashMap<String, ArrayList<ArrayList<String>>> a = unpackageJSON();
+    private void calculation2Point4KMScore(String capturedTiming) throws JSONException{
+        AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
+        AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
+        dataAppendFailed
+        .setTitle("Data append failed")
+        .setMessage("We are not able to save your timing into the database")
+        .setPositiveButton(
+            "OK",
+            (DialogInterface di, int i) -> {
+                di.dismiss();
+                new CountDownTimer(3000, 1000){
+                    @Override
+                    public void onTick(long l) { }
+                    @Override
+                    public void onFinish() {
+                        try {
+                            calculation2Point4KMScore(capturedTiming);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+            }
+        )
+        .setCancelable(false);
 
+        dataFetchFail
+        .setTitle("Cannot fetch data from the database")
+        .setMessage("Failed to retrieve the required data from the database, do you want to retry this process again??")
+        .setPositiveButton(
+            "YES",
+            (DialogInterface di, int i) -> {
+                di.dismiss();
+                try {
+                    calculation2Point4KMScore(capturedTiming);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        )
+        .setNegativeButton(
+            "NO",
+            (DialogInterface di, int i) -> {
+                dataAppendFailed.create().show();
+            }
+        )
+        .setCancelable(false);
+
+        HashMap<String, ArrayList<ArrayList<String>>> a = unpackageJSON();
+        ArrayList<ArrayList<String>> values = a.values().iterator().next();
+        for (int i = 0; i < values.get(0).size(); i++){
+            Log.d("TIMING", "" + values.get(0).size()); //60 CORRECT
+            if (values.get(0).get(i).equals(capturedTiming)){
+                RESTdb.collection("IPPTUser")
+                .get()
+                .addOnCompleteListener(function -> {
+                    for (DocumentSnapshot ds : function.getResult().getDocuments()){
+                        Log.d("DocumentSnapshot", "" + ds.getId()); //this field actually returns the email addresses
+                        //get which account the user was logged in through the ProfileActivity.java
+                        Intent whiteHole = getIntent();
+                        Log.d("Code has reached here", "The code has reached here");
+                        if (whiteHole.getStringExtra("EmailAddressVerifier") != null) {
+                            if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())) {
+
+                            }
+                        }
+                        else {
+
+                        }
+                    }
+                })
+                .addOnFailureListener(function -> {
+                    dataFetchFail.create().show();
+                });
+            }
+            else {
+                //if the timing does not exist within the key
+
+            }
+        }
     }
 
     @Override
@@ -195,10 +217,14 @@ public class RunActivity extends AppCompatActivity {
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
-        getAndWriteToFirebase();
-
         try {
             Log.d("TAG", "" + unpackageJSON());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            calculation2Point4KMScore("8:30");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -260,6 +286,11 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    try {
+                        calculation2Point4KMScore(capturedTiming);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     finish();
                 }
             )
