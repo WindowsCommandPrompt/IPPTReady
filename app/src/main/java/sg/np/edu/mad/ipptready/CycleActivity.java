@@ -218,8 +218,6 @@ public class CycleActivity extends AppCompatActivity {
                                             currentIpptCycle = result;
                                             ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
                                             ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
-                                            ipptCycleList.add(result);
-                                            ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() -1);
                                         }
                                     });
                         }
