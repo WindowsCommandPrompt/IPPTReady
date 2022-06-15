@@ -246,7 +246,7 @@ public class CycleActivity extends AppCompatActivity {
             ((TextView)findViewById(R.id.cyclenameText)).setText("");
             ((TextView)findViewById(R.id.cycledateCreatedText)).setText("");
             Log.d("CycleActivity", "Completing Cycle...");
-            setCompleteCycleButton();
+            setCreateCycleButton();
             currentIpptCycle.completeIPPTCycle(EmailAddress,
                     new OnCompleteListener<Void>() {
                         @Override
