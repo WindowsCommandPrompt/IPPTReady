@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".CycleActivity">
 
-    <Button
-        android:id="@+id/createcycleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create a new Cycle"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout2"
-        app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-        app:layout_constraintStart_toStartOf="@+id/constraintLayout2" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cycleRecyclerView"
         android:layout_width="409dp"
@@ -32,14 +22,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="invisible">
+        tools:visibility="visible">
 
         <Button
-            android:id="@+id/completecycleButton"
+            android:id="@+id/completecreatecycleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Complete Cycle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +43,6 @@
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cyclenameText"
-            tools:text="DateCreated"
             tools:visibility="visible" />
 
         <TextView
@@ -65,7 +53,6 @@
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Name"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
