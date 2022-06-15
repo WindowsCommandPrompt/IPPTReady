@@ -19,13 +19,7 @@ public class RunRecord extends AppCompatActivity implements IPPTRecord {
     // time taken to finsih the 2.4km
     public int TimeTakenFinished;
 
-    private void writeToFirebase(){
-        //IPPTRecord -> collection
-        //RunRecord -> document
-        Intent whiteHole = getIntent();
-        String dataToBeSent = whiteHole.getStringExtra("TimeTakenForTheRun");
-
-    }
+    public RunRecord(){ }
 
     @Override
     public int getIPPTRecordScore() {

@@ -24,6 +24,7 @@ import android.widget.*;
 //import com.google.android.gms.tasks.*;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
 import org.json.JSONException;
@@ -116,8 +117,9 @@ public class RunActivity extends AppCompatActivity {
                     arrayListCleaningStep2.remove(targetIndex + 1);
                 }
             }
-            Log.d("Size", "" + arrayListCleaningStep2.size());
-            Log.d("Size1", "" + scoringCriteriaRaw.size());
+            //FIXME: Fix the bug which would cause the array list named scoringCriteriaRaw to remove the array that was initially stored within subArray
+            Log.d("Size", "" + arrayListCleaningStep2.size());  //this number must not reach 0 but must be less than 858 and must not remain at 855
+            Log.d("Size1", "" + scoringCriteriaRaw.size());     //this number must not be stuck at 2
         }
         Log.d("LENGTH", "" + scoringCriteriaRaw);
         Log.d("TIMINGINDICATORLENGTH", "" + new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw))); //correct
@@ -127,7 +129,7 @@ public class RunActivity extends AppCompatActivity {
         return returnItem;
     }
 
-    private void calculation2Point4KMScore(String capturedTiming) throws JSONException{
+    private void calculation2Point4KMScore(String capturedTiming) throws JSONException {
         AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
         AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
         dataAppendFailed
@@ -175,6 +177,8 @@ public class RunActivity extends AppCompatActivity {
         )
         .setCancelable(false);
 
+        RunRecord rr = new RunRecord();
+
         HashMap<String, ArrayList<ArrayList<String>>> a = unpackageJSON();
         ArrayList<ArrayList<String>> values = a.values().iterator().next();
         for (int i = 0; i < values.get(0).size(); i++){
@@ -184,16 +188,29 @@ public class RunActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(function -> {
                     for (DocumentSnapshot ds : function.getResult().getDocuments()){
-                        Log.d("DocumentSnapshot", "" + ds.getId()); //this field actually returns the email addresses
+                        Log.d("EmailAddresses", "" + ds.getId()); //this field actually returns the email addresses
+                        Log.d("USERDOB", "" + ((Timestamp) ds.getData().values().iterator().next()).getSeconds()); //returns a Timestamp object
+                        Log.d("USERS", "" + ds);
                         //get which account the user was logged in through the ProfileActivity.java
                         Intent whiteHole = getIntent();
                         Log.d("Code has reached here", "The code has reached here");
                         if (whiteHole.getStringExtra("EmailAddressVerifier") != null) {
                             if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())) {
-
+                                //update the relevant field within the same database under the same email address that the user has used in order to sign into the platform
+                                //Shift this chunk of code later
+                                RESTdb.collection("IPPTUser").document(whiteHole.getStringExtra("EmailAddressVerifier"))
+                                .get()
+                                .addOnSuccessListener(onDataReturn -> {
+                                    //get the age of the user....
+                                })
+                                .addOnFailureListener(onNoResponseFromServer -> {
+                                    //show the alert dialog that displays a message that the application cannot load the information off the database...
+                                    dataFetchFail.create().show();
+                                });
                             }
                         }
                         else {
+                            Log.e("UserNotSignedInError", "No user detected on this device..Please sign into the application first");
 
                         }
                     }
@@ -204,7 +221,15 @@ public class RunActivity extends AppCompatActivity {
             }
             else {
                 //if the timing does not exist within the key
-
+                String[] ab = capturedTiming.split(":");
+                if (Integer.parseInt(ab[1]) >= 0 && Integer.parseInt(ab[1]) <= 59) {
+                    if (Integer.parseInt(ab[0]) > 18 && Integer.parseInt(ab[1]) >= 20) {
+                        int score = 0;
+                    }
+                    else if(Integer.parseInt(ab[0]) < 8 && Integer.parseInt(ab[1]) <= 30){
+                        int score = 50; //maximum attainable points from the running...
+                    }
+                }
             }
         }
     }
