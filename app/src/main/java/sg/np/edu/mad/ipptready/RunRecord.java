@@ -19,7 +19,9 @@ public class RunRecord extends AppCompatActivity implements IPPTRecord {
     // time taken to finsih the 2.4km
     public int TimeTakenFinished;
 
-    public RunRecord(){ }
+    public RunRecord(int timeTakenTotal){
+        this.TimeTakenTotal = timeTakenTotal;
+    }
 
     @Override
     public int getIPPTRecordScore() {
