@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.*;
+import android.view.View;
 import android.widget.*;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,27 @@ public class PushupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pushup);
 
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
+        AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
 
         Intent whiteHole = getIntent();
         ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(whiteHole.getStringExtra("NumPushups"));
+
+        confirmationNotSaveData
+            .setTitle("Are you sure?")
+            .setMessage("Are you sure you do not want to save your data (at least in a really secure location)?")
+            .setPositiveButton(
+                "YES",
+                (DialogInterface di, int i) -> {
+
+                }
+            )
+            .setNegativeButton(
+                "NO",
+                (DialogInterface di, int i) -> {
+
+                }
+            )
+            .setCancelable(false);
 
         timeIsUp
             .setTitle("You ran out of time")
@@ -30,7 +49,20 @@ public class PushupActivity extends AppCompatActivity {
             .setPositiveButton(
                 "OK",
                 (DialogInterface di, int i) -> {
+                    ((LinearLayout) findViewById(R.id.pushUpRecordTimingInterface)).setVisibility(View.GONE);
+                    ((LinearLayout) findViewById(R.id.pushUpActivityEnterRecords)).setVisibility(View.VISIBLE);
+                    //Get the text from the edit text field...
+                    String numPushUpsDone = ((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString();
 
+                    //If the user would like to save the data to the database....
+                    ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
+
+                    });
+
+                    //If the user would NOT like to save the data to the database...
+                    ((Button) findViewById(R.id.dontSet)).setOnClickListener(functionAs -> {
+
+                    });
                 }
             )
             .setCancelable(false);
