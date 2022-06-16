@@ -50,7 +50,28 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:gravity = "center">
+
+                            <LinearLayout
+                                android:layout_height = "wrap_content"
+                                android:layout_width = "match_parent"
+                                android:orientation = "horizontal">
+                                <TextView
+                                    android:layout_width = "wrap_content"
+                                    android:layout_height = "match_parent"
+                                    android:gravity = "center"
+                                    android:textSize = "50px"
+                                    android:text = "Target number of push ups: "/>
+                                <TextView
+                                    android:id = "@+id/targetNumberOfPushUps"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200px"
+                                    android:gravity = "center"
+                                    android:textSize = "102px"
+                                    android:textStyle = "bold"
+                                    android:text = "12"/>
+                            </LinearLayout>
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -113,7 +134,7 @@
                                                 android:id="@+id/timerStatus"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:text="Time Remaining"
+                                                android:text= "seconds remaining"
                                                 android:textSize="55px" />
                                         </LinearLayout>
                                     </RelativeLayout>
