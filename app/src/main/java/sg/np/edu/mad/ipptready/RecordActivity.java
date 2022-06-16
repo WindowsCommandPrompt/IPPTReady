@@ -111,34 +111,10 @@ public class RecordActivity extends AppCompatActivity {
                                                     }
                                                 }
                                                 if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
-                                                    findViewById(R.id.runrecordButton).setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            Intent recordIntent = new Intent(RecordActivity.this, RunActivity.class);
 
-                                                            recordIntent.putExtra("Email", EmailAddress);
-                                                            recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
-                                                            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-                                                            recordIntent.putExtra("IPPTRecordId", "RunRecord");
-
-                                                            startActivity(recordIntent);
-                                                        }
-                                                    });
                                                 }
                                                 if (View.GONE != findViewById(R.id.situprecordButton).getVisibility()) {
-                                                    findViewById(R.id.situprecordButton).setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            Bundle bundle = new Bundle();
-                                                            bundle.putString("Email", EmailAddress);
-                                                            bundle.putString("IPPTCycleId", IPPTCycleId);
-                                                            bundle.putString("IPPTRoutineId", IPPTRoutineId);
-                                                            bundle.putString("IPPTRecordId", "SitupRecord");
-                                                            Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
-                                                            recordIntent.putExtras(bundle);
-                                                            startActivity(recordIntent);
-                                                        }
-                                                    });
+
                                                 }
                                                 if (View.GONE != findViewById(R.id.pushuprecordButton).getVisibility()) {
                                                     findViewById(R.id.pushuprecordButton).setOnClickListener(new View.OnClickListener() {
@@ -155,6 +131,33 @@ public class RecordActivity extends AppCompatActivity {
                                                         }
                                                     });
                                                 }
+                                            }
+                                            else {
+                                                findViewById(R.id.situprecordButton).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Bundle bundle = new Bundle();
+                                                        bundle.putString("Email", EmailAddress);
+                                                        bundle.putString("IPPTCycleId", IPPTCycleId);
+                                                        bundle.putString("IPPTRoutineId", IPPTRoutineId);
+                                                        Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
+                                                        recordIntent.putExtras(bundle);
+                                                        startActivity(recordIntent);
+                                                    }
+                                                });
+                                                findViewById(R.id.runrecordButton).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Intent recordIntent = new Intent(RecordActivity.this, RunActivity.class);
+
+                                                        recordIntent.putExtra("Email", EmailAddress);
+                                                        recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
+                                                        recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
+                                                        recordIntent.putExtra("IPPTRecordId", "RunRecord");
+
+                                                        startActivity(recordIntent);
+                                                    }
+                                                });
                                             }
                                         }
                                     }
