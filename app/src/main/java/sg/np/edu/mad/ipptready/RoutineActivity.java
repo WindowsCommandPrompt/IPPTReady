@@ -321,7 +321,7 @@ public class RoutineActivity extends AppCompatActivity {
                     .collection("IPPTCycle")
                     .document(IPPTCycleId)
                     .collection("IPPTRoutine")
-                    .whereEqualTo("DateCreated", currentIpptRoutine)
+                    .whereEqualTo("DateCreated", currentIpptRoutine.DateCreated)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
