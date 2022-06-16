@@ -1,9 +1,15 @@
 package sg.np.edu.mad.ipptready;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +31,12 @@ public class RecordActivity extends AppCompatActivity {
         IPPTCycleId,
         IPPTRoutineId;
     private byte[] SerializedIPPTRoutine;
+    private int runRecordScore,
+        situpRecordScore,
+        pushupRecordScore;
+    ActivityResultLauncher<Intent> GoRun,
+        GoSitup,
+        GoPushup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,53 +123,19 @@ public class RecordActivity extends AppCompatActivity {
                                                     }
                                                 }
                                                 if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
-
+                                                    findViewById(R.id.runrecordButton).setOnClickListener(new RunRecordOnClickListener());
                                                 }
                                                 if (View.GONE != findViewById(R.id.situprecordButton).getVisibility()) {
-
+                                                    findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
                                                 }
                                                 if (View.GONE != findViewById(R.id.pushuprecordButton).getVisibility()) {
-                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View v) {
-                                                            Intent recordIntent = new Intent(RecordActivity.this, PushupActivity.class);
-
-                                                            recordIntent.putExtra("Email", EmailAddress);
-                                                            recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
-                                                            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-                                                            recordIntent.putExtra("IPPTRecordId", "PushupRecord");
-                                                            startActivity(recordIntent);
-                                                        }
-                                                    });
+                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
                                                 }
                                             }
                                             else {
-                                                findViewById(R.id.situprecordButton).setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        Bundle bundle = new Bundle();
-                                                        bundle.putString("Email", EmailAddress);
-                                                        bundle.putString("IPPTCycleId", IPPTCycleId);
-                                                        bundle.putString("IPPTRoutineId", IPPTRoutineId);
-                                                        bundle.putBoolean("SitupTargetSet", false);
-                                                        Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
-                                                        recordIntent.putExtras(bundle);
-                                                        startActivity(recordIntent);
-                                                    }
-                                                });
-                                                findViewById(R.id.runrecordButton).setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        Intent recordIntent = new Intent(RecordActivity.this, RunActivity.class);
-
-                                                        recordIntent.putExtra("Email", EmailAddress);
-                                                        recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
-                                                        recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-                                                        recordIntent.putExtra("IPPTRecordId", "RunRecord");
-
-                                                        startActivity(recordIntent);
-                                                    }
-                                                });
+                                                findViewById(R.id.runrecordButton).setOnClickListener(new RunRecordOnClickListener());
+                                                findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
+                                                findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
                                             }
                                         }
                                     }
@@ -174,6 +152,68 @@ public class RecordActivity extends AppCompatActivity {
         return String.format("%d:%d:%d", hour, minute, second);
     }
 
+    private class RunRecordOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent recordIntent = new Intent(RecordActivity.this, RunActivity.class);
+
+            recordIntent.putExtra("Email", EmailAddress);
+            recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
+            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
+            recordIntent.putExtra("IPPTRecordId", "RunRecord");
+
+            if (null == GoRun) {
+                GoRun = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+
+                            }
+                        });
+            }
+            GoRun.launch(recordIntent);
+        }
+    }
+
+    private class SitupRecordOnClickListener implements  View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Bundle bundle = new Bundle();
+            bundle.putString("Email", EmailAddress);
+            bundle.putString("IPPTCycleId", IPPTCycleId);
+            bundle.putString("IPPTRoutineId", IPPTRoutineId);
+            bundle.putBoolean("SitupTargetSet", false);
+            Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
+            recordIntent.putExtras(bundle);
+            startActivity(recordIntent);
+        }
+    }
+
+    private class PushupRecordOnClickListner implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Intent recordIntent = new Intent(RecordActivity.this, PushupActivity.class);
+
+            recordIntent.putExtra("Email", EmailAddress);
+            recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
+            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
+            recordIntent.putExtra("IPPTRecordId", "PushupRecord");
+
+            if (null == GoPushup) {
+                GoPushup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                        new ActivityResultCallback<ActivityResult>() {
+                            @Override
+                            public void onActivityResult(ActivityResult result) {
+
+                            }
+                        });
+            }
+            startActivity(recordIntent);
+        }
+    }
 
     @Override
     protected  void onSaveInstanceState(@NonNull Bundle outState) {
@@ -182,5 +222,22 @@ public class RecordActivity extends AppCompatActivity {
         outState.putString("IPPTRoutineId", IPPTRoutineId);
         outState.putByteArray("IPPTRoutine", SerializedIPPTRoutine);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    @MainThread
+    public void onBackPressed() {
+        Intent backButtonIntent = new Intent();
+        backButtonIntent.putExtra("UpdatedScore", runRecordScore +
+                situpRecordScore +
+                pushupRecordScore);
+        setResult(Activity.RESULT_OK, backButtonIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        GoRun.unregister();
+        GoPushup.unregister();
+        super.onDestroy();
     }
 }
