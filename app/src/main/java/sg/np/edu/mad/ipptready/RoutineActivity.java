@@ -128,10 +128,6 @@ public class RoutineActivity extends AppCompatActivity {
                                                 .getId();
                                         ipptRoutineList.remove(currentIpptRoutine);
 
-                                        ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(currentIpptRoutine.IPPTScore));
-                                        DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                        ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(currentIpptRoutine.DateCreated));
-                                        ((Button)findViewById(R.id.completecreateroutineButton)).setText("Complete Routine");
                                         findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -163,28 +159,6 @@ public class RoutineActivity extends AppCompatActivity {
                                                 startActivity(routineIntent);
                                             }
                                         });
-                                        findViewById(R.id.completecreateroutineButton).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Log.d("CycleActivity", "Completing Cycle...");
-                                                currentIpptRoutine.completeIPPTRoutine(EmailAddress,
-                                                        IPPTCycleId,
-                                                        new OnCompleteListener<Void>() {
-                                                            @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                Log.d("CycleActivity", "Completed Cycle, changing UI...");
-                                                                setCreateRoutineButton();
-                                                                currentIpptRoutine.completeIPPTRoutine(EmailAddress,
-                                                                        IPPTCycleId,
-                                                                        new OnCompleteListener<Void>() {
-                                                                            @Override
-                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                            }
-                                                                        });
-                                                            }
-                                                        });
-                                            }
-                                        });
                                         break;
                                     }
                                 }
@@ -193,9 +167,12 @@ public class RoutineActivity extends AppCompatActivity {
                                     setCreateRoutineButton();
                                 }
                                 else {
+                                    ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(currentIpptRoutine.IPPTScore));
+                                    DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(currentIpptRoutine.DateCreated));
                                     setCompleteRoutineButton();
                                 }
-                                ipptRoutineAdapter = new IPPTRoutineAdapter(ipptRoutineList, getApplicationContext());
+                                ipptRoutineAdapter = new IPPTRoutineAdapter(ipptRoutineList, RoutineActivity.this, EmailAddress, IPPTCycleId);
 
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                                 recyclerView.setLayoutManager(layoutManager);
@@ -204,7 +181,8 @@ public class RoutineActivity extends AppCompatActivity {
                             }
                             else {
                                 Log.d("RoutineActivity", "Routine Collection is empty!");
-                                ipptRoutineAdapter = new IPPTRoutineAdapter(new ArrayList<IPPTRoutine>(), getApplicationContext());
+                                ipptRoutineAdapter = new IPPTRoutineAdapter(new ArrayList<IPPTRoutine>(), RoutineActivity.this,
+                                        EmailAddress, IPPTCycleId);
 
                                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                                 recyclerView.setLayoutManager(layoutManager);
@@ -268,7 +246,7 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                     setCompleteRoutineButton();
                                                                                     currentIpptRoutine = task.getResult().iterator().next().toObject(IPPTRoutine.class);
                                                                                     ((TextView)findViewById(R.id.routineipptscoreText))
-                                                                                            .setText(String.valueOf(
+                                                                                           .setText(String.valueOf(
                                                                                                     currentIpptRoutine.IPPTScore)
                                                                                             );
                                                                                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -276,7 +254,7 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                             dateFormat.format(currentIpptRoutine.DateCreated)
                                                                                     );
 
-                                                                                    String IPPTRoutineId = task.getResult().iterator().next().getId();
+                                                                                     String IPPTRoutineId = task.getResult().iterator().next().getId();
                                                                                     recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
                                                                                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                                                                                     try {
@@ -306,6 +284,8 @@ public class RoutineActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            ((TextView)findViewById(R.id.routineipptscoreText)).setText("");
+            ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
             currentIpptRoutine.completeIPPTRoutine(EmailAddress,
                     IPPTCycleId,
                     new OnCompleteListener<Void>() {
@@ -318,6 +298,53 @@ public class RoutineActivity extends AppCompatActivity {
                                 currentIpptRoutine = null;
                                 setCreateRoutineButton();
                             }
+                        }
+                    });
+        }
+    }
+
+    private class GoRecordOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Log.d("CycleActivity", "View Clicked! Going to RecordActivity...");
+            Intent routineIntent = new Intent(RoutineActivity.this, RecordActivity.class);
+
+            // Output to RecordActivity:
+            // "Email", String : Email Address of the user.
+            // "IPPTCycleId", String : Id of the IPPTCycle
+            // "IPPTRoutineId", String : Id of the IPPTCycle
+            // "IPPTRoutine", byteArray : Serialized IPPTRoutine Object
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            db.collection("IPPTUser")
+                    .document(EmailAddress)
+                    .collection("IPPTCycle")
+                    .document(IPPTCycleId)
+                    .collection("IPPTRoutine")
+                    .whereEqualTo("DateCreated", currentIpptRoutine)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot documentSnapshot = task.getResult().iterator().next();
+                            routineIntent.putExtra("Email", EmailAddress);
+                            routineIntent.putExtra("IPPTCycleId", IPPTCycleId);
+                            routineIntent.putExtra("IPPTRoutineId", documentSnapshot.getId());
+
+                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                            try {
+                                ObjectOutputStream oos = new ObjectOutputStream(bos);
+                                oos.writeObject(currentIpptRoutine);
+                                routineIntent.putExtra("IPPTRoutine", bos.toByteArray());
+                            } catch (IOException e) {
+                                // If error occurred, display friendly message to user
+
+                                Toast.makeText(RoutineActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                                return;
+                            }
+
+                            startActivity(routineIntent);
                         }
                     });
         }
