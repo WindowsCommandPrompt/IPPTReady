@@ -61,7 +61,7 @@
                                     android:layout_width = "wrap_content"
                                     android:layout_height = "match_parent"
                                     android:gravity = "center"
-                                    android:textSize = "50px"
+                                    android:textSize = "29px"
                                     android:text = "Target number of push ups: "/>
                                 <TextView
                                     android:id = "@+id/targetNumberOfPushUps"
