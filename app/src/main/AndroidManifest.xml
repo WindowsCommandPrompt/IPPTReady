@@ -67,10 +67,12 @@
             android:exported="false" />
         <activity
             android:name=".RunActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges = "orientation|screenSize"/>
         <activity
             android:name=".PushupActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges = "orientation|screenSize"/>
         <activity
             android:name=".PushupTargetActivity"
             android:exported="false" />
