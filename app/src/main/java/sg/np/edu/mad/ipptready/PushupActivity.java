@@ -30,7 +30,7 @@ public class PushupActivity extends AppCompatActivity {
             Toast.makeText(this, "The timer has already begun", Toast.LENGTH_SHORT);
             CountDownTimer mainCountdownTimer = new CountDownTimer(1000, 1000){
                 @Override
-                public void onTick(long l) {
+                public void onTick(long millisLeft) {
 
                 }
                 @Override
