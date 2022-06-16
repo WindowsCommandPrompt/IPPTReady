@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,12 +34,14 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     private Context ipptRoutineContext;
     private String EmailAddress,
         IPPTCycleId;
+    private RoutineActivity routineActivity;
     private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTRoutineAdapter(List<IPPTRoutine> ipptRoutineList,
                               Context currentContext,
                               String EmailAddress,
-                              String IPPTCycleId) {
+                              String IPPTCycleId,
+                              RoutineActivity routineActivity) {
         this.ipptRoutineList = ipptRoutineList;
         this.ipptRoutineContext = currentContext;
         this.EmailAddress = EmailAddress;
@@ -55,7 +61,6 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     @Override
     public void onBindViewHolder(@NonNull IPPTRoutineViewHolder holder, int position) {
         IPPTRoutine ipptRoutine = ipptRoutineList.get(position);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,8 +96,24 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
                                             return;
                                         }
                                         recordIntent.putExtra("IPPTRoutineId", documentSnapshot.getId());
-
-                                        IPPTRoutineAdapter.this.ipptRoutineContext.startActivity(recordIntent);
+                                        if (null == routineActivity.GoRoutine) {
+                                            routineActivity.GoRoutine = routineActivity.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                                                    new ActivityResultCallback<ActivityResult>() {
+                                                        @Override
+                                                        public void onActivityResult(ActivityResult result) {
+                                                            if (null != result) {
+                                                                Intent resultIntent = result.getData();
+                                                                boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
+                                                                if (isCompleted) {
+                                                                    routineActivity.findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
+                                                                }
+                                                                int updatedScore = resultIntent.getIntExtra("UpdatedScore", ipptRoutine.IPPTScore);
+                                                                ((TextView)routineActivity.findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                        routineActivity.GoRoutine.launch(recordIntent);
                                     }
                                 }
                             }

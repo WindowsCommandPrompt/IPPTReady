@@ -126,7 +126,6 @@ public class RecordActivity extends AppCompatActivity {
                                                             recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
                                                             recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
                                                             recordIntent.putExtra("IPPTRecordId", "PushupRecord");
-
                                                             startActivity(recordIntent);
                                                         }
                                                     });
@@ -174,6 +173,7 @@ public class RecordActivity extends AppCompatActivity {
 
         return String.format("%d:%d:%d", hour, minute, second);
     }
+
 
     @Override
     protected  void onSaveInstanceState(@NonNull Bundle outState) {
