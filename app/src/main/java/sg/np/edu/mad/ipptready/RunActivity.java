@@ -47,7 +47,9 @@ public class RunActivity extends AppCompatActivity {
 
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
-    private JSONObject unparseJSON() throws JSONException {
+    public RunActivity() { }
+
+    public JSONObject unparseJSON() throws JSONException {
         InputStream is = getResources().openRawResource(R.raw.ipptscore);
         JSONObject jObject = null;
         try {
@@ -61,7 +63,7 @@ public class RunActivity extends AppCompatActivity {
         return jObject;
     }
 
-    private HashMap<String, ArrayList<ArrayList<String>>> unpackagePartialJSON() throws JSONException {
+    public HashMap<String, ArrayList<ArrayList<String>>> unpackagePartialJSON() throws JSONException {
         String timingPortionAll = "";
         String timingPortionFirst = "";
         String timingPortionSecond = "";
@@ -236,6 +238,8 @@ public class RunActivity extends AppCompatActivity {
                                                         Integer.parseInt(correspondingScoreAttainable)
                                                 );
                                                 Log.d("ISTHESCORECORRECT????", "" + rr.TimeTakenTotal);
+                                                //If the timing is correct then the
+
                                             }
                                         }
                                     }
