@@ -73,18 +73,36 @@ public class IPPTRoutine implements Serializable {
                             if (!task.getResult().isEmpty()) {
                                 QueryDocumentSnapshot document = task.getResult().iterator().next();
 
-                                Map<String, Object> mergeDat = new HashMap<>();
-                                mergeDat.put("isFinished", true);
-                                IPPTRoutine.this.isFinished = true;
-
                                 db.collection("IPPTUser")
                                         .document(EmailAddress)
                                         .collection("IPPTCycle")
                                         .document(IPPTCycleId)
                                         .collection("IPPTRoutine")
                                         .document(document.getId())
-                                        .set(mergeDat, SetOptions.merge())
-                                        .addOnCompleteListener(onCompleteVoidListener);
+                                        .collection("IPPTRecord")
+                                        .whereEqualTo("isCompleted", false)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (task.getResult().isEmpty()) {
+                                                        Map<String, Object> mergeDat = new HashMap<>();
+                                                        mergeDat.put("isFinished", true);
+                                                        IPPTRoutine.this.isFinished = true;
+
+                                                        db.collection("IPPTUser")
+                                                                .document(EmailAddress)
+                                                                .collection("IPPTCycle")
+                                                                .document(IPPTCycleId)
+                                                                .collection("IPPTRoutine")
+                                                                .document(document.getId())
+                                                                .set(mergeDat, SetOptions.merge())
+                                                                .addOnCompleteListener(onCompleteVoidListener);
+                                                    }
+                                                }
+                                            }
+                                        });
                             }
                         }
                     }

@@ -96,16 +96,32 @@ public class IPPTCycle implements Serializable {
                             if (!task.getResult().isEmpty()) {
                                 QueryDocumentSnapshot document = task.getResult().iterator().next();
 
-                                Map<String, Object> mergeDat = new HashMap<>();
-                                mergeDat.put("isFinished", true);
-                                IPPTCycle.this.isFinished = true;
-
                                 db.collection("IPPTUser")
                                         .document(EmailAddress)
                                         .collection("IPPTCycle")
                                         .document(document.getId())
-                                        .set(mergeDat, SetOptions.merge())
-                                        .addOnCompleteListener(onCompleteVoidListener);
+                                        .collection("IPPTRoutine")
+                                        .whereEqualTo("isFinished", false)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (task.getResult().isEmpty()) {
+                                                        Map<String, Object> mergeDat = new HashMap<>();
+                                                        mergeDat.put("isFinished", true);
+                                                        IPPTCycle.this.isFinished = true;
+
+                                                        db.collection("IPPTUser")
+                                                                .document(EmailAddress)
+                                                                .collection("IPPTCycle")
+                                                                .document(document.getId())
+                                                                .set(mergeDat, SetOptions.merge())
+                                                                .addOnCompleteListener(onCompleteVoidListener);
+                                                    }
+                                                }
+                                            }
+                                        });
                             }
                         }
                     }

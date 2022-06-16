@@ -11,11 +11,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHolder> {
     private List<IPPTRoutine> ipptRoutineList;
     private Context ipptRoutineContext;
+    private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTRoutineAdapter(List<IPPTRoutine> ipptRoutineList,
                               Context currentContext) {
@@ -49,7 +52,7 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
         });
 
         holder.ipptScoreTextView.setText(String.valueOf(ipptRoutine.IPPTScore));
-        holder.DateCreatedTextView.setText(ipptRoutine.DateCreated.toString());
+        holder.DateCreatedTextView.setText(dateFormat.format(ipptRoutine.DateCreated));
     }
 
     @Override

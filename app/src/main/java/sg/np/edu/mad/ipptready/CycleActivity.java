@@ -130,9 +130,9 @@ public class CycleActivity extends AppCompatActivity {
                                                 .getId();
                                         ipptCycleList.remove(ipptCycleItem);
 
+                                        DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                         ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
-                                        ((TextView)findViewById(R.id.cycledateCreatedText)).setText(currentIpptCycle.DateCreated.toString());
-                                        ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
+                                        ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
 
                                         String finalIPPTCycleId = IPPTCycleId;
                                         findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
@@ -159,7 +159,6 @@ public class CycleActivity extends AppCompatActivity {
                                                     e.printStackTrace();
                                                     return;
                                                 }
-
                                                 startActivity(routineIntent);
                                             }
                                         });
@@ -171,8 +170,6 @@ public class CycleActivity extends AppCompatActivity {
                                     setCreateCycleButton();
                                 }
                                 else {
-                                    // do Recycle Initialization if there is no current IPPT Cycles
-                                    ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
                                     setCompleteCycleButton();
                                 }
                                 ipptCycleAdapter = new IPPTCycleAdapter(ipptCycleList, CycleActivity.this,
@@ -184,7 +181,6 @@ public class CycleActivity extends AppCompatActivity {
                                 recyclerView.setAdapter(ipptCycleAdapter);
                             }
                             else {
-
                                 ipptCycleAdapter = new IPPTCycleAdapter(new ArrayList<IPPTCycle>(), CycleActivity.this,
                                         EmailAddress);
 
@@ -209,15 +205,40 @@ public class CycleActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(IPPTCycle result) {
                         if (null != result) {
-                            finalUser.addNewIPPTCycleToDatabase(EmailAddress,
-                                    result,
-                                    new OnCompleteListener<Void>() {
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("IPPTUser")
+                                    .document(EmailAddress)
+                                    .collection("IPPTCycle")
+                                    .whereEqualTo("Name", result.Name)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                            currentIpptCycle = result;
-                                            ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
-                                            ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                if (task.getResult().isEmpty()) {
+                                                    finalUser.addNewIPPTCycleToDatabase(EmailAddress,
+                                                            result,
+                                                            new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                                                    currentIpptCycle = result;
+                                                                    ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
+                                                                    ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
+                                                                    Toast.makeText(CycleActivity.this,
+                                                                            result.Name + " created!",
+                                                                            Toast.LENGTH_SHORT)
+                                                                            .show();
+                                                                }
+                                                            });
+                                                }
+                                                else {
+                                                    Toast.makeText(CycleActivity.this,
+                                                            "Cycle with name " + result.Name + " already exists!",
+                                                            Toast.LENGTH_SHORT)
+                                                            .show();
+                                                }
+                                            }
                                         }
                                     });
                         }
