@@ -1,9 +1,12 @@
 package sg.np.edu.mad.ipptready;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.*;
 import android.widget.*;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,9 @@ public class PushupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pushup);
 
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
+
+        Intent whiteHole = getIntent();
+        ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(whiteHole.getStringExtra("NumPushups"));
 
         timeIsUp
             .setTitle("You ran out of time")
@@ -39,7 +45,9 @@ public class PushupActivity extends AppCompatActivity {
 
         //Once the timer has been activated by the user....
         ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(function -> {
-            Toast.makeText(this, "The timer has already begun", Toast.LENGTH_SHORT);
+            //We only want the timer to be clicked on once, which that means we will need to disable the layout after the
+            ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
+            Toast.makeText(this, "The timer has already begun", Toast.LENGTH_SHORT).show();
             long timeAvailable = Long.parseLong(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString()) * 1000;
             CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 1000){
                 @Override
@@ -51,6 +59,24 @@ public class PushupActivity extends AppCompatActivity {
                     timeIsUp.create().show();
                 }
             }.start();
+
         });
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            /* Current config for the alignment of the elements when the phone's orientation is portrait...
+             * android:textSize = "29px"  -> For textView identifier
+             * android:textSize = "102px" -> For @+id/targetNumberOfPushups
+             */
+            ((TextView) findViewById(R.id.textViewIdentifier)).setTextSize(19F);
+            ((TextView) findViewById(R.id.targetNumberOfPushUps)).setTextSize(52F);
+        }
+        else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            ((TextView) findViewById(R.id.textViewIdentifier)).setTextSize(39F);
+            ((TextView) findViewById(R.id.targetNumberOfPushUps)).setTextSize(92F);
+        }
     }
 }
