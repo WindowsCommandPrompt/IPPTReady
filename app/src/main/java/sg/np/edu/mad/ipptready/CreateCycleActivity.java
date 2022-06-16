@@ -60,6 +60,7 @@ public class CreateCycleActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     String IPPTCycleName = ((TextView)findViewById(R.id.createnewcycleName)).getText().toString();
                     IPPTCycle ipptCycle = new IPPTCycle(IPPTCycleName, dateCreated);
+                    ipptCycle.isFinished = false;
                     Intent backCycleIntent = new Intent();
 
                     backCycleIntent.putExtra("IPPTCycle", ipptCycle);

@@ -122,7 +122,7 @@ public class RoutineActivity extends AppCompatActivity {
 
                                 for (IPPTRoutine ipptRoutineItem : ipptRoutineList) {
                                     if (!ipptRoutineItem.isFinished) {
-                                        Log.d("RoutineActivity", "Routine not Completed Detected!");
+                                        Log.d("RoutineActivity", "Routine Completed Detected!");
                                         currentIpptRoutine = ipptRoutineItem;
                                         String ipptRoutineId = documentSnapshots.get(ipptRoutineList.indexOf(currentIpptRoutine))
                                                 .getId();
