@@ -101,7 +101,11 @@ public class RunActivity extends AppCompatActivity {
         return returnItem;
     }
 
-    private void calculation2Point4KMScore(String capturedTiming) throws JSONException {
+    private void Something(){
+
+    }
+
+    private String calculation2Point4KMScore(String capturedTiming) throws JSONException {
         AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
         AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
         dataAppendFailed
@@ -151,6 +155,8 @@ public class RunActivity extends AppCompatActivity {
 
         String RunRecordDataSegment = unparseJSON().getString("RunRecord");
         //Log.d("Current", "" + new JSONObject(RunRecordDataSegment).getString("10:20").split("[\\[,\\]]")[0]);
+
+        AtomicReference<String> ref = new AtomicReference<String>(new String());
 
         HashMap<String, ArrayList<ArrayList<String>>> a = unpackagePartialJSON();
         ArrayList<ArrayList<String>> values = a.values().iterator().next();
@@ -228,6 +234,7 @@ public class RunActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 String correspondingScoreAttainable = correspondingArray[ageGroup];
+                                ref.set(correspondingScoreAttainable);
                                 Log.d("ISTHESCORECORRECT????", "" + correspondingScoreAttainable);
                                 //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
                                 RESTdb.collection("IPPTUser")
@@ -260,9 +267,7 @@ public class RunActivity extends AppCompatActivity {
                                         .addOnCompleteListener(serverResponse -> {
                                             if (serverResponse.isSuccessful()) {
                                                 Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore"));
-                                                //set timetotal to 0
-                                                //set distance to 0
-                                                //set
+
                                             } else {
                                                 Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
                                             }
@@ -291,6 +296,7 @@ public class RunActivity extends AppCompatActivity {
                 }
             }
         }
+        return ref.get();
     }
 
     @Override
