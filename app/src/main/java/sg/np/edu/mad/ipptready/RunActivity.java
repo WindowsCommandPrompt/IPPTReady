@@ -238,7 +238,8 @@ public class RunActivity extends AppCompatActivity {
                                                         Integer.parseInt(correspondingScoreAttainable)
                                                 );
                                                 Log.d("ISTHESCORECORRECT????", "" + rr.TimeTakenTotal);
-                                                //If the timing is correct then the
+                                                //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
+
 
                                             }
                                         }
@@ -252,6 +253,15 @@ public class RunActivity extends AppCompatActivity {
                         }
                         else {
                             Log.e("UserNotSignedInError", "No user detected on this device..Please sign into the application first");
+                            //Add
+                            RESTdb.collection("IPPTUser")
+                                .document("bryanflee01@gmail.com")
+                                .collection("IPPTCycle")
+                                .get()
+                                .addOnCompleteListener(function1 -> {
+                                    Log.d("LogITOUT", "" + function1.getResult().getDocuments());
+                                });
+
                         }
                     }
                 })
