@@ -162,7 +162,7 @@
                                     android:textSize="45px"
                                     android:textStyle="bold" />
                             </LinearLayout>
-
+                            <!--This button controls the timer pausing (sorry la my english not that good)-->
                             <LinearLayout
                                 android:id="@+id/pauseTimer"
                                 android:layout_width="0px"
