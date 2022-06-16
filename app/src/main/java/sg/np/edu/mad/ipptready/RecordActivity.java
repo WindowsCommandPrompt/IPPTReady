@@ -140,6 +140,7 @@ public class RecordActivity extends AppCompatActivity {
                                                         bundle.putString("Email", EmailAddress);
                                                         bundle.putString("IPPTCycleId", IPPTCycleId);
                                                         bundle.putString("IPPTRoutineId", IPPTRoutineId);
+                                                        bundle.putBoolean("SitupTargetSet", false);
                                                         Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
                                                         recordIntent.putExtras(bundle);
                                                         startActivity(recordIntent);
