@@ -157,116 +157,125 @@ public class RunActivity extends AppCompatActivity {
         for (int i = 0; i < values.get(0).size(); i++){
             Log.d("TIMING", "" + values.get(0).size()); //60 CORRECT
             if (values.get(0).get(i).equals(capturedTiming)){
+                Intent whiteHole2 = getIntent(); //This whiteHole is used to get the output information from the RecordActivity.java
+                String cycleID = whiteHole2.getStringExtra("IPPTCycleId");
+                String routineID = whiteHole2.getStringExtra("IPPTRoutineId");
+                String recordID = whiteHole2.getStringExtra("IPPTRecordId");
+                String email = whiteHole2.getStringExtra("Email");
+                Log.d("Code has reached here", "The code has reached here");
+                Log.d("Email", "" + email);
                 RESTdb.collection("IPPTUser")
+                .document(email)
                 .get()
-                .addOnCompleteListener(function -> {
-                    for (DocumentSnapshot ds : function.getResult().getDocuments()){
-                        Log.d("EmailAddresses", "" + ds.getId()); //this field actually returns the email addresses
-                        //Log.d("USERDOB", "" + ((Timestamp) ds.getData().values().iterator().next()).getSeconds()); //returns a Timestamp object
-                        //get which account the user was logged in through the ProfileActivity.java
-                        Intent whiteHole = getIntent();
-                        Log.d("Code has reached here", "The code has reached here");
-                        if (whiteHole.getStringExtra("EmailAddressVerifier") != null) {
-                            if (whiteHole.getStringExtra("EmailAddressVerifier").equals(ds.getId())) {
-                                //update the relevant field within the same database under the same email address that the user has used in order to sign into the platform
-                                //Shift this chunk of code later
-                                //whiteHole.getStringExtra("EmailAddressVerifier")
-                                RESTdb.collection("IPPTUser").document(whiteHole.getStringExtra("EmailAddressVerifier"))
+                .addOnCompleteListener(onServerResponse -> {
+                    if (onServerResponse.isSuccessful()){
+                        //Once the server has provided us with the response, we need to get the DOB of the user that has signed into the application.
+                        //extract the POSIX seconds from the so-called timestamp
+                        int YEAR = ((Date) onServerResponse.getResult().get("DOB", Date.class)).getYear();
+                        int correctedYEAR = new Date().getYear() - YEAR;
+                        Log.d("CorrectedYEAR", "" + correctedYEAR);
+                        int ageGroup = 0;
+                        if (correctedYEAR < 22){
+                            ageGroup = 1;
+                        }
+                        else if (correctedYEAR >= 22 && correctedYEAR <= 24){
+                            ageGroup = 2;
+                        }
+                        else if (correctedYEAR >= 25 && correctedYEAR <= 27){
+                            ageGroup = 3;
+                        }
+                        else if (correctedYEAR >= 28 && correctedYEAR <= 30){
+                            ageGroup = 4;
+                        }
+                        else if (correctedYEAR >= 31 && correctedYEAR <= 33){
+                            ageGroup = 5;
+                        }
+                        else if (correctedYEAR >= 34 && correctedYEAR <= 36){
+                            ageGroup = 6;
+                        }
+                        else if (correctedYEAR >= 37 && correctedYEAR <= 39){
+                            ageGroup = 7;
+                        }
+                        else if (correctedYEAR >= 40 && correctedYEAR <= 42){
+                            ageGroup = 8;
+                        }
+                        else if (correctedYEAR >= 43 && correctedYEAR <= 45){
+                            ageGroup = 9;
+                        }
+                        else if (correctedYEAR >= 46 && correctedYEAR <= 48){
+                            ageGroup = 10;
+                        }
+                        else if (correctedYEAR >= 49 && correctedYEAR <= 51){
+                            ageGroup = 11;
+                        }
+                        else if (correctedYEAR >= 52 && correctedYEAR <= 54){
+                            ageGroup = 12;
+                        }
+                        else if (correctedYEAR >= 55 && correctedYEAR <= 57){
+                            ageGroup = 13;
+                        }
+                        else if (correctedYEAR >= 58 && correctedYEAR <= 60){
+                            ageGroup = 14;
+                        }
+                        //get from the array list and then reference from it...
+                        for (int j = 0; j < a.values().iterator().next().get(0).size(); j++) {
+                            if (a.values().iterator().next().get(0).get(j).equals(capturedTiming)){
+                                String[] correspondingArray = new String[] { };
+                                try {
+                                    correspondingArray = new JSONObject(RunRecordDataSegment).getString(capturedTiming).split("[\\[,\\]]");
+                                }
+                                catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                String correspondingScoreAttainable = correspondingArray[ageGroup];
+                                Log.d("ISTHESCORECORRECT????", "" + correspondingScoreAttainable);
+                                //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
+                                RESTdb.collection("IPPTUser")
+                                .document(email)
+                                .collection("IPPTCycle")
+                                .document(cycleID)
+                                .collection("IPPTRoutine")
+                                .document(routineID)
                                 .get()
-                                .addOnCompleteListener(onServerResponse -> {
-                                    if (onServerResponse.isSuccessful()){
-                                        //Once the server has provided us with the response, we need to get the DOB of the user that has signed into the application.
-                                        //extract the POSIX seconds from the so-called timestamp
-                                        int YEAR = ((Date) onServerResponse.getResult().get("DOB", Date.class)).getYear();
-                                        int correctedYEAR = YEAR + 1900;
-                                        Log.d("CorrectedYEAR", "" + correctedYEAR);
-                                        int ageGroup = 0;
-                                        if (correctedYEAR < 22){
-                                            ageGroup = 1;
-                                        }
-                                        else if (correctedYEAR >= 22 && correctedYEAR <= 24){
-                                            ageGroup = 2;
-                                        }
-                                        else if (correctedYEAR >= 25 && correctedYEAR <= 27){
-                                            ageGroup = 3;
-                                        }
-                                        else if (correctedYEAR >= 28 && correctedYEAR <= 30){
-                                            ageGroup = 4;
-                                        }
-                                        else if (correctedYEAR >= 31 && correctedYEAR <= 33){
-                                            ageGroup = 5;
-                                        }
-                                        else if (correctedYEAR >= 34 && correctedYEAR <= 36){
-                                            ageGroup = 6;
-                                        }
-                                        else if (correctedYEAR >= 37 && correctedYEAR <= 39){
-                                            ageGroup = 7;
-                                        }
-                                        else if (correctedYEAR >= 40 && correctedYEAR <= 42){
-                                            ageGroup = 8;
-                                        }
-                                        else if (correctedYEAR >= 43 && correctedYEAR <= 45){
-                                            ageGroup = 9;
-                                        }
-                                        else if (correctedYEAR >= 46 && correctedYEAR <= 48){
-                                            ageGroup = 10;
-                                        }
-                                        else if (correctedYEAR >= 49 && correctedYEAR <= 51){
-                                            ageGroup = 11;
-                                        }
-                                        else if (correctedYEAR >= 52 && correctedYEAR <= 54){
-                                            ageGroup = 12;
-                                        }
-                                        else if (correctedYEAR >= 55 && correctedYEAR <= 57){
-                                            ageGroup = 13;
-                                        }
-                                        else if (correctedYEAR >= 58 && correctedYEAR <= 60){
-                                            ageGroup = 14;
-                                        }
-                                        //get from the array list and then reference from it...
-                                        for (int j = 0; j < a.values().iterator().next().get(0).size(); j++) {
-                                            if (a.values().iterator().next().get(0).get(j).equals(capturedTiming)){
-                                                String[] correspondingArray = new String[] { };
-                                                try {
-                                                    correspondingArray = new JSONObject(RunRecordDataSegment).getString(capturedTiming).split("[\\[,\\]]");
-                                                }
-                                                catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                String correspondingScoreAttainable = correspondingArray[ageGroup];
-                                                RunRecord rr = new RunRecord(
-                                                        Integer.parseInt(correspondingScoreAttainable)
-                                                );
-                                                Log.d("ISTHESCORECORRECT????", "" + rr.TimeTakenTotal);
-                                                //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
-
-
+                                .addOnCompleteListener(onResponseFromServer -> {
+                                    //perform a "GET" request to get the current IPPTScore that the user has
+                                    RESTdb.collection("IPPTUser")
+                                    .document(email)
+                                    .collection("IPPTCycle")
+                                    .document(cycleID)
+                                    .collection("IPPTRoutine")
+                                    .document(routineID)
+                                    .get()
+                                    .addOnCompleteListener(thenGetServerResponse -> {
+                                        int result = thenGetServerResponse.getResult().get("IPPTScore", int.class);
+                                        HashMap<String, Object> newIPPTScore = new HashMap<>();
+                                        newIPPTScore.put("IPPTScore", result + Integer.parseInt(correspondingScoreAttainable));
+                                        RESTdb.collection("IPPTUser")
+                                        .document(email)
+                                        .collection("IPPTCycle")
+                                        .document(cycleID)
+                                        .collection("IPPTRoutine")
+                                        .document(routineID)
+                                        .set(newIPPTScore, SetOptions.merge())
+                                        .addOnCompleteListener(serverResponse -> {
+                                            if (serverResponse.isSuccessful()) {
+                                                Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore"));
+                                                //set timetotal to 0
+                                                //set distance to 0
+                                                //set
+                                            } else {
+                                                Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
                                             }
-                                        }
-                                    }
-                                    else {
-                                        //Once the server has not provided us with the response then
-                                        dataFetchFail.create().show();
-                                    }
+                                        });
+                                    });
                                 });
                             }
                         }
-                        else {
-                            Log.e("UserNotSignedInError", "No user detected on this device..Please sign into the application first");
-                            //Add
-                            RESTdb.collection("IPPTUser")
-                                .document("bryanflee01@gmail.com")
-                                .collection("IPPTCycle")
-                                .get()
-                                .addOnCompleteListener(function1 -> {
-                                    Log.d("LogITOUT", "" + function1.getResult().getDocuments());
-                                });
-
-                        }
                     }
-                })
-                .addOnFailureListener(function -> {
-                    dataFetchFail.create().show();
+                    else {
+                        //Once the server has not provided us with the response then
+                        dataFetchFail.create().show();
+                    }
                 });
             }
             else {
@@ -298,14 +307,8 @@ public class RunActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try {
-            calculation2Point4KMScore("8:30");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         //Build the countdown
-        mainStopwatch = new CountDownTimer(1000, 1000){
+        mainStopwatch = new CountDownTimer(10, 1000){
             @Override
             public void onTick(long millisUntilFinished) {
                 int minutes = Integer.parseInt(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString().split(":")[0]);
@@ -361,12 +364,13 @@ public class RunActivity extends AppCompatActivity {
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
                     try {
                         calculation2Point4KMScore(capturedTiming);
+                        Log.d("AMICALLED??", "Yes I was called");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    finish();
                 }
             )
             .setNegativeButton(
