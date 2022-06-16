@@ -41,6 +41,12 @@ public class PushupActivity extends AppCompatActivity {
 
                 }
             )
+            .setNeutralButton(
+                "LET ME THINK FIRST",
+                (DialogInterface di, int i) -> {
+
+                }
+            )
             .setCancelable(false);
 
         timeIsUp
@@ -99,13 +105,14 @@ public class PushupActivity extends AppCompatActivity {
 
             //If the user would like to reset the timer
             ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(thenFunctionAs -> {
-                Toast.makeText(this, "The stopwatch has been reset", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "The stopwatch has been reset", Toast.LENGTH_SHORT).show();
                 mainCountdownTimer.cancel(); //The stopwatch will stop..
                 ((TextView) findViewById(R.id.timing_indicator_text)).setText("60");  //initialize the amount of time remaining back to
                 ((TextView) findViewById(R.id.startCycleInternalText)).setText("Resume");
+                ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(true); //We will have to re-enable the button again
                 //The user would have to manually the start the timer by himself...OBVIOUSLY
                 ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(onUserClick -> {
-                    Toast.makeText(this, "Resuming timer...", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Resuming timer...", Toast.LENGTH_SHORT).show(); //Display the Toast message which states that the timer is resuming...
                     mainCountdownTimer.start(); //start the stopwatch again....
                 });
             });
