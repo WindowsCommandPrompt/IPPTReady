@@ -23,6 +23,13 @@ public class PushupActivity extends AppCompatActivity {
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
         AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
 
+        //METADATA
+        Intent whiteHoleConnectingRecordActivityBlackHole = getIntent();
+        String cycleID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTCycleId");
+        String routineID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTRoutineId");
+        String recordID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTRecordId");
+        String email = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("Email");
+
         Intent whiteHole = getIntent();
         ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(whiteHole.getStringExtra("NumPushups"));
 
@@ -114,6 +121,11 @@ public class PushupActivity extends AppCompatActivity {
                 ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(onUserClick -> {
                     Toast.makeText(this, "Resuming timer...", Toast.LENGTH_SHORT).show(); //Display the Toast message which states that the timer is resuming...
                     mainCountdownTimer.start(); //start the stopwatch again....
+                    ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false); //Disable the button again...
+                });
+
+                ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(onUserClick -> {
+
                 });
             });
         });
