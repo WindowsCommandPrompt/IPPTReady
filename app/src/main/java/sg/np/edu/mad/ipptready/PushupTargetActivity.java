@@ -1,6 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 
@@ -18,18 +19,20 @@ public class PushupTargetActivity extends AppCompatActivity {
 
         woahThatIsTooMuch
                 .setTitle("HOLD ON!")
-                .setMessage("You have set the target number of push-ups to be " + ((EditText) findViewById(R.id.pushUpTarget)).getText().toString() + " times. Are you sure you will be able to finish those repetitions within 1 minute?")
+                .setMessage("You have set the target number of push-ups to be more than 60 times. Are you sure you will be able to finish those repetitions within 1 minute?")
                 .setPositiveButton(
-                        "YES",
-                        (DialogInterface di, int i) -> {
-
-                        }
+                    "YES",
+                    (DialogInterface di, int i) -> {
+                        di.dismiss();
+                    }
                 )
                 .setNegativeButton(
-                        "NO",
-                        (DialogInterface di, int i) -> {
-
-                        }
+                    "NO",
+                    (DialogInterface di, int i) -> {
+                        ((EditText) findViewById(R.id.pushUpTarget)).setText("60");
+                        Toast.makeText(this, "Target has been set to 60 repetitions", Toast.LENGTH_SHORT);
+                        di.dismiss();
+                    }
                 )
                 .setCancelable(false);
 
@@ -45,7 +48,10 @@ public class PushupTargetActivity extends AppCompatActivity {
                         woahThatIsTooMuch.create().show();
                     }
                     else{
-
+                        Intent andThenRedirect = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        andThenRedirect.putExtra("NumPushups", Integer.toString(targetPushUps));
+                        startActivity(andThenRedirect);
+                        finish(); //finish the current activity...
                     }
                 }
             }
