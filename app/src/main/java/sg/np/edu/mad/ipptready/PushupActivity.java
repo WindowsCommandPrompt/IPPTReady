@@ -56,12 +56,17 @@ public class PushupActivity extends AppCompatActivity {
 
                     //If the user would like to save the data to the database....
                     ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
+                        if (numPushUpsDone.length() > 0){
 
+                        }
+                        else if (numPushUpsDone.length() == 0){
+                            Toast.makeText(this, "Uh oh! That is not a good value! Field cannot be left blank if you are submitting the number of push ups that you have done to the database!", Toast.LENGTH_SHORT).show();
+                        }
                     });
 
                     //If the user would NOT like to save the data to the database...
                     ((Button) findViewById(R.id.dontSet)).setOnClickListener(functionAs -> {
-
+                        confirmationNotSaveData.create().show();
                     });
                 }
             )
@@ -81,7 +86,7 @@ public class PushupActivity extends AppCompatActivity {
             ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
             Toast.makeText(this, "The timer has already begun", Toast.LENGTH_SHORT).show();
             long timeAvailable = Long.parseLong(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString()) * 1000;
-            CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 1000){
+            CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 10){
                 @Override
                 public void onTick(long millisLeft) {
                     ((TextView) findViewById(R.id.timing_indicator_text)).setText(Long.toString(millisLeft / 1000));
@@ -92,6 +97,18 @@ public class PushupActivity extends AppCompatActivity {
                 }
             }.start();
 
+            //If the user would like to reset the timer
+            ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(thenFunctionAs -> {
+                Toast.makeText(this, "The stopwatch has been reset", Toast.LENGTH_SHORT);
+                mainCountdownTimer.cancel(); //The stopwatch will stop..
+                ((TextView) findViewById(R.id.timing_indicator_text)).setText("60");  //initialize the amount of time remaining back to
+                ((TextView) findViewById(R.id.startCycleInternalText)).setText("Resume");
+                //The user would have to manually the start the timer by himself...OBVIOUSLY
+                ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(onUserClick -> {
+                    Toast.makeText(this, "Resuming timer...", Toast.LENGTH_SHORT);
+                    mainCountdownTimer.start(); //start the stopwatch again....
+                });
+            });
         });
     }
 
