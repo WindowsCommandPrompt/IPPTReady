@@ -29,6 +29,7 @@
             android:id = "@+id/pushUpTarget"
             android:layout_marginTop = "25dp"
             android:layout_width="306dp"
+            android:textSize = "100px"
             android:layout_height="wrap_content" />
         <Button
             android:id = "@+id/setPushUpActivity"
