@@ -185,6 +185,7 @@ public class CycleActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
                                                 if (task.getResult().isEmpty()) {
+                                                    // Makes sure no name is referred here
                                                     currentIpptCycle = result;
                                                     finalUser.addNewIPPTCycleToDatabase(EmailAddress,
                                                             result,

@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.google.firebase.firestore.*;
 
-public class RunRecord extends AppCompatActivity implements IPPTRecord {
+public class RunRecord extends IPPTRecord {
 
     // Total distance taken (can exceed 2.4km)
     public float TotalDistanceTravelled;
@@ -21,10 +21,5 @@ public class RunRecord extends AppCompatActivity implements IPPTRecord {
 
     public RunRecord(int timeTakenTotal){
         this.TimeTakenTotal = timeTakenTotal;
-    }
-
-    @Override
-    public int getIPPTRecordScore() {
-        return 0;
     }
 }

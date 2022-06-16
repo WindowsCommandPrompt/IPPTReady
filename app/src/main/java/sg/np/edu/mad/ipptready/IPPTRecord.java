@@ -1,7 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
-public interface IPPTRecord {
+public class IPPTRecord {
     public boolean isCompleted = false;
-
-    public int getIPPTRecordScore();
+    public int ipptScore;
 }
