@@ -110,7 +110,7 @@ public class RecordActivity extends AppCompatActivity {
                                                         ((TextView)findViewById(R.id.pushuprecordrepstarget)).setText(String.valueOf(pushupRecord.RepsTarget));
                                                     }
                                                 }
-                                                /*if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
+                                                if (View.GONE != findViewById(R.id.runrecordButton).getVisibility()) {
                                                     findViewById(R.id.runrecordButton).setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
@@ -129,13 +129,13 @@ public class RecordActivity extends AppCompatActivity {
                                                     findViewById(R.id.situprecordButton).setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-                                                            Intent recordIntent = new Intent(RecordActivity.this, SitupActivity.class);
-
-                                                            recordIntent.putExtra("Email", EmailAddress);
-                                                            recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
-                                                            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-                                                            recordIntent.putExtra("IPPTRecordId", "SitupRecord");
-
+                                                            Bundle bundle = new Bundle();
+                                                            bundle.putString("Email", EmailAddress);
+                                                            bundle.putString("IPPTCycleId", IPPTCycleId);
+                                                            bundle.putString("IPPTRoutineId", IPPTRoutineId);
+                                                            bundle.putString("IPPTRecordId", "SitupRecord");
+                                                            Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
+                                                            recordIntent.putExtras(bundle);
                                                             startActivity(recordIntent);
                                                         }
                                                     });
@@ -154,11 +154,13 @@ public class RecordActivity extends AppCompatActivity {
                                                             startActivity(recordIntent);
                                                         }
                                                     });
-                                                }*/
+                                                }
                                             }
                                         }
                                     }
                                 });
+
+
     }
 
     private String SecondstoString(int seconds) {
