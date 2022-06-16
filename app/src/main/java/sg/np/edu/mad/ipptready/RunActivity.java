@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -369,19 +370,29 @@ public class RunActivity extends AppCompatActivity {
                 "YES",
                 (DialogInterface di, int i) -> {
                     //take note of the timing that is within the TextView
-                    String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString(),
+                        runRecordScore = null;
                     Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
                     try {
-                        calculation2Point4KMScore(capturedTiming);
+                        runRecordScore = calculation2Point4KMScore(capturedTiming);
                         Log.d("AMICALLED??", "Yes I was called");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Intent recordBackIntent = new Intent();
+                    recordBackIntent.putExtra("Timing", capturedTiming);
+                    recordBackIntent.putExtra("IPPTScore", runRecordScore);
+
+                    setResult(Activity.RESULT_OK, recordBackIntent);
+                    finish();
                 }
             )
             .setNegativeButton(
                 "NO",
                 (DialogInterface di, int i) -> {
+                    Intent recordBackIntent = new Intent();
+
+                    setResult(Activity.RESULT_OK, recordBackIntent);
                     finish();
                 }
             );

@@ -104,6 +104,7 @@ public class RecordActivity extends AppCompatActivity {
                                                 for (DocumentSnapshot document : task.getResult()) {
                                                     if ("RunRecord" == document.getId()) {
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
+                                                        runRecord.
                                                         findViewById(R.id.runrecordButton).setVisibility(View.VISIBLE);
                                                         ((TextView)findViewById(R.id.runrecordtotaldistancetravelled)).setText(String.valueOf(runRecord.TotalDistanceTravelled) + "km");
                                                         ((TextView)findViewById(R.id.runrecordtimetakentotal)).setText(SecondstoString(runRecord.TimeTakenTotal));
@@ -168,7 +169,17 @@ public class RecordActivity extends AppCompatActivity {
                         new ActivityResultCallback<ActivityResult>() {
                             @Override
                             public void onActivityResult(ActivityResult result) {
-
+                                if (null != result) {
+                                    Intent resultIntent = result.getData();
+                                    String timeFinished = resultIntent.getStringExtra("Timing");
+                                    if (null != timeFinished) {
+                                        ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
+                                    }
+                                    String ipptScore = resultIntent.getStringExtra("IPPTScore");
+                                    if (null != ipptScore) {
+                                        runRecordScore = Integer.parseInt(ipptScore);
+                                    }
+                                }
                             }
                         });
             }

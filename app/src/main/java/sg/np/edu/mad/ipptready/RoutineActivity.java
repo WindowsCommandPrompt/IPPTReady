@@ -377,6 +377,13 @@ public class RoutineActivity extends AppCompatActivity {
                 boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
                 if (isCompleted) {
                     findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
+                    ((TextView)findViewById(R.id.routineipptscoreText)).setText("");
+                    ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
+                    findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    });
                 }
                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
                 ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
@@ -394,12 +401,6 @@ public class RoutineActivity extends AppCompatActivity {
         });
     }
 
-    private void setCompleteRoutineButton() {
-        ((Button)findViewById(R.id.completecreateroutineButton)).setText("Complete Routine");
-        findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CompleteRoutineOnClickListener());
-        findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
-    }
-
     @Override
     protected  void onSaveInstanceState(@NonNull Bundle outState) {
         // write code here!
@@ -413,5 +414,6 @@ public class RoutineActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         GoRoutine.unregister();
+        super.onDestroy();
     }
 }
