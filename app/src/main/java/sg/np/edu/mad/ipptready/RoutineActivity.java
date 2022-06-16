@@ -111,6 +111,7 @@ public class RoutineActivity extends AppCompatActivity {
                             setContentView(R.layout.activity_routine);
                             recyclerView = findViewById(R.id.routineRecyclerView);
                             if (finalIpptCycle.isFinished) {
+                                Log.d("RoutineActivity", "IPPTCycle is already finished!");
                                 findViewById(R.id.constraintLayout2).setVisibility(View.GONE);
                                 findViewById(R.id.previousroutinetext).setVisibility(View.GONE);
                             }
