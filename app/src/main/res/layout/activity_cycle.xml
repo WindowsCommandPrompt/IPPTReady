@@ -41,7 +41,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cycleRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="396dp"
+            android:layout_height="404dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/previouscycletext"
@@ -75,9 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="51dp"
-                android:layout_marginTop="30dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/datecreatedText"
-                app:layout_constraintTop_toBottomOf="@+id/cyclenameText"
+                app:layout_constraintTop_toTopOf="@+id/datecreatedText"
                 tools:visibility="visible" />
 
             <TextView
@@ -86,6 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/currentcyclenameText"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible" />
@@ -106,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:text="Date Created:"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"

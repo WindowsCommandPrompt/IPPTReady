@@ -126,42 +126,7 @@ public class CycleActivity extends AppCompatActivity {
                                     if (!ipptCycleItem.isFinished) {
                                         Log.d("CycleActivity", "Not finished Cycle Detected!");
                                         currentIpptCycle = ipptCycleItem;
-                                        IPPTCycleId = docSnapshots.get(ipptCycleList.indexOf(currentIpptCycle))
-                                                .getId();
                                         ipptCycleList.remove(ipptCycleItem);
-
-                                        DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                        ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
-                                        ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
-
-                                        String finalIPPTCycleId = IPPTCycleId;
-                                        findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Log.d("CycleActivity", "View Clicked! Going to RoutineActivity...");
-                                                Intent routineIntent = new Intent(CycleActivity.this, RoutineActivity.class);
-
-                                                // "Email", String : Email Address of the user.
-                                                // "IPPTCycleId", String : Id of the IPPTCycle
-                                                // "IPPTCycle", byteArray : Serialized IPPTCycle Object
-                                                routineIntent.putExtra("Email", EmailAddress);
-                                                routineIntent.putExtra("IPPTCycleId", finalIPPTCycleId);
-
-                                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                                try {
-                                                    ObjectOutputStream oos = new ObjectOutputStream(bos);
-                                                    oos.writeObject(currentIpptCycle);
-                                                    routineIntent.putExtra("IPPTCycle", bos.toByteArray());
-                                                } catch (IOException e) {
-                                                    // If error occurred, display friendly message to user
-
-                                                    Toast.makeText(CycleActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                                                    e.printStackTrace();
-                                                    return;
-                                                }
-                                                startActivity(routineIntent);
-                                            }
-                                        });
                                         break;
                                     }
                                 }
@@ -170,6 +135,9 @@ public class CycleActivity extends AppCompatActivity {
                                     setCreateCycleButton();
                                 }
                                 else {
+                                    DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
+                                    ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
                                     setCompleteCycleButton();
                                 }
                                 ipptCycleAdapter = new IPPTCycleAdapter(ipptCycleList, CycleActivity.this,
@@ -181,6 +149,7 @@ public class CycleActivity extends AppCompatActivity {
                                 recyclerView.setAdapter(ipptCycleAdapter);
                             }
                             else {
+                                ipptCycleList = new ArrayList<IPPTCycle>();
                                 ipptCycleAdapter = new IPPTCycleAdapter(new ArrayList<IPPTCycle>(), CycleActivity.this,
                                         EmailAddress);
 
@@ -216,13 +185,13 @@ public class CycleActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
                                                 if (task.getResult().isEmpty()) {
+                                                    currentIpptCycle = result;
                                                     finalUser.addNewIPPTCycleToDatabase(EmailAddress,
                                                             result,
                                                             new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                                                    currentIpptCycle = result;
                                                                     ((TextView)findViewById(R.id.cyclenameText)).setText(currentIpptCycle.Name);
                                                                     ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(currentIpptCycle.DateCreated));
                                                                     Toast.makeText(CycleActivity.this,
@@ -231,6 +200,7 @@ public class CycleActivity extends AppCompatActivity {
                                                                             .show();
                                                                 }
                                                             });
+                                                    findViewById(R.id.constraintLayout2).setOnClickListener(new GoRoutineOnClickListener());
                                                 }
                                                 else {
                                                     Toast.makeText(CycleActivity.this,
@@ -276,6 +246,7 @@ public class CycleActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             ipptCycleList.add(currentIpptCycle);
                                             ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() - 1);
+                                            currentIpptCycle = null;
                                         }
                                     });
                         }
@@ -283,14 +254,66 @@ public class CycleActivity extends AppCompatActivity {
         }
     }
 
+    private class GoRoutineOnClickListener implements  View.OnClickListener {
+
+            @Override
+            public void onClick(View v) {
+                Log.d("CycleActivity", "View Clicked! Going to RoutineActivity...");
+                Intent routineIntent = new Intent(CycleActivity.this, RoutineActivity.class);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("IPPTUser")
+                        .document(EmailAddress)
+                        .collection("IPPTCycle")
+                        .whereEqualTo("Name", currentIpptCycle.Name)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        // "Email", String : Email Address of the user.
+                                        // "IPPTCycleId", String : Id of the IPPTCycle
+                                        // "IPPTCycle", byteArray : Serialized IPPTCycle Object
+                                        routineIntent.putExtra("Email", EmailAddress);
+                                        routineIntent.putExtra("IPPTCycleId", task.getResult()
+                                                .getDocuments().iterator().next().getId());
+
+                                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                        try {
+                                            ObjectOutputStream oos = new ObjectOutputStream(bos);
+                                            oos.writeObject(currentIpptCycle);
+                                            routineIntent.putExtra("IPPTCycle", bos.toByteArray());
+                                        } catch (IOException e) {
+                                            // If error occurred, display friendly message to user
+
+                                            Toast.makeText(CycleActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                                            e.printStackTrace();
+                                            return;
+                                        }
+                                        startActivity(routineIntent);
+                                    }
+                                }
+                            }
+                        });
+            }
+    }
+
     private void setCreateCycleButton() {
         ((Button)findViewById(R.id.completecreatecycleButton)).setText("Create A New Cycle");
         findViewById(R.id.completecreatecycleButton).setOnClickListener(new CreateCycleOnClickListener());
+        findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setCompleteCycleButton() {
         ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
         findViewById(R.id.completecreatecycleButton).setOnClickListener(new CompleteCycleOnClickListener());
+        findViewById(R.id.constraintLayout2).setOnClickListener(new GoRoutineOnClickListener());
     }
 
     private class CycleActivityResultContract extends ActivityResultContract<Date, IPPTCycle> {
