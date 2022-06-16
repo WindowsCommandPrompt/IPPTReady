@@ -353,11 +353,18 @@ public class RoutineActivity extends AppCompatActivity {
     private void setCreateRoutineButton() {
         ((Button)findViewById(R.id.completecreateroutineButton)).setText("Create A New Routine");
         findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CreateRoutineOnClickListener());
+        findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setCompleteRoutineButton() {
         ((Button)findViewById(R.id.completecreateroutineButton)).setText("Complete Routine");
         findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CompleteRoutineOnClickListener());
+        findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
     }
 
     @Override
