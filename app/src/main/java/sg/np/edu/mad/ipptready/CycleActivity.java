@@ -232,21 +232,48 @@ public class CycleActivity extends AppCompatActivity {
     private class CompleteCycleOnClickListener implements  View.OnClickListener {
         @Override
         public void onClick(View v) {
-            ((TextView)findViewById(R.id.cyclenameText)).setText("");
-            ((TextView)findViewById(R.id.cycledateCreatedText)).setText("");
             Log.d("CycleActivity", "Completing Cycle...");
-            setCreateCycleButton();
-            currentIpptCycle.completeIPPTCycle(EmailAddress,
-                    new OnCompleteListener<Void>() {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("IPPTUser")
+                    .document(EmailAddress)
+                    .collection("IPPTCycle")
+                    .whereEqualTo("Name", currentIpptCycle.Name)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            currentIpptCycle.completeIPPTCycle(EmailAddress,
-                                    new OnCompleteListener<Void>() {
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            db.collection("IPPTUser")
+                                    .document(EmailAddress)
+                                    .collection("IPPTCycle")
+                                    .document(task.getResult().iterator().next().getId())
+                                    .collection("IPPTRoutine")
+                                    .whereEqualTo("isFinished", false)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            ipptCycleList.add(currentIpptCycle);
-                                            ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() - 1);
-                                            currentIpptCycle = null;
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                if (task.getResult().isEmpty()) {
+                                                    currentIpptCycle.completeIPPTCycle(EmailAddress,
+                                                            new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    currentIpptCycle.completeIPPTCycle(EmailAddress,
+                                                                            new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                    ipptCycleList.add(currentIpptCycle);
+                                                                                    ipptCycleAdapter.notifyItemInserted(ipptCycleList.size() - 1);
+                                                                                    currentIpptCycle = null;
+                                                                                    ((TextView)findViewById(R.id.cyclenameText)).setText("");
+                                                                                    ((TextView)findViewById(R.id.cycledateCreatedText)).setText("");
+                                                                                    setCreateCycleButton();
+                                                                                }
+                                                                            });
+                                                                }
+                                                            });
+                                                }
+                                            }
                                         }
                                     });
                         }

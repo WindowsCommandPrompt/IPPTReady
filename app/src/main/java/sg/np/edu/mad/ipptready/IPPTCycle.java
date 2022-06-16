@@ -27,7 +27,7 @@ public class IPPTCycle implements Serializable {
                      Date DateCreated) {
         this.Name = Name;
         this.DateCreated = DateCreated;
-        this.isFinished = true;
+        this.isFinished = false;
     }
 
     public IPPTCycle() { }
@@ -95,19 +95,6 @@ public class IPPTCycle implements Serializable {
                         if (task.isSuccessful()) {
                             if (!task.getResult().isEmpty()) {
                                 QueryDocumentSnapshot document = task.getResult().iterator().next();
-
-                                db.collection("IPPTUser")
-                                        .document(EmailAddress)
-                                        .collection("IPPTCycle")
-                                        .document(document.getId())
-                                        .collection("IPPTRoutine")
-                                        .whereEqualTo("isFinished", false)
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    if (task.getResult().isEmpty()) {
                                                         Map<String, Object> mergeDat = new HashMap<>();
                                                         mergeDat.put("isFinished", true);
                                                         IPPTCycle.this.isFinished = true;
@@ -118,10 +105,6 @@ public class IPPTCycle implements Serializable {
                                                                 .document(document.getId())
                                                                 .set(mergeDat, SetOptions.merge())
                                                                 .addOnCompleteListener(onCompleteVoidListener);
-                                                    }
-                                                }
-                                            }
-                                        });
                             }
                         }
                     }
