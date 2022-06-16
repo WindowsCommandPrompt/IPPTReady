@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sg.np.edu.mad.ipptready">
+    package="sg.np.edu.mad.ipptready" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -22,16 +22,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IPPTReady">
+        android:theme="@style/Theme.IPPTReady" >
+        <activity
+            android:name=".SitupActivity"
+            android:exported="false" />
         <activity
             android:name=".WatchVideo"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".DetailedInformationActivity"
-            android:parentActivityName=".InformationActivity"
+            android:exported="false"
             android:label="Details"
-            android:exported="false" />
+            android:parentActivityName=".InformationActivity" />
         <activity
             android:name=".InformationActivity"
             android:exported="false" />
@@ -62,7 +65,7 @@
         <activity
             android:name=".LoginActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
