@@ -69,4 +69,12 @@ public class CreateCycleActivity extends AppCompatActivity {
             });
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        // write code here!
+        outState.putSerializable("DateCreated", dateCreated);
+        // make sure to call super after writing code ...
+        super.onSaveInstanceState(outState);
+    }
 }
