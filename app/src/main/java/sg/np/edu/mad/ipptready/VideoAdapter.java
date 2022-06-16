@@ -2,6 +2,7 @@ package sg.np.edu.mad.ipptready;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,7 +41,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     ArrayList<Integer> noOfVideos;
     int totalVideos = 0;
     String videoTitle = "";
-    String videoId = "";
     String videoType = "";
     String videoDescription = "";
     int actualPosition = 0;
@@ -66,7 +66,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
         ViewGroup.MarginLayoutParams videoEntryParams = (ViewGroup.MarginLayoutParams) holder.videoEntry.getLayoutParams();
         if (holder.getAdapterPosition() == totalVideos - 1) {
-            videoEntryParams.bottomMargin = 100;
+            int orientation = ctx.getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                videoEntryParams.bottomMargin = 1350;
+            } else {
+                videoEntryParams.bottomMargin = 140;
+            }
+
         }
         else {
             videoEntryParams.bottomMargin = 0;

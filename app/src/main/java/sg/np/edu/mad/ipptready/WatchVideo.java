@@ -52,6 +52,7 @@ public class WatchVideo extends YouTubeBaseActivity {
         };
 
         youtubePlayerView.initialize("AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU", initializedListener);
-
+        //AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58
+        //AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU
     }
 }
