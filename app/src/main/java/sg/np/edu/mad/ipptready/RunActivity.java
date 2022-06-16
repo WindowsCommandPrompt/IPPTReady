@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ public class RunActivity extends AppCompatActivity {
 
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
-    private JSONObject calculateTotalScore(){
+    private JSONObject unparseJSON() throws JSONException {
         InputStream is = getResources().openRawResource(R.raw.ipptscore);
         JSONObject jObject = null;
         try {
@@ -60,11 +61,10 @@ public class RunActivity extends AppCompatActivity {
         return jObject;
     }
 
-    private HashMap<String, ArrayList<ArrayList<String>>> unpackageJSON() throws JSONException {
+    private HashMap<String, ArrayList<ArrayList<String>>> unpackagePartialJSON() throws JSONException {
         String timingPortionAll = "";
         String timingPortionFirst = "";
         String timingPortionSecond = "";
-
         HashMap<String, ArrayList<ArrayList<String>>> returnItem = new HashMap<>();
         ArrayList<String> arrayList = new ArrayList<>();
         ArrayList<String> arrayListCleaningStep2 = new ArrayList<>();
@@ -72,7 +72,7 @@ public class RunActivity extends AppCompatActivity {
         final ArrayList<ArrayList<String>> scoringCriteriaRaw = new ArrayList<>();
         ArrayList<String> subArray = new ArrayList<>();
         ArrayList<String> singleElement = new ArrayList<>();
-        for (String s : calculateTotalScore().get("RunRecord").toString().split(",")){
+        for (String s : unparseJSON().get("RunRecord").toString().split(",")){
             arrayList.add(s);
         }
         for (int i = 0; i < arrayList.size(); i++){
@@ -94,39 +94,8 @@ public class RunActivity extends AppCompatActivity {
                 }
             }
         }
-        for (int i = 0; i < arrayListCleaningStep2.size(); i++) {
-            if (arrayListCleaningStep2.get(i).contains("[")) {
-                if (arrayListCleaningStep2.get(i).contains("]")) { //If both symbols are located on the same row....
-                    int j = i;
-                    singleElement.add(arrayListCleaningStep2.get(i).replace(Character.toString(arrayListCleaningStep2.get(i).charAt(0)), "").replace(Character.toString(arrayListCleaningStep2.get(i).charAt(3)), "")); //This line of code only execute once....
-                    scoringCriteriaRaw.add(singleElement);
-                    arrayListCleaningStep2.remove(j);
-                }
-                else if (arrayListCleaningStep2.get(i + 1).contains("]")) {
-                    int targetIndex = i;
-                    //check if the character before the second last character exist
-                    subArray.add(Character.toString(arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 1)) + (arrayListCleaningStep2.get(i).length() > arrayListCleaningStep2.get(i).indexOf("[") + 2 ? arrayListCleaningStep2.get(i).charAt(arrayListCleaningStep2.get(i).indexOf("[") + 2) : "")); //head of the entire array
-                    //Check for any sandwiched elements....
-                    if (!arrayListCleaningStep2.get(i + 1).contains("]")) {
-                        subArray.add(arrayListCleaningStep2.get(i + 1));
-                    }
-                    else {
-                        subArray.add((arrayListCleaningStep2.get(i + 1).length() - 3 > -1 ? arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 3) : "") + Character.toString(arrayListCleaningStep2.get(i + 1).charAt(arrayListCleaningStep2.get(i + 1).length() - 2))); //tail of the entire array
-                    }
-                    scoringCriteriaRaw.add(subArray);
-                    arrayListCleaningStep2.remove(targetIndex);
-                    arrayListCleaningStep2.remove(targetIndex + 1);
-                }
-            }
-            //FIXME: Fix the bug which would cause the array list named scoringCriteriaRaw to remove the array that was initially stored within subArray
-            Log.d("Size", "" + arrayListCleaningStep2.size());  //this number must not reach 0 but must be less than 858 and must not remain at 855
-            Log.d("Size1", "" + scoringCriteriaRaw.size());     //this number must not be stuck at 2
-        }
-        Log.d("LENGTH", "" + scoringCriteriaRaw);
         Log.d("TIMINGINDICATORLENGTH", "" + new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw))); //correct
-        Log.d("InitialLengthAfter", "" + arrayListCleaningStep2.size());
         returnItem.put("Timings", new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw)));
-        returnItem.put("ScoringSystem", scoringCriteriaRaw);
         return returnItem;
     }
 
@@ -178,9 +147,10 @@ public class RunActivity extends AppCompatActivity {
         )
         .setCancelable(false);
 
-        RunRecord rr = new RunRecord();
+        String RunRecordDataSegment = unparseJSON().getString("RunRecord");
+        //Log.d("Current", "" + new JSONObject(RunRecordDataSegment).getString("10:20").split("[\\[,\\]]")[0]);
 
-        HashMap<String, ArrayList<ArrayList<String>>> a = unpackageJSON();
+        HashMap<String, ArrayList<ArrayList<String>>> a = unpackagePartialJSON();
         ArrayList<ArrayList<String>> values = a.values().iterator().next();
         for (int i = 0; i < values.get(0).size(); i++){
             Log.d("TIMING", "" + values.get(0).size()); //60 CORRECT
@@ -199,51 +169,85 @@ public class RunActivity extends AppCompatActivity {
                                 //update the relevant field within the same database under the same email address that the user has used in order to sign into the platform
                                 //Shift this chunk of code later
                                 //whiteHole.getStringExtra("EmailAddressVerifier")
-
+                                RESTdb.collection("IPPTUser").document(whiteHole.getStringExtra("EmailAddressVerifier"))
+                                .get()
+                                .addOnCompleteListener(onServerResponse -> {
+                                    if (onServerResponse.isSuccessful()){
+                                        //Once the server has provided us with the response, we need to get the DOB of the user that has signed into the application.
+                                        //extract the POSIX seconds from the so-called timestamp
+                                        int YEAR = ((Date) onServerResponse.getResult().get("DOB", Date.class)).getYear();
+                                        int correctedYEAR = YEAR + 1900;
+                                        Log.d("CorrectedYEAR", "" + correctedYEAR);
+                                        int ageGroup = 0;
+                                        if (correctedYEAR < 22){
+                                            ageGroup = 1;
+                                        }
+                                        else if (correctedYEAR >= 22 && correctedYEAR <= 24){
+                                            ageGroup = 2;
+                                        }
+                                        else if (correctedYEAR >= 25 && correctedYEAR <= 27){
+                                            ageGroup = 3;
+                                        }
+                                        else if (correctedYEAR >= 28 && correctedYEAR <= 30){
+                                            ageGroup = 4;
+                                        }
+                                        else if (correctedYEAR >= 31 && correctedYEAR <= 33){
+                                            ageGroup = 5;
+                                        }
+                                        else if (correctedYEAR >= 34 && correctedYEAR <= 36){
+                                            ageGroup = 6;
+                                        }
+                                        else if (correctedYEAR >= 37 && correctedYEAR <= 39){
+                                            ageGroup = 7;
+                                        }
+                                        else if (correctedYEAR >= 40 && correctedYEAR <= 42){
+                                            ageGroup = 8;
+                                        }
+                                        else if (correctedYEAR >= 43 && correctedYEAR <= 45){
+                                            ageGroup = 9;
+                                        }
+                                        else if (correctedYEAR >= 46 && correctedYEAR <= 48){
+                                            ageGroup = 10;
+                                        }
+                                        else if (correctedYEAR >= 49 && correctedYEAR <= 51){
+                                            ageGroup = 11;
+                                        }
+                                        else if (correctedYEAR >= 52 && correctedYEAR <= 54){
+                                            ageGroup = 12;
+                                        }
+                                        else if (correctedYEAR >= 55 && correctedYEAR <= 57){
+                                            ageGroup = 13;
+                                        }
+                                        else if (correctedYEAR >= 58 && correctedYEAR <= 60){
+                                            ageGroup = 14;
+                                        }
+                                        //get from the array list and then reference from it...
+                                        for (int j = 0; j < a.values().iterator().next().get(0).size(); j++) {
+                                            if (a.values().iterator().next().get(0).get(j).equals(capturedTiming)){
+                                                String[] correspondingArray = new String[] { };
+                                                try {
+                                                    correspondingArray = new JSONObject(RunRecordDataSegment).getString(capturedTiming).split("[\\[,\\]]");
+                                                }
+                                                catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                String correspondingScoreAttainable = correspondingArray[ageGroup];
+                                                RunRecord rr = new RunRecord(
+                                                        Integer.parseInt(correspondingScoreAttainable)
+                                                );
+                                                Log.d("ISTHESCORECORRECT????", "" + rr.TimeTakenTotal);
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        //Once the server has not provided us with the response then
+                                        dataFetchFail.create().show();
+                                    }
+                                });
                             }
                         }
                         else {
                             Log.e("UserNotSignedInError", "No user detected on this device..Please sign into the application first");
-                            RESTdb.collection("IPPTUser").document("bryanflee01@gmail.com")
-                            .get()
-                            .addOnCompleteListener(onServerResponse -> {
-                                if (onServerResponse.isSuccessful()){
-                                    //Once the server has provided us with the response, we need to get the DOB of the user that has signed into the application.
-                                    //extract the POSIX seconds from the so-called timestamp
-                                    int YEAR = ((Date) onServerResponse.getResult().get("DOB", Date.class)).getYear();
-                                    int correctedYEAR = YEAR + 1900;
-                                    Log.d("CorrectedYEAR", "" + correctedYEAR);
-                                    int ageGroup = 0;
-                                    if (correctedYEAR < 22){
-                                        ageGroup = 1;
-                                    }
-                                    else if (correctedYEAR >= 22 && correctedYEAR <= 24){
-                                        ageGroup = 2;
-                                    }
-                                    else if (correctedYEAR >= 25 && correctedYEAR <= 27){
-                                        ageGroup = 3;
-                                    }
-                                    else if (correctedYEAR >= 28 && correctedYEAR <= 30){
-                                        ageGroup = 4;
-                                    }
-                                    else if (correctedYEAR >= 31 && correctedYEAR <= 33){
-                                        ageGroup = 5;
-                                    }
-                                    else if (correctedYEAR >= 34 && correctedYEAR <= 36){
-                                        ageGroup = 6;
-                                    }
-                                    else if (correctedYEAR >= 37 && correctedYEAR <= 39){
-                                        ageGroup = 7;
-                                    }
-                                    else if (correctedYEAR >= 40 && correctedYEAR <= 42){
-
-                                    }
-                                }
-                                else {
-                                    //Once the server has not provided us with the response then
-                                    dataFetchFail.create().show();
-                                }
-                            });
                         }
                     }
                 })
@@ -275,7 +279,7 @@ public class RunActivity extends AppCompatActivity {
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
         try {
-            Log.d("TAG", "" + unpackageJSON());
+            Log.d("TAG", "" + unpackagePartialJSON());
         } catch (JSONException e) {
             e.printStackTrace();
         }
