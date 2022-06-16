@@ -49,6 +49,7 @@ public class PushupTargetActivity extends AppCompatActivity {
                     }
                     else{
                         Intent andThenRedirect = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        andThenRedirect.putExtra("NumPushups", Integer.toString(targetPushUps));
                         startActivity(andThenRedirect);
                         finish(); //finish the current activity...
                     }
