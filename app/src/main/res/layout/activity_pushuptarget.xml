@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context = ".PushupTargetActivity">
+    <!--Apply the appropriate background color to the layout-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/sd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation = "vertical"
+        android:gravity = "center">
+        <!--Add the relevant fields into the -->
+        <TextView
+            android:layout_height = "wrap_content"
+            android:layout_width = "309dp"
+            android:textStyle = "bold"
+            android:textSize = "20dp"
+            android:gravity = "center"
+            android:text = "Enter the number of push-ups that you would do in 1 minute"/>
+        <EditText
+            android:id = "@+id/pushUpTarget"
+            android:layout_marginTop = "25dp"
+            android:layout_width="306dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_marginTop = "75dp"
+            android:layout_width="306dp"
+            android:text = "LET's GO"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
