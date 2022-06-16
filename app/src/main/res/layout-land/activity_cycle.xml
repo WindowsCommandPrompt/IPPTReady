@@ -56,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:background="@color/whitesmoke"
             app:layout_constraintTop_toBottomOf="@+id/recyclerVideoType5"
             tools:layout_editor_absoluteX="0dp"
             tools:visibility="visible">
@@ -75,7 +76,9 @@
                 android:id="@+id/completecreatecycleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,6 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="61dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/datecreatedText2"
                 app:layout_constraintTop_toTopOf="@+id/datecreatedText2"
                 tools:visibility="visible" />
@@ -96,6 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/currentcyclenameText2"
                 app:layout_constraintTop_toTopOf="@+id/currentcyclenameText2"
                 tools:visibility="visible" />
