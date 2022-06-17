@@ -274,8 +274,8 @@ public class RunActivity extends AppCompatActivity {
                                         .set(newIPPTScore, SetOptions.merge())
                                         .addOnCompleteListener(serverResponse -> {
                                             if (serverResponse.isSuccessful()) {
-                                                Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore"));
-                                                //Send info by intent to R
+                                                Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore")); //Display a Toast
+                                                Toast.makeText(this, "Successfully added" + newIPPTScore.get("IPPTScore") + " to your account", Toast.LENGTH_SHORT).show();
                                             }
                                             else {
                                                 Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
@@ -320,7 +320,7 @@ public class RunActivity extends AppCompatActivity {
                 .setPositiveButton(
                         "YES",
                         (DialogInterface di, int i) -> {
-                            finish();
+                            super.onBackPressed(); //Quits the current activity
                         }
                 )
                 .setNegativeButton(
