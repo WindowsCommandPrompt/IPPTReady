@@ -16,6 +16,7 @@
         android:textColor="@color/design_default_color_primary"
         android:textSize="28dp"
         android:textStyle="bold"
+        android:layout_marginLeft="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
@@ -37,11 +38,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/routineRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="404dp"
+        android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/previousroutinetext"
-        app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="2dp"
         tools:visibility="visible">
 
@@ -53,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/whitesmoke"
+        android:paddingBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routinetitletext"
         tools:visibility="visible">
@@ -95,12 +95,12 @@
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="20dp"
             android:text="IPPT Score:"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
         <TextView
             android:id="@+id/textView24"
@@ -111,6 +111,17 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@+id/textView19"
             app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Click here to view current workout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

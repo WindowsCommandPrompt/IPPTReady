@@ -12,7 +12,10 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +40,7 @@ public class RecordActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> GoRun,
         GoSitup,
         GoPushup;
+    private int completed = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,7 @@ public class RecordActivity extends AppCompatActivity {
                         }
                     }
                 });
+
         ipptRoutine.getRecordsList(EmailAddress,
                                 IPPTCycleId,
                                 new OnCompleteListener<QuerySnapshot>() {
@@ -133,6 +138,7 @@ public class RecordActivity extends AppCompatActivity {
                                             if (!task.getResult().isEmpty()) {
                                                 for (DocumentSnapshot document : task.getResult()) {
                                                     if (document.getId().equals("RunRecord")) {
+                                                        completed++;
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
                                                         findViewById(R.id.runrecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.runrecordtotaldistancetravelled)).setText(String.valueOf(runRecord.TotalDistanceTravelled) + "km");
@@ -140,12 +146,14 @@ public class RecordActivity extends AppCompatActivity {
                                                         ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(SecondstoString(runRecord.TimeTakenFinished));
                                                     }
                                                     else if (document.getId().equals("SitupRecord")) {
+                                                        completed++;
                                                         SitupRecord situpRecord = document.toObject(SitupRecord.class);
                                                         findViewById(R.id.situprecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.situprecordnumreps)).setText(String.valueOf(situpRecord.NumsReps));
                                                         ((TextView)findViewById(R.id.situprecordrepstarget)).setText(String.valueOf(situpRecord.RepsTarget));
                                                     }
                                                     else if (document.getId().equals("PushupRecord")) {
+                                                        completed++;
                                                         PushupRecord pushupRecord = document.toObject(PushupRecord.class);
                                                         findViewById(R.id.pushuprecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.pushuprecordnumreps)).setText(String.valueOf(pushupRecord.NumsReps));
@@ -159,19 +167,66 @@ public class RecordActivity extends AppCompatActivity {
                                                     findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
                                                 }
                                                 if (View.GONE != findViewById(R.id.pushuprecordButton).getVisibility()) {
-                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
+                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListener());
                                                 }
                                             }
                                             else {
                                                 findViewById(R.id.runrecordButton).setOnClickListener(new RunRecordOnClickListener());
                                                 findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
-                                                findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
+                                                findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListener());
                                             }
                                         }
                                     }
                                 });
+        Button completeButton = findViewById(R.id.recordcompletebutton);
+        if (completed == 3 && ipptRoutine.isFinished) {
+            completeButton.setVisibility(View.GONE);
+        }
 
+        IPPTRoutine finalIpptRoutine = ipptRoutine;
+        completeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finalIpptRoutine.getRecordsList(EmailAddress,
+                        IPPTCycleId,
+                        new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (!task.getResult().isEmpty()) {
+                                        completed = 0;
+                                        for (DocumentSnapshot document : task.getResult()) {
+                                            if (document.getId().equals("RunRecord")) {
+                                                completed++;
+                                            }
+                                            else if (document.getId().equals("SitupRecord")) {
+                                                completed++;
+                                            }
 
+                                            else if(document.getId().equals("PushupRecord")) {
+                                                completed++;
+                                            }
+                                        }
+                                        if (completed == 3) {
+                                            finalIpptRoutine.completeIPPTRoutine(EmailAddress, IPPTCycleId, new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Toast.makeText(RecordActivity.this, "Well Done! Returning to Routines page", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra("isCompleted", true);
+                                                    setResult(Activity.RESULT_OK, intent);
+                                                    finish();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            Toast.makeText(RecordActivity.this, "You have " + String.valueOf(3 - completed) + " more activities to complete!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }
+                });
+    }});
     }
 
     private String SecondstoString(int seconds) {
@@ -212,7 +267,7 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    private class PushupRecordOnClickListner implements View.OnClickListener {
+    private class PushupRecordOnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {

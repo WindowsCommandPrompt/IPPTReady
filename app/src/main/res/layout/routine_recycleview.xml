@@ -7,6 +7,16 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/textView37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="_____________________________________________________"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+    <TextView
         android:id="@+id/routineipptScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +37,7 @@
         android:id="@+id/textView25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
         android:text="IPPT Score:"
         android:textColor="@color/black"
@@ -44,5 +54,6 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView25"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintTop_toBottomOf="@+id/textView25"
+        app:layout_constraintVertical_bias="0.346" />
 </androidx.constraintlayout.widget.ConstraintLayout>
