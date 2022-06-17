@@ -104,11 +104,6 @@ public class RecordActivity extends AppCompatActivity {
                             if (null != timeFinished) {
                                 ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
                             }
-                            String ipptScore = resultIntent.getStringExtra("IPPTScore");
-                            if (null != ipptScore) {
-                                runRecordScore = Integer.parseInt(ipptScore);
-                            }
-
                              */
                         }
                     }
