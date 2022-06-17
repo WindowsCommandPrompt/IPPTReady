@@ -102,6 +102,7 @@ public class RunActivity extends AppCompatActivity {
         return returnItem;
     }
 
+    /*
     private int calculation2Point4KMScore(String capturedTiming) throws JSONException {
         AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
         AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
@@ -169,7 +170,8 @@ public class RunActivity extends AppCompatActivity {
             Log.d("WHATISTHECAPTUREDTIMING", "" + capturedTiming);
             Log.d("Code has reached here", "The code has reached here");
             Log.d("Email", "" + email);
-            if (Integer.parseInt(capturedTiming.split(":")[0]) >= 8 && Integer.parseInt(capturedTiming.split(":")[0]) <= 18){
+            int currentTotalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+            if (currentTotalSeconds >= 510 && currentTotalSeconds <= 1100){
                 RESTdb.collection("IPPTUser")
                     .document(email)
                     .get()
@@ -217,58 +219,87 @@ public class RunActivity extends AppCompatActivity {
                             Log.d("CONTENTS", "" + a.values().iterator().next().get(0).get(2));
                             Log.d("CURRENTTIMING", "" + capturedTiming);
                             for (int j = 0; j < a.values().iterator().next().get(0).size(); j++) {
-                                if (a.values().iterator().next().get(0).get(j).equals(capturedTiming)) {
-                                    Log.d("IfStatementEntry", "YES");
-                                    String[] correspondingArray = new String[]{};
-                                    try {
-                                        correspondingArray = new JSONObject(RunRecordDataSegment).getString(capturedTiming).split("[\\[,\\]]");
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    String correspondingScoreAttainable = correspondingArray[ageGroup];
-                                    Log.d("ISTHESCORECORRECT????", "" + correspondingScoreAttainable);
-                                    //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
-                                    RESTdb.collection("IPPTUser")
-                                    .document(email)
-                                    .collection("IPPTCycle")
-                                    .document(cycleID)
-                                    .collection("IPPTRoutine")
-                                    .document(routineID)
-                                    .get()
-                                    .addOnCompleteListener(onResponseFromServer -> {
-                                        //perform a "GET" request to get the current IPPTScore that the user has from within the database...
+                                Log.d("Indicator", "The code has reached to this point");
+                                //Log.d("Values", "" + (Integer.parseInt(a.values().iterator().next().get(0).get(j).split(":")[0]) * 60 + Integer.parseInt(a.values().iterator().next().get(0).get(j).split(":")[1])));
+                                if (j + 1 < a.values().iterator().next().get(0).size()) {
+                                    Log.d("IMHERE", "YES");
+                                    if (Integer.parseInt(a.values().iterator().next().get(0).get(j).split(":")[0]) * 60 + Integer.parseInt(a.values().iterator().next().get(0).get(j).split(":")[1]) >= currentTotalSeconds && currentTotalSeconds < Integer.parseInt(a.values().iterator().next().get(0).get(j + 1).split(":")[0]) * 60 + Integer.parseInt(a.values().iterator().next().get(0).get(j + 1).split(":")[1])) {
+                                        Log.d("IfStatementEntry", "YES");
+                                        int index = j;
+                                        String[] correspondingArray = new String[]{};
+                                        try {
+                                            correspondingArray = new JSONObject(RunRecordDataSegment).getString(a.values().iterator().next().get(0).get(index)).split("[\\[,\\]]");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        String correspondingScoreAttainable = correspondingArray[ageGroup];
+                                        Log.d("ISTHESCORECORRECT????", "" + correspondingScoreAttainable);
+                                        //If the timing is correct then perform a getrequest from the RESTdb again to get the details about the CycleID
+
                                         RESTdb.collection("IPPTUser")
-                                        .document(email)
-                                        .collection("IPPTCycle")
-                                        .document(cycleID)
-                                        .collection("IPPTRoutine")
-                                        .document(routineID)
-                                        .get()
-                                        .addOnCompleteListener(thenGetServerResponse -> {
-                                            int result = thenGetServerResponse.getResult().get("IPPTScore", int.class);
-                                            HashMap<String, Object> newIPPTScore = new HashMap<>();
-                                            int total = result + Integer.parseInt(correspondingScoreAttainable);
-                                            newIPPTScore.put("IPPTScore", total);
-                                            //Add the value into the database...
-                                            ref.set(total);
-                                            RESTdb.collection("IPPTUser")
-                                            .document(email)
-                                            .collection("IPPTCycle")
-                                            .document(cycleID)
-                                            .collection("IPPTRoutine")
-                                            .document(routineID)
-                                            .set(newIPPTScore, SetOptions.merge())
-                                            .addOnCompleteListener(serverResponse -> {
-                                                if (serverResponse.isSuccessful()) {
-                                                    Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore")); //Display a Toast
-                                                    Toast.makeText(this, "Successfully added" + newIPPTScore.get("IPPTScore") + " to your account", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
-                                                    Toast.makeText(this, "Failed to append the required data into the database. We are currently fixing this issue", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                        });
-                                    });
+                                                .document(email)
+                                                .collection("IPPTCycle")
+                                                .document(cycleID)
+                                                .collection("IPPTRoutine")
+                                                .document(routineID)
+                                                .get()
+                                                .addOnCompleteListener(onResponseFromServer -> {
+                                                    //perform a "GET" request to get the current IPPTScore that the user has from within the database...
+                                                    RESTdb.collection("IPPTUser")
+                                                            .document(email)
+                                                            .collection("IPPTCycle")
+                                                            .document(cycleID)
+                                                            .collection("IPPTRoutine")
+                                                            .document(routineID)
+                                                            .get()
+                                                            .addOnCompleteListener(thenGetServerResponse -> {
+                                                                int result = thenGetServerResponse.getResult().get("IPPTScore", int.class);
+                                                                HashMap<String, Object> newIPPTScore = new HashMap<>();
+                                                                int total = result + Integer.parseInt(correspondingScoreAttainable);
+                                                                newIPPTScore.put("IPPTScore", total);
+                                                                //Add the value into the database...
+                                                                ref.set(total);
+                                                                RESTdb.collection("IPPTUser")
+                                                                        .document(email)
+                                                                        .collection("IPPTCycle")
+                                                                        .document(cycleID)
+                                                                        .collection("IPPTRoutine")
+                                                                        .document(routineID)
+                                                                        .set(newIPPTScore, SetOptions.merge())
+                                                                        .addOnCompleteListener(serverResponse -> {
+                                                                            if (serverResponse.isSuccessful()) {
+                                                                                Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore")); //Display a Toast
+                                                                                Toast.makeText(this, "Successfully added" + newIPPTScore.get("IPPTScore") + " to your account", Toast.LENGTH_SHORT).show();
+                                                                                //now we will need to save the data to the database
+                                                                                int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+                                                                                HashMap<String, Object> record = new HashMap<>();
+                                                                                record.put("TimeTakenTotal", totalSeconds);
+                                                                                RESTdb.collection("IPPTUser")
+                                                                                        .document(email)
+                                                                                        .collection("IPPTCycle")
+                                                                                        .document(cycleID)
+                                                                                        .collection("IPPTRoutine")
+                                                                                        .document(routineID)
+                                                                                        .collection("IPPTRecord")
+                                                                                        .document("RunRecord")
+                                                                                        .set(record)
+                                                                                        .addOnCompleteListener(function -> {
+                                                                                            if (function.isSuccessful()) {
+                                                                                                Log.d("PROCESSSUCCESSFUL", "Data appending process has been successful!");
+                                                                                            }
+                                                                                        });
+                                                                            } else {
+                                                                                Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
+                                                                                Toast.makeText(this, "Failed to append the required data into the database. We are currently fixing this issue", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                            });
+                                                });
+
+                                    }
+                                    else {
+                                        Log.d("CAMETOTHEELSECLAUSE", "No words.");
+                                    }
                                 }
                             }
                         } else {
@@ -306,9 +337,11 @@ public class RunActivity extends AppCompatActivity {
                 }
             }
         }
+
         Log.d("RETURNRESULT", "" + ref.get());
         return ref.get();
     }
+    */
 
     //When the user wants to click on the back icon on the navigation bar
     //GET CONFIRMATION FROM THE USER FIRST
@@ -407,6 +440,7 @@ public class RunActivity extends AppCompatActivity {
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
                     Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
                     int runRecordScore = 0;
+                    /*
                     try {
                         runRecordScore = calculation2Point4KMScore(capturedTiming);
                         Log.d("AMICALLED??", "Yes I was called");
@@ -415,10 +449,10 @@ public class RunActivity extends AppCompatActivity {
                     }
                     Intent recordBackIntent = new Intent();
                     recordBackIntent.putExtra("Timing", capturedTiming);
-                    recordBackIntent.putExtra("IPPTScore", runRecordScore);
-
                     setResult(Activity.RESULT_OK, recordBackIntent);
                     finish();
+
+                     */
                 }
             )
             .setNegativeButton(
