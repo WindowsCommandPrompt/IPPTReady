@@ -139,37 +139,7 @@ public class RoutineActivity extends AppCompatActivity {
                                                 .getId();
                                         ipptRoutineList.remove(currentIpptRoutine);
 
-                                        findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                Log.d("CycleActivity", "View Clicked! Going to RecordActivity...");
-                                                Intent routineIntent = new Intent(RoutineActivity.this, RecordActivity.class);
-
-                                                // Output to RecordActivity:
-                                                // "Email", String : Email Address of the user.
-                                                // "IPPTCycleId", String : Id of the IPPTCycle
-                                                // "IPPTRoutineId", String : Id of the IPPTCycle
-                                                // "IPPTRoutine", byteArray : Serialized IPPTRoutine Object
-                                                routineIntent.putExtra("Email", EmailAddress);
-                                                routineIntent.putExtra("IPPTCycleId", IPPTCycleId);
-                                                routineIntent.putExtra("IPPTRoutineId", ipptRoutineId);
-
-                                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                                try {
-                                                    ObjectOutputStream oos = new ObjectOutputStream(bos);
-                                                    oos.writeObject(currentIpptRoutine);
-                                                    routineIntent.putExtra("IPPTRoutine", bos.toByteArray());
-                                                } catch (IOException e) {
-                                                    // If error occurred, display friendly message to user
-
-                                                    Toast.makeText(RoutineActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                                                    e.printStackTrace();
-                                                    return;
-                                                }
-
-                                                startActivity(routineIntent);
-                                            }
-                                        });
+                                        findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
                                         break;
                                     }
                                 }
@@ -294,29 +264,6 @@ public class RoutineActivity extends AppCompatActivity {
         }
     }
 
-    private class CompleteRoutineOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            ((TextView)findViewById(R.id.routineipptscoreText)).setText("");
-            ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
-            currentIpptRoutine.completeIPPTRoutine(EmailAddress,
-                    IPPTCycleId,
-                    new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                ipptRoutineList.add(currentIpptRoutine);
-                                ipptRoutineAdapter.notifyItemChanged(ipptRoutineList.size() - 1);
-
-                                currentIpptRoutine = null;
-                                setCreateRoutineButton();
-                            }
-                        }
-                    });
-        }
-    }
-
     private class GoRecordOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -382,8 +329,6 @@ public class RoutineActivity extends AppCompatActivity {
                         }
                     });
                 }
-                int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
-                ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
             }
         }
     }
