@@ -137,20 +137,20 @@ public class RecordActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             if (!task.getResult().isEmpty()) {
                                                 for (DocumentSnapshot document : task.getResult()) {
-                                                    if ("RunRecord" == document.getId()) {
+                                                    if (document.getId().equals("RunRecord")) {
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
                                                         findViewById(R.id.runrecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.runrecordtotaldistancetravelled)).setText(String.valueOf(runRecord.TotalDistanceTravelled) + "km");
                                                         ((TextView)findViewById(R.id.runrecordtimetakentotal)).setText(SecondstoString(runRecord.TimeTakenTotal));
                                                         ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(SecondstoString(runRecord.TimeTakenFinished));
                                                     }
-                                                    else if ("SitupRecord" == document.getId()) {
+                                                    else if (document.getId().equals("SitupRecord")) {
                                                         SitupRecord situpRecord = document.toObject(SitupRecord.class);
                                                         findViewById(R.id.situprecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.situprecordnumreps)).setText(String.valueOf(situpRecord.NumsReps));
                                                         ((TextView)findViewById(R.id.situprecordrepstarget)).setText(String.valueOf(situpRecord.RepsTarget));
                                                     }
-                                                    else if ("PushupRecord" == document.getId()) {
+                                                    else if (document.getId().equals("PushupRecord")) {
                                                         PushupRecord pushupRecord = document.toObject(PushupRecord.class);
                                                         findViewById(R.id.pushuprecordButton).setVisibility(View.GONE);
                                                         ((TextView)findViewById(R.id.pushuprecordnumreps)).setText(String.valueOf(pushupRecord.NumsReps));
