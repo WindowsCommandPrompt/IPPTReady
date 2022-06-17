@@ -102,15 +102,7 @@ public class RunActivity extends AppCompatActivity {
         return returnItem;
     }
 
-    private void Something(){
-
-    }
-
     private String calculation2Point4KMScore(String capturedTiming) throws JSONException {
-
-        Intent blackHole = new Intent(RunActivity.this, RecordActivity.class);
-        blackHole.putExtra("Timing", capturedTiming);
-
         AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
         AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
         dataAppendFailed
@@ -170,7 +162,7 @@ public class RunActivity extends AppCompatActivity {
             Log.d("TIMING", "" + values.get(0).size()); //60 CORRECT
             String cycleID = whiteHole2.getStringExtra("IPPTCycleId");
             String routineID = whiteHole2.getStringExtra("IPPTRoutineId");
-            String recordID = whiteHole2.getStringExtra("IPPTRecordId");
+            //String recordID = whiteHole2.getStringExtra("IPPTRecordId");
             String email = whiteHole2.getStringExtra("Email");
             if (values.get(0).get(i).equals(capturedTiming)){
                 Log.d("Code has reached here", "The code has reached here");
@@ -263,7 +255,6 @@ public class RunActivity extends AppCompatActivity {
                                         HashMap<String, Object> newIPPTScore = new HashMap<>();
                                         int total = result + Integer.parseInt(correspondingScoreAttainable);
                                         newIPPTScore.put("IPPTScore", total);
-                                        blackHole.putExtra("IPPTScore", total);
                                         //Add the value into the database...
                                         RESTdb.collection("IPPTUser")
                                         .document(email)
@@ -279,6 +270,7 @@ public class RunActivity extends AppCompatActivity {
                                             }
                                             else {
                                                 Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
+                                                Toast.makeText(this, "Failed to append the required data into the database. We are currently fixing this issue", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     });
@@ -298,15 +290,40 @@ public class RunActivity extends AppCompatActivity {
                 if (Integer.parseInt(ab[1]) >= 0 && Integer.parseInt(ab[1]) <= 59) {
                     if (Integer.parseInt(ab[0]) > 18 && Integer.parseInt(ab[1]) >= 20) {
                         int score = 0; //minimum attainable points from the running
+                        //PERFORM A GET REQUEST FROM THE DATABASE
                     }
                     else if(Integer.parseInt(ab[0]) < 8 && Integer.parseInt(ab[1]) <= 30){
                         int score = 50; //maximum attainable points from the running...
+                        //PERFORM A GET REQUEST FROM THE DATABASE
+                        RESTdb.collection("IPPTUser")
+                        .document(email)
+                        .collection("IPPTCycle")
+                        .document(cycleID)
+                        .collection("IPPTRoutine")
+                        .document(routineID)
+                        .get()
+                        .addOnCompleteListener(andThenGetServerResponse -> {
+                            if(andThenGetServerResponse.isSuccessful()){
+                                int existingResultFromTheDatabase = andThenGetServerResponse.getResult().get("IPPTScore", int.class);
+
+                            }
+                        });
                     }
                 }
             }
         }
         Log.d("RETURNRESULT", "" + ref.get());
         return ref.get();
+    }
+
+    //NOW WE WILL NEED TO PASS THE DATA BACK TO THE RecordActivity.java
+    //WE WILL BE USING THE CONCEPT OF THIS CLEVER IDEA OF ONSAVEINSTANCESTATE TO PASS IT BACK
+    //(psst.. hopefully it works heehehe)
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("Timing", "WITH SOME TIMING");
+
     }
 
     //When the user wants to click on the back icon on the navigation bar
