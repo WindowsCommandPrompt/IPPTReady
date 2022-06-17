@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -206,59 +207,81 @@ public class RoutineActivity extends AppCompatActivity {
             ipptRoutine.DateCreated = new Date();
             ipptRoutine.IPPTScore = 0;
             ipptRoutine.isFinished = false;
-            ipptCycle.addNewIPPTRoutineToDatabase(EmailAddress,
-                                                ipptRoutine,
-                                                new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                                            db.collection("IPPTUser")
-                                                                    .document(EmailAddress)
-                                                                    .collection("IPPTCycle")
-                                                                    .document(IPPTCycleId)
-                                                                    .collection("IPPTRoutine")
-                                                                    .whereEqualTo("DateCreated", ipptRoutine.DateCreated)
-                                                                    .get()
-                                                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                            if (task.isSuccessful()) {
-                                                                                if (!task.getResult().isEmpty()) {
-                                                                                    currentIpptRoutine = task.getResult().iterator().next().toObject(IPPTRoutine.class);
-                                                                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                                                                    ((TextView)findViewById(R.id.routinedateCreatedText)).setText(
-                                                                                            dateFormat.format(currentIpptRoutine.DateCreated)
-                                                                                    );
-                                                                                    findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
 
-                                                                                    findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            IPPTCycle finalIpptCycle = ipptCycle;
+            db.collection("IPPTUser")
+                    .document(EmailAddress)
+                    .collection("IPPTCycle")
+                    .document(IPPTCycleId)
+                    .collection("IPPTRoutine")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                Date todayDate = new Date();
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    Date documentDate = (Date) document.get("DateCreated");
+                                    if (documentDate.getYear() == todayDate.getYear() && documentDate.getMonth() == todayDate.getMonth() && documentDate.getDay() == todayDate.getDay())
+                                    {
+                                        Toast.makeText(RoutineActivity.this, "Come back tomorrow to start a new Routine :)", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                }
+                                finalIpptCycle.addNewIPPTRoutineToDatabase(EmailAddress, ipptRoutine, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                    db.collection("IPPTUser")
+                                                            .document(EmailAddress)
+                                                            .collection("IPPTCycle")
+                                                            .document(IPPTCycleId)
+                                                            .collection("IPPTRoutine")
+                                                            .whereEqualTo("DateCreated", ipptRoutine.DateCreated)
+                                                            .get()
+                                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        if (!task.getResult().isEmpty()) {
+                                                                            currentIpptRoutine = task.getResult().iterator().next().toObject(IPPTRoutine.class);
+                                                                            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                                                            ((TextView)findViewById(R.id.routinedateCreatedText)).setText(
+                                                                                    dateFormat.format(currentIpptRoutine.DateCreated)
+                                                                            );
+                                                                            findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
 
-                                                                                    String IPPTRoutineId = task.getResult().iterator().next().getId();
-                                                                                    recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-                                                                                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                                                                    try {
-                                                                                        ObjectOutputStream oos = new ObjectOutputStream(bos);
-                                                                                        oos.writeObject(ipptRoutine);
-                                                                                        recordIntent.putExtra("IPPTRoutine", bos.toByteArray());
-                                                                                    } catch (IOException e) {
-                                                                                        // If error occurred, display friendly message to user
-                                                                                        Toast.makeText(RoutineActivity.this, "Unexpected error occurred",
-                                                                                                Toast.LENGTH_SHORT).show();
-                                                                                        e.printStackTrace();
-                                                                                        return;
-                                                                                    }
-                                                                                    if (null != GoRoutine) {
-                                                                                        GoRoutine.launch(recordIntent);
-                                                                                    }
-                                                                                }
+                                                                            findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
+
+                                                                            String IPPTRoutineId = task.getResult().iterator().next().getId();
+                                                                            recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
+                                                                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                                                            try {
+                                                                                ObjectOutputStream oos = new ObjectOutputStream(bos);
+                                                                                oos.writeObject(ipptRoutine);
+                                                                                recordIntent.putExtra("IPPTRoutine", bos.toByteArray());
+                                                                            } catch (IOException e) {
+                                                                                // If error occurred, display friendly message to user
+                                                                                Toast.makeText(RoutineActivity.this, "Unexpected error occurred",
+                                                                                        Toast.LENGTH_SHORT).show();
+                                                                                e.printStackTrace();
+                                                                                return;
+                                                                            }
+                                                                            if (null != GoRoutine) {
+                                                                                GoRoutine.launch(recordIntent);
                                                                             }
                                                                         }
-                                                                    });
-                                                        }
-                                                    }
-                                                });
-
+                                                                    }
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    });
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -93,7 +94,7 @@ public class SitupTargetActivity extends AppCompatActivity {
                                     recordIntent.putExtra("Target", targetSitupsNumber);
                                     recordIntent.putExtra("NumReps", completedSitupsNumber);
                                     recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivity(recordIntent);
+                                    setResult(Activity.RESULT_OK, recordIntent);
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();

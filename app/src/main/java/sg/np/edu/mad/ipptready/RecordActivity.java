@@ -113,7 +113,7 @@ public class RecordActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (null != result) {
+                        if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int totalSeconds = resultIntent.getIntExtra("Timing", 0);
                             String timeFinished = SecondstoString(totalSeconds);
@@ -128,7 +128,7 @@ public class RecordActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (null != result) {
+                        if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int target = resultIntent.getIntExtra("Target", -1);
                             int numberOfSitupsCompleted = resultIntent.getIntExtra("NumReps", -1);
