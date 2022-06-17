@@ -128,7 +128,16 @@ public class RecordActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-
+                        if (null != result) {
+                            Intent resultIntent = result.getData();
+                            int target = resultIntent.getIntExtra("Target", -1);
+                            int numberOfSitupsCompleted = resultIntent.getIntExtra("NumReps", -1);
+                            if (target != -1 && numberOfSitupsCompleted != -1) {
+                                findViewById(R.id.situprecordButton).setVisibility(View.GONE);
+                                ((TextView)findViewById(R.id.situprecordnumreps)).setText(String.valueOf(target));
+                                ((TextView)findViewById(R.id.situprecordrepstarget)).setText(String.valueOf(numberOfSitupsCompleted));
+                            }
+                        }
                     }
                 });
         GoPushup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),

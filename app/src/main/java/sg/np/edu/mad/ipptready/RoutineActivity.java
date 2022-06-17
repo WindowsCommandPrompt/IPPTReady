@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -231,7 +232,9 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                     );
                                                                                     findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
 
-                                                                                     String IPPTRoutineId = task.getResult().iterator().next().getId();
+                                                                                    findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
+
+                                                                                    String IPPTRoutineId = task.getResult().iterator().next().getId();
                                                                                     recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
                                                                                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                                                                                     try {

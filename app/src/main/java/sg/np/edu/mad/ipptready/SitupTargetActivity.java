@@ -88,8 +88,10 @@ public class SitupTargetActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SitupTargetActivity.this, "Directing to Routines page", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SitupTargetActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
                                     Intent recordIntent =  new Intent();
+                                    recordIntent.putExtra("Target", targetSitupsNumber);
+                                    recordIntent.putExtra("NumReps", completedSitupsNumber);
                                     recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(recordIntent);
                                 }
