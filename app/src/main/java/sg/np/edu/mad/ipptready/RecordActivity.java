@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -20,13 +21,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RecordActivity extends AppCompatActivity {
@@ -102,13 +114,13 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (null != result) {
-                            /*
                             Intent resultIntent = result.getData();
-                            String timeFinished = resultIntent.getStringExtra("Timing");
+                            int totalSeconds = resultIntent.getIntExtra("Timing", 0);
+                            String timeFinished = SecondstoString(totalSeconds);
                             if (null != timeFinished) {
                                 ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
+                                ((Button) findViewById(R.id.runrecordButton)).setVisibility(View.GONE);
                             }
-                             */
                         }
                     }
                 });
@@ -141,8 +153,6 @@ public class RecordActivity extends AppCompatActivity {
                                                         completed++;
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
                                                         findViewById(R.id.runrecordButton).setVisibility(View.GONE);
-                                                        ((TextView)findViewById(R.id.runrecordtotaldistancetravelled)).setText(String.valueOf(runRecord.TotalDistanceTravelled) + "km");
-                                                        ((TextView)findViewById(R.id.runrecordtimetakentotal)).setText(SecondstoString(runRecord.TimeTakenTotal));
                                                         ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(SecondstoString(runRecord.TimeTakenFinished));
                                                     }
                                                     else if (document.getId().equals("SitupRecord")) {
@@ -195,25 +205,188 @@ public class RecordActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     if (!task.getResult().isEmpty()) {
                                         completed = 0;
+                                        int totalTimeRun = 0, totalSitups = 0, totalPushups = 0;
                                         for (DocumentSnapshot document : task.getResult()) {
                                             if (document.getId().equals("RunRecord")) {
+                                                totalTimeRun = (int) document.get("TimeTakenFinished");
                                                 completed++;
                                             }
                                             else if (document.getId().equals("SitupRecord")) {
+                                                totalSitups = (int) document.get("NumsReps");
                                                 completed++;
                                             }
 
                                             else if(document.getId().equals("PushupRecord")) {
+                                                totalPushups = (int) document.get("NumsReps");
                                                 completed++;
                                             }
                                         }
                                         if (completed == 3) {
+                                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                                            int finalTotalTimeRun = totalTimeRun;
+                                            int finalTotalSitups = totalSitups;
+                                            int finalTotalPushups = totalPushups;
+                                            final int[] totalScore = {0};
+                                            db.collection("IPPTUser")
+                                                    .document(EmailAddress)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                int YEAR = ((Date) task.getResult().get("DOB", Date.class)).getYear();
+                                                                int correctedYEAR = new Date().getYear() - YEAR;
+                                                                int ageGroup = 0;
+                                                                if (correctedYEAR < 22) {
+                                                                    ageGroup = 1;
+                                                                } else if (correctedYEAR >= 22 && correctedYEAR <= 24) {
+                                                                    ageGroup = 2;
+                                                                } else if (correctedYEAR >= 25 && correctedYEAR <= 27) {
+                                                                    ageGroup = 3;
+                                                                } else if (correctedYEAR >= 28 && correctedYEAR <= 30) {
+                                                                    ageGroup = 4;
+                                                                } else if (correctedYEAR >= 31 && correctedYEAR <= 33) {
+                                                                    ageGroup = 5;
+                                                                } else if (correctedYEAR >= 34 && correctedYEAR <= 36) {
+                                                                    ageGroup = 6;
+                                                                } else if (correctedYEAR >= 37 && correctedYEAR <= 39) {
+                                                                    ageGroup = 7;
+                                                                } else if (correctedYEAR >= 40 && correctedYEAR <= 42) {
+                                                                    ageGroup = 8;
+                                                                } else if (correctedYEAR >= 43 && correctedYEAR <= 45) {
+                                                                    ageGroup = 9;
+                                                                } else if (correctedYEAR >= 46 && correctedYEAR <= 48) {
+                                                                    ageGroup = 10;
+                                                                } else if (correctedYEAR >= 49 && correctedYEAR <= 51) {
+                                                                    ageGroup = 11;
+                                                                } else if (correctedYEAR >= 52 && correctedYEAR <= 54) {
+                                                                    ageGroup = 12;
+                                                                } else if (correctedYEAR >= 55 && correctedYEAR <= 57) {
+                                                                    ageGroup = 13;
+                                                                } else if (correctedYEAR >= 58 && correctedYEAR <= 60) {
+                                                                    ageGroup = 14;
+                                                                }
+
+                                                                int ageGroupIndex = ageGroup - 1;
+                                                                int roundedTime = finalTotalTimeRun + (10 - finalTotalTimeRun%10);
+
+                                                                Resources res = getResources();
+                                                                InputStream is = res.openRawResource(R.raw.ipptscore);
+                                                                JSONObject jsonObject = null;
+                                                                try {
+                                                                    byte[] resbytes = new byte[is.available()];
+                                                                    is.read(resbytes);
+                                                                    jsonObject = new JSONObject(new String(resbytes));
+                                                                } catch (IOException | JSONException e) {
+                                                                    Toast.makeText(RecordActivity.this, "JSONException", Toast.LENGTH_SHORT).show();
+                                                                    e.printStackTrace();
+                                                                }
+
+                                                                int scoreRun = 0, scoreSitup = 0, scorePushup = 0;
+
+                                                                if (roundedTime < 510) {
+                                                                    scoreRun = 50;
+                                                                }
+                                                                else if (roundedTime > 1100) {
+                                                                    scoreRun = 0;
+                                                                }
+                                                                else {
+                                                                    try {
+                                                                        JSONArray runRecords = jsonObject.getJSONObject("RunRecord").getJSONArray(String.valueOf(roundedTime));
+                                                                        if (runRecords.length() < ageGroup) {
+                                                                            scoreRun = runRecords.getInt(runRecords.length() - 1);
+                                                                        }
+                                                                        else {
+                                                                            scoreRun = runRecords.getInt(ageGroupIndex);
+                                                                        }
+
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+
+                                                                if (finalTotalSitups > 60) {
+                                                                    scoreSitup = 25;
+                                                                }
+                                                                else if (finalTotalSitups < 1 ) {
+                                                                    scoreSitup = 0;
+                                                                }
+                                                                else {
+                                                                    try {
+                                                                        JSONArray situpRecords = jsonObject.getJSONObject("SitupRecord").getJSONArray(String.valueOf(finalTotalSitups));
+                                                                        if (situpRecords.length() < ageGroup) {
+                                                                            scoreSitup = situpRecords.getInt(situpRecords.length() - 1);
+                                                                        }
+                                                                        else {
+                                                                            scoreSitup = situpRecords.getInt(ageGroupIndex);
+                                                                        }
+
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+
+                                                                if (finalTotalPushups > 60) {
+                                                                    scorePushup = 25;
+                                                                }
+                                                                else if (finalTotalPushups < 1 ) {
+                                                                    scorePushup = 0;
+                                                                }
+                                                                else {
+                                                                    try {
+                                                                        JSONArray pushupRecords = jsonObject.getJSONObject("PushupRecord").getJSONArray(String.valueOf(finalTotalPushups));
+                                                                        if (pushupRecords.length() < ageGroup) {
+                                                                            scorePushup = pushupRecords.getInt(pushupRecords.length() - 1);
+                                                                        }
+                                                                        else {
+                                                                            scorePushup = pushupRecords.getInt(ageGroupIndex);
+                                                                        }
+
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+
+                                                                totalScore[0] = scorePushup + scoreRun + scoreSitup;
+
+                                                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                                                Map<String, Object> Score = new HashMap<>();
+                                                                Score.put("IPPTScore", totalScore[0]);
+
+                                                                db.collection("IPPTUser")
+                                                                        .document(EmailAddress)
+                                                                        .collection("IPPTCycle")
+                                                                        .document(IPPTCycleId)
+                                                                        .collection("IPPTRoutine")
+                                                                        .document(IPPTRoutineId)
+                                                                        .set(Score, SetOptions.merge())
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+                                                                                Toast.makeText(RecordActivity.this, "Successfully recorded IPPT Score: " + totalScore[0], Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Toast.makeText(RecordActivity.this, "Error recording IPPT score", Toast.LENGTH_SHORT).show();
+                                                                                return;
+                                                                            }
+                                                                        });
+
+
+                                                            }
+                                                        }
+                                                    });
+
                                             finalIpptRoutine.completeIPPTRoutine(EmailAddress, IPPTCycleId, new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     Toast.makeText(RecordActivity.this, "Well Done! Returning to Routines page", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent();
                                                     intent.putExtra("isCompleted", true);
+                                                    intent.putExtra("IPPTScore", totalScore[0]);
                                                     setResult(Activity.RESULT_OK, intent);
                                                     finish();
                                                 }
@@ -230,11 +403,13 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private String SecondstoString(int seconds) {
-        int hour = seconds%3600,
-            minute = (seconds-(3600*hour))%60,
-            second = seconds - 3600*hour - 60*minute;
+        if (seconds == 0) {
+            return null;
+        }
 
-        return String.format("%d:%d:%d", hour, minute, second);
+        int minute = seconds/60, second = seconds - 60*minute;
+
+        return String.format("%d:%02d", minute, second);
     }
 
     private class RunRecordOnClickListener implements View.OnClickListener {

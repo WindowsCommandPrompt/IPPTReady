@@ -248,13 +248,22 @@ public class CycleActivity extends AppCompatActivity {
                                     .collection("IPPTCycle")
                                     .document(task.getResult().iterator().next().getId())
                                     .collection("IPPTRoutine")
-                                    .whereEqualTo("isFinished", false)
                                     .get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
                                                 if (task.getResult().isEmpty()) {
+                                                    Toast.makeText(CycleActivity.this, "Please create routines", Toast.LENGTH_SHORT).show();
+                                                }
+                                                else {
+                                                    for (DocumentSnapshot document : task.getResult()) {
+                                                        if (!((boolean) document.get("isFinished"))) {
+                                                            Toast.makeText(CycleActivity.this, "Complete current routines first!", Toast.LENGTH_SHORT).show();
+                                                            return;
+                                                        }
+                                                    }
+
                                                     currentIpptCycle.completeIPPTCycle(EmailAddress,
                                                             new OnCompleteListener<Void>() {
                                                                 @Override
@@ -273,9 +282,6 @@ public class CycleActivity extends AppCompatActivity {
                                                                             });
                                                                 }
                                                             });
-                                                }
-                                                else {
-                                                    Toast.makeText(CycleActivity.this, "Complete current routines first!", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         }
