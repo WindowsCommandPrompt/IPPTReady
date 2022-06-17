@@ -107,6 +107,10 @@ public class RunActivity extends AppCompatActivity {
     }
 
     private String calculation2Point4KMScore(String capturedTiming) throws JSONException {
+
+        Intent blackHole = new Intent(RunActivity.this, RecordActivity.class);
+        blackHole.putExtra("Timing", capturedTiming);
+
         AlertDialog.Builder dataFetchFail = new AlertDialog.Builder(this);
         AlertDialog.Builder dataAppendFailed = new AlertDialog.Builder(this);
         dataAppendFailed
@@ -162,13 +166,13 @@ public class RunActivity extends AppCompatActivity {
         HashMap<String, ArrayList<ArrayList<String>>> a = unpackagePartialJSON();
         ArrayList<ArrayList<String>> values = a.values().iterator().next();
         for (int i = 0; i < values.get(0).size(); i++){
+            Intent whiteHole2 = getIntent(); //This whiteHole is used to get the output information from the RecordActivity.java
             Log.d("TIMING", "" + values.get(0).size()); //60 CORRECT
+            String cycleID = whiteHole2.getStringExtra("IPPTCycleId");
+            String routineID = whiteHole2.getStringExtra("IPPTRoutineId");
+            String recordID = whiteHole2.getStringExtra("IPPTRecordId");
+            String email = whiteHole2.getStringExtra("Email");
             if (values.get(0).get(i).equals(capturedTiming)){
-                Intent whiteHole2 = getIntent(); //This whiteHole is used to get the output information from the RecordActivity.java
-                String cycleID = whiteHole2.getStringExtra("IPPTCycleId");
-                String routineID = whiteHole2.getStringExtra("IPPTRoutineId");
-                String recordID = whiteHole2.getStringExtra("IPPTRecordId");
-                String email = whiteHole2.getStringExtra("Email");
                 Log.d("Code has reached here", "The code has reached here");
                 Log.d("Email", "" + email);
                 RESTdb.collection("IPPTUser")
@@ -246,7 +250,7 @@ public class RunActivity extends AppCompatActivity {
                                 .document(routineID)
                                 .get()
                                 .addOnCompleteListener(onResponseFromServer -> {
-                                    //perform a "GET" request to get the current IPPTScore that the user has
+                                    //perform a "GET" request to get the current IPPTScore that the user has from within the database...
                                     RESTdb.collection("IPPTUser")
                                     .document(email)
                                     .collection("IPPTCycle")
@@ -257,7 +261,10 @@ public class RunActivity extends AppCompatActivity {
                                     .addOnCompleteListener(thenGetServerResponse -> {
                                         int result = thenGetServerResponse.getResult().get("IPPTScore", int.class);
                                         HashMap<String, Object> newIPPTScore = new HashMap<>();
-                                        newIPPTScore.put("IPPTScore", result + Integer.parseInt(correspondingScoreAttainable));
+                                        int total = result + Integer.parseInt(correspondingScoreAttainable);
+                                        newIPPTScore.put("IPPTScore", total);
+                                        blackHole.putExtra("IPPTScore", total);
+                                        //Add the value into the database...
                                         RESTdb.collection("IPPTUser")
                                         .document(email)
                                         .collection("IPPTCycle")
@@ -268,8 +275,9 @@ public class RunActivity extends AppCompatActivity {
                                         .addOnCompleteListener(serverResponse -> {
                                             if (serverResponse.isSuccessful()) {
                                                 Log.d("PROCESSSUCCESSFUL", "Successful added " + newIPPTScore.get("IPPTScore"));
-
-                                            } else {
+                                                //Send info by intent to R
+                                            }
+                                            else {
                                                 Log.e("PROCESSFAILED", "We were not able to append your data into the database.");
                                             }
                                         });
@@ -289,7 +297,7 @@ public class RunActivity extends AppCompatActivity {
                 String[] ab = capturedTiming.split(":");
                 if (Integer.parseInt(ab[1]) >= 0 && Integer.parseInt(ab[1]) <= 59) {
                     if (Integer.parseInt(ab[0]) > 18 && Integer.parseInt(ab[1]) >= 20) {
-                        int score = 0;
+                        int score = 0; //minimum attainable points from the running
                     }
                     else if(Integer.parseInt(ab[0]) < 8 && Integer.parseInt(ab[1]) <= 30){
                         int score = 50; //maximum attainable points from the running...
@@ -297,7 +305,32 @@ public class RunActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("RETURNRESULT", "" + ref.get());
         return ref.get();
+    }
+
+    //When the user wants to click on the back icon on the navigation bar
+    //GET CONFIRMATION FROM THE USER FIRST
+    @Override
+    public void onBackPressed()  {
+        AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
+        confirmQuit
+                .setTitle("Confirm end cycle?")
+                .setMessage("Are you sure you want to terminate the current run routine? Do note that your progress will not be saved.")
+                .setPositiveButton(
+                        "YES",
+                        (DialogInterface di, int i) -> {
+                            finish();
+                        }
+                )
+                .setNegativeButton(
+                        "NO",
+                        (DialogInterface di, int i) -> {
+                            di.dismiss();
+                        }
+                )
+                .setCancelable(false);
+        confirmQuit.create().show();
     }
 
     @Override
