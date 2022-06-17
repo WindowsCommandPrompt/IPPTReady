@@ -159,13 +159,13 @@ public class RecordActivity extends AppCompatActivity {
                                                     findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
                                                 }
                                                 if (View.GONE != findViewById(R.id.pushuprecordButton).getVisibility()) {
-                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
+                                                    findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListener());
                                                 }
                                             }
                                             else {
                                                 findViewById(R.id.runrecordButton).setOnClickListener(new RunRecordOnClickListener());
                                                 findViewById(R.id.situprecordButton).setOnClickListener(new SitupRecordOnClickListener());
-                                                findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListner());
+                                                findViewById(R.id.pushuprecordButton).setOnClickListener(new PushupRecordOnClickListener());
                                             }
                                         }
                                     }
@@ -212,7 +212,7 @@ public class RecordActivity extends AppCompatActivity {
         }
     }
 
-    private class PushupRecordOnClickListner implements View.OnClickListener {
+    private class PushupRecordOnClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
