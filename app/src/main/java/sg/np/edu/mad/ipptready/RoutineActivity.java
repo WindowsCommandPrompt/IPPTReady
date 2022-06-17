@@ -110,6 +110,8 @@ public class RoutineActivity extends AppCompatActivity {
             e.printStackTrace();
             finish();
         }
+        GoRoutine = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new GoRoutineActivityResultCallback());
         IPPTCycle finalIpptCycle = ipptCycle;
         ipptCycle.getRoutineList(EmailAddress,
                 IPPTCycleId,
@@ -278,12 +280,9 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                         e.printStackTrace();
                                                                                         return;
                                                                                     }
-                                                                                    if (null == GoRoutine) {
-                                                                                        GoRoutine = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                                                                                                new GoRoutineActivityResultCallback());
+                                                                                    if (null != GoRoutine) {
+                                                                                        GoRoutine.launch(recordIntent);
                                                                                     }
-
-                                                                                    GoRoutine.launch(recordIntent);
                                                                                 }
                                                                             }
                                                                         }
@@ -358,11 +357,9 @@ public class RoutineActivity extends AppCompatActivity {
                                 e.printStackTrace();
                                 return;
                             }
-                            if (null == GoRoutine) {
-                                GoRoutine = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                                        new GoRoutineActivityResultCallback());
+                            if (null != GoRoutine) {
+                                GoRoutine.launch(recordIntent);
                             }
-                            GoRoutine.launch(recordIntent);
                         }
                     });
         }
@@ -413,7 +410,9 @@ public class RoutineActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        GoRoutine.unregister();
+        if (null != GoRoutine) {
+            GoRoutine.unregister();
+        }
         super.onDestroy();
     }
 }

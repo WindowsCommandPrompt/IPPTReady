@@ -94,6 +94,39 @@ public class RecordActivity extends AppCompatActivity {
                     e.printStackTrace();
                     finish();
         }
+        GoRun = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (null != result) {
+                            Intent resultIntent = result.getData();
+                            String timeFinished = resultIntent.getStringExtra("Timing");
+                            if (null != timeFinished) {
+                                ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
+                            }
+                            String ipptScore = resultIntent.getStringExtra("IPPTScore");
+                            if (null != ipptScore) {
+                                runRecordScore = Integer.parseInt(ipptScore);
+                            }
+                        }
+                    }
+                });
+        GoSitup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+
+                    }
+                });
+        GoPushup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (Activity.RESULT_OK == result.getResultCode() &&
+                                null != result.getData()) {
+                        }
+                    }
+                });
         ipptRoutine.getRecordsList(EmailAddress,
                                 IPPTCycleId,
                                 new OnCompleteListener<QuerySnapshot>() {
@@ -104,7 +137,6 @@ public class RecordActivity extends AppCompatActivity {
                                                 for (DocumentSnapshot document : task.getResult()) {
                                                     if ("RunRecord" == document.getId()) {
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
-                                                        runRecord.
                                                         findViewById(R.id.runrecordButton).setVisibility(View.VISIBLE);
                                                         ((TextView)findViewById(R.id.runrecordtotaldistancetravelled)).setText(String.valueOf(runRecord.TotalDistanceTravelled) + "km");
                                                         ((TextView)findViewById(R.id.runrecordtimetakentotal)).setText(SecondstoString(runRecord.TimeTakenTotal));
@@ -164,25 +196,6 @@ public class RecordActivity extends AppCompatActivity {
             recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
             recordIntent.putExtra("IPPTRecordId", "RunRecord");
 
-            if (null == GoRun) {
-                GoRun = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-                                if (null != result) {
-                                    Intent resultIntent = result.getData();
-                                    String timeFinished = resultIntent.getStringExtra("Timing");
-                                    if (null != timeFinished) {
-                                        ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
-                                    }
-                                    String ipptScore = resultIntent.getStringExtra("IPPTScore");
-                                    if (null != ipptScore) {
-                                        runRecordScore = Integer.parseInt(ipptScore);
-                                    }
-                                }
-                            }
-                        });
-            }
             GoRun.launch(recordIntent);
         }
     }
@@ -198,7 +211,8 @@ public class RecordActivity extends AppCompatActivity {
             bundle.putBoolean("SitupTargetSet", false);
             Intent recordIntent = new Intent(RecordActivity.this, SitupTargetActivity.class);
             recordIntent.putExtras(bundle);
-            startActivity(recordIntent);
+
+            GoSitup.launch(recordIntent);
         }
     }
 
@@ -213,16 +227,7 @@ public class RecordActivity extends AppCompatActivity {
             recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
             recordIntent.putExtra("IPPTRecordId", "PushupRecord");
 
-            if (null == GoPushup) {
-                GoPushup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                        new ActivityResultCallback<ActivityResult>() {
-                            @Override
-                            public void onActivityResult(ActivityResult result) {
-
-                            }
-                        });
-            }
-            startActivity(recordIntent);
+            GoPushup.launch(recordIntent);
         }
     }
 
