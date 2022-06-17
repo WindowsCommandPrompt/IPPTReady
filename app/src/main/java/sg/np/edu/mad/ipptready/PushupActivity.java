@@ -1,9 +1,11 @@
 package sg.np.edu.mad.ipptready;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.*;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.*;
 
@@ -11,6 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class PushupActivity extends AppCompatActivity {
 
@@ -65,15 +73,23 @@ public class PushupActivity extends AppCompatActivity {
                     ((LinearLayout) findViewById(R.id.pushUpRecordTimingInterface)).setVisibility(View.GONE);
                     ((LinearLayout) findViewById(R.id.pushUpActivityEnterRecords)).setVisibility(View.VISIBLE);
                     //Get the text from the edit text field...
-                    String numPushUpsDone = ((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString();
+                    int numPushUpsDone = Integer.parseInt(((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString());
+                    String numTargetInitial = ((EditText) findViewById(R.id.pushUpTarget)).getText().toString();
 
                     //If the user would like to save the data to the database....
                     ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
-                        if (numPushUpsDone.length() > 0){
-
+                        if (numPushUpsDone >= 0){
+                            //now push into the database. .
+                            addPushupToDatabase(numPushUpsDone, email, cycleID, routineID, (Task<Void> task) -> {
+                                Intent recordBackIntent = new Intent();
+                                recordBackIntent.putExtra("NumPushUpsDone", numPushUpsDone);
+                                recordBackIntent.putExtra("NumPushUpsTarget", numTargetInitial);
+                                setResult(Activity.RESULT_OK, recordBackIntent);
+                                finish();
+                            });
                         }
-                        else if (numPushUpsDone.length() == 0){
-                            Toast.makeText(this, "Uh oh! That is not a good value! Field cannot be left blank if you are submitting the number of push ups that you have done to the database!", Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(this, "Uh Oh! Any value that is less than zero is not good value! Please try entering another number that is greater than zero!", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -124,8 +140,9 @@ public class PushupActivity extends AppCompatActivity {
                     ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false); //Disable the button again...
                 });
 
+                //The user can only click on the resetTimer once
                 ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(onUserClick -> {
-
+                    Toast.makeText(this, "The timer has already been tapped. Please start the timer again", Toast.LENGTH_SHORT);
                 });
             });
         });
@@ -170,5 +187,25 @@ public class PushupActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.textViewIdentifier)).setTextSize(39F);
             ((TextView) findViewById(R.id.targetNumberOfPushUps)).setTextSize(92F);
         }
+    }
+
+    //THIS WILL BE THE METHOD WHERE WE WILL PUSH THE INFORMATION INTO THE DATABASE.
+    public void addPushupToDatabase(int numOfPushUps, String EmailAddress, String IPPTCycleID, String IPPTRoutineID, OnCompleteListener<Void> onCompleteListener){
+        FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
+        HashMap<String, Object> numOfPushupsDone = new HashMap<String, Object>();
+
+        RESTdb.collection("IPPTUser")
+                .document(EmailAddress)
+                .collection("IPPTCycle")
+                .document(IPPTCycleID)
+                .collection("IPPTRoutine")
+                .document(IPPTRoutineID)
+                .set(numOfPushupsDone)
+                .addOnSuccessListener(function -> {
+                    Toast.makeText(this, "The number of push ups that you have done has been successfully appended into the database!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(function -> {
+                    Toast.makeText(this, "Aw snap! The data has not been pushed into the database!", Toast.LENGTH_SHORT).show();
+                });
     }
 }
