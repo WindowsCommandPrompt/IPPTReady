@@ -45,13 +45,20 @@ public class SitupActivity extends AppCompatActivity {
         startButton =  findViewById(R.id.startSitup);
         resetButton = findViewById(R.id.stopSitup);;
         remainingSeconds = findViewById(R.id.situpSecondsRemaining);
+        TextView targetSitupsTextView = findViewById(R.id.targetNumberOfSitups);
+        targetSitupsTextView.setText(String.valueOf(getIntent().getExtras().getInt("Target Situps")));
 
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isRunning = true;
-                Toast.makeText(SitupActivity.this, "Timer has started!", Toast.LENGTH_SHORT).show();
-                countDownTimer();
+                if (!isRunning) {
+                    isRunning = true;
+                    Toast.makeText(SitupActivity.this, "Timer has started!", Toast.LENGTH_SHORT).show();
+                    countDownTimer();
+                }
+                else {
+                    Toast.makeText(SitupActivity.this, "Timer has already started!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -75,7 +82,7 @@ public class SitupActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            vibrationEffect1 = VibrationEffect.createOneShot(3000, VibrationEffect.DEFAULT_AMPLITUDE);
+            vibrationEffect1 = VibrationEffect.createOneShot(2500, VibrationEffect.DEFAULT_AMPLITUDE);
             vibrator.cancel();
             vibrator.vibrate(vibrationEffect1);
         }

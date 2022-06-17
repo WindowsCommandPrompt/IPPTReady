@@ -68,6 +68,7 @@
                                         android:layout_height = "match_parent"
                                         android:gravity = "center"
                                         android:textSize = "29px"
+                                        android:layout_marginLeft="15dp"
                                         android:text = "Target number of push ups: "/>
                                     <TextView
                                         android:id = "@+id/targetNumberOfPushUps"
@@ -140,7 +141,7 @@
                                                     android:id="@+id/timerStatus"
                                                     android:layout_width="wrap_content"
                                                     android:layout_height="wrap_content"
-                                                    android:text= "seconds remaining"
+                                                    android:text="seconds"
                                                     android:textSize="55px" />
                                             </LinearLayout>
                                         </RelativeLayout>
@@ -217,6 +218,7 @@
                     android:layout_marginTop = "25dp"
                     android:layout_width="306dp"
                     android:textSize = "100px"
+                    android:inputType="number"
                     android:layout_height="wrap_content" />
                 <LinearLayout
                     android:layout_width = "306dp"

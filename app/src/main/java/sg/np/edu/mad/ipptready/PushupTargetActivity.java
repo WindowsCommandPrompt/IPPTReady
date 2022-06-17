@@ -10,6 +10,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PushupTargetActivity extends AppCompatActivity {
+    int targetPushUps;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +25,13 @@ public class PushupTargetActivity extends AppCompatActivity {
                 .setPositiveButton(
                     "YES",
                     (DialogInterface di, int i) -> {
-                        di.dismiss();
+                        Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        intent.putExtra("NumPushups", targetPushUps);
+                        intent.putExtra("Email", getIntent().getStringExtra("Email"));
+                        intent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
+                        intent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
+                        startActivity(intent);
+                        finish();
                     }
                 )
                 .setNegativeButton(
@@ -38,7 +46,7 @@ public class PushupTargetActivity extends AppCompatActivity {
 
         ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
             try{
-                int targetPushUps = Integer.parseInt(((EditText) findViewById(R.id.pushUpTarget)).getText().toString());
+                targetPushUps = Integer.parseInt(((EditText) findViewById(R.id.pushUpTarget)).getText().toString());
                 if (targetPushUps < 0) {
                     ((EditText) findViewById(R.id.pushUpTarget)).setText("");
                     Toast.makeText(this, "The value cannot be less than 0, please try again", Toast.LENGTH_SHORT).show();
@@ -48,10 +56,13 @@ public class PushupTargetActivity extends AppCompatActivity {
                         woahThatIsTooMuch.create().show();
                     }
                     else{
-                        Intent andThenRedirect = new Intent(PushupTargetActivity.this, PushupActivity.class);
-                        andThenRedirect.putExtra("NumPushups", Integer.toString(targetPushUps));
-                        startActivity(andThenRedirect);
-                        finish(); //finish the current activity...
+                        Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        intent.putExtra("NumPushups", targetPushUps);
+                        intent.putExtra("Email", getIntent().getStringExtra("Email"));
+                        intent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
+                        intent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
+                        startActivity(intent);
+                        finish();
                     }
                 }
             }

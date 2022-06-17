@@ -3,22 +3,16 @@ package sg.np.edu.mad.ipptready;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +23,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.ByteArrayInputStream;
@@ -46,8 +39,7 @@ import java.util.List;
 
 public class RoutineActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private String EmailAddress,
-        IPPTCycleId;
+    private String EmailAddress, IPPTCycleId;
     private byte[] SerializedIPPTCycle;
     private List<IPPTRoutine> ipptRoutineList;
     private IPPTRoutine currentIpptRoutine;
@@ -115,9 +107,7 @@ public class RoutineActivity extends AppCompatActivity {
         GoRoutine = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new GoRoutineActivityResultCallback());
         IPPTCycle finalIpptCycle = ipptCycle;
-        ipptCycle.getRoutineList(EmailAddress,
-                IPPTCycleId,
-                new OnCompleteListener<QuerySnapshot>() {
+        ipptCycle.getRoutineList(EmailAddress,IPPTCycleId,new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -150,7 +140,7 @@ public class RoutineActivity extends AppCompatActivity {
                                     setCreateRoutineButton();
                                 }
                                 else {
-                                    DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(currentIpptRoutine.DateCreated));
                                     findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
                                 }
@@ -203,10 +193,6 @@ public class RoutineActivity extends AppCompatActivity {
                 e.printStackTrace();
                 finish();
             }
-            IPPTRoutine ipptRoutine = new IPPTRoutine();
-            ipptRoutine.DateCreated = new Date();
-            ipptRoutine.IPPTScore = 0;
-            ipptRoutine.isFinished = false;
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             IPPTCycle finalIpptCycle = ipptCycle;
@@ -229,6 +215,11 @@ public class RoutineActivity extends AppCompatActivity {
                                         return;
                                     }
                                 }
+                                IPPTRoutine ipptRoutine = new IPPTRoutine();
+                                ipptRoutine.DateCreated = new Date();
+                                ipptRoutine.IPPTScore = 0;
+                                ipptRoutine.isFinished = false;
+
                                 finalIpptCycle.addNewIPPTRoutineToDatabase(EmailAddress, ipptRoutine, new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -350,6 +341,9 @@ public class RoutineActivity extends AppCompatActivity {
                     });
                 }
                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
+                currentIpptRoutine.IPPTScore = updatedScore;
+                ipptRoutineList.add(currentIpptRoutine);
+                ipptRoutineAdapter.notifyItemChanged(ipptRoutineList.size() - 1);
             }
         }
     }

@@ -1,6 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,7 +23,8 @@ import java.util.HashMap;
 
 public class PushupActivity extends AppCompatActivity {
 
-    //This PushupActivity would be responsible for maintaining the activity_pushup.xml (sorry la my english bad as hell)-->
+    Vibrator vibrator;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,15 +33,13 @@ public class PushupActivity extends AppCompatActivity {
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
         AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
 
-        //METADATA
-        Intent whiteHoleConnectingRecordActivityBlackHole = getIntent();
-        String cycleID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTCycleId");
-        String routineID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTRoutineId");
-        String recordID = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("IPPTRecordId");
-        String email = whiteHoleConnectingRecordActivityBlackHole.getStringExtra("Email");
+        Intent intent = getIntent();
+        String cycleID = intent.getStringExtra("IPPTCycleId");
+        String routineID = intent.getStringExtra("IPPTRoutineId");
+        String email = intent.getStringExtra("Email");
+        int NumPushups = intent.getIntExtra("NumPushups", 0);
 
-        Intent whiteHole = getIntent();
-        ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(whiteHole.getStringExtra("NumPushups"));
+        ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(String.valueOf(NumPushups));
 
         confirmationNotSaveData
             .setTitle("Are you sure?")
@@ -56,36 +56,31 @@ public class PushupActivity extends AppCompatActivity {
 
                 }
             )
-            .setNeutralButton(
-                "LET ME THINK FIRST",
-                (DialogInterface di, int i) -> {
-                    di.dismiss();
-                }
-            )
             .setCancelable(false);
 
         timeIsUp
-            .setTitle("You ran out of time")
-            .setMessage("You ran out of time. Please remember to key in the number of push ups that you have done for the past 1 minute")
+            .setTitle("Times up!")
+            .setMessage("It's time to key in the number of push ups that you have done for the past 1 minute")
             .setPositiveButton(
                 "OK",
                 (DialogInterface di, int i) -> {
                     ((LinearLayout) findViewById(R.id.pushUpRecordTimingInterface)).setVisibility(View.GONE);
                     ((LinearLayout) findViewById(R.id.pushUpActivityEnterRecords)).setVisibility(View.VISIBLE);
-                    //Get the text from the edit text field...
-                    String numTargetInitial = ((EditText) findViewById(R.id.pushUpTarget)).getText().toString();
 
-                    //If the user would like to save the data to the database....
                     ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
                         int numPushUpsDone = Integer.parseInt(((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString());
                         if (numPushUpsDone >= 0){
                             //now push into the database. .
-                            addPushupToDatabase(numPushUpsDone, email, cycleID, routineID, (Task<Void> task) -> {
-                                Intent recordBackIntent = new Intent();
-                                recordBackIntent.putExtra("NumPushUpsDone", numPushUpsDone);
-                                recordBackIntent.putExtra("NumPushUpsTarget", numTargetInitial);
-                                setResult(Activity.RESULT_OK, recordBackIntent);
-                                finish();
+                            addPushupToDatabase(numPushUpsDone, NumPushups, email, cycleID, routineID, new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Intent recordBackIntent = new Intent();
+                                    recordBackIntent.putExtra("NumPushUpsDone", numPushUpsDone);
+                                    recordBackIntent.putExtra("NumPushUpsTarget", NumPushups);
+                                    recordBackIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    setResult(Activity.RESULT_OK, recordBackIntent);
+                                    startActivity(recordBackIntent);
+                                }
                             });
                         }
                         else {
@@ -118,6 +113,15 @@ public class PushupActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFinish() {
+                    final VibrationEffect vibrationEffect1;
+                    vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        vibrationEffect1 = VibrationEffect.createOneShot(2500, VibrationEffect.DEFAULT_AMPLITUDE);
+                        vibrator.cancel();
+                        vibrator.vibrate(vibrationEffect1);
+                    }
+
                     timeIsUp.create().show();
                 }
             }.start();
@@ -186,9 +190,11 @@ public class PushupActivity extends AppCompatActivity {
     }
 
     //THIS WILL BE THE METHOD WHERE WE WILL PUSH THE INFORMATION INTO THE DATABASE.
-    public void addPushupToDatabase(int numOfPushUps, String EmailAddress, String IPPTCycleID, String IPPTRoutineID, OnCompleteListener<Void> onCompleteListener){
+    public void addPushupToDatabase(int pushUps, int target, String EmailAddress, String IPPTCycleID, String IPPTRoutineID, OnCompleteListener<Void> onCompleteVoidListener){
         FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
         HashMap<String, Object> numOfPushupsDone = new HashMap<String, Object>();
+        numOfPushupsDone.put("RepsTarget", target);
+        numOfPushupsDone.put("NumsReps", pushUps);
 
         RESTdb.collection("IPPTUser")
                 .document(EmailAddress)
@@ -196,12 +202,15 @@ public class PushupActivity extends AppCompatActivity {
                 .document(IPPTCycleID)
                 .collection("IPPTRoutine")
                 .document(IPPTRoutineID)
+                .collection("IPPTRecord")
+                .document("PushupRecord")
                 .set(numOfPushupsDone)
                 .addOnSuccessListener(function -> {
                     Toast.makeText(this, "The number of push ups that you have done has been successfully appended into the database!", Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(function -> {
                     Toast.makeText(this, "Aw snap! The data has not been pushed into the database!", Toast.LENGTH_SHORT).show();
-                });
+                })
+                .addOnCompleteListener(onCompleteVoidListener);
     }
 }

@@ -106,7 +106,6 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
                                                                 boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
                                                                 if (isCompleted) {
                                                                     routineActivity.findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
-                                                                    //((TextView)routineActivity.findViewById(R.id.routineipptscoreText)).setText("");
                                                                     ((TextView)routineActivity.findViewById(R.id.routinedateCreatedText)).setText("");
                                                                     routineActivity.findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
                                                                         @Override
@@ -115,7 +114,9 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
                                                                     });
                                                                 }
                                                                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", ipptRoutine.IPPTScore);
-                                                                //((TextView)routineActivity.findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
+                                                                ipptRoutine.IPPTScore = updatedScore;
+                                                                ipptRoutineList.add(ipptRoutine);
+                                                                notifyItemChanged(ipptRoutineList.size() - 1);
                                                             }
                                                         }
                                                     });

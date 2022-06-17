@@ -146,11 +146,13 @@ public class RecordActivity extends AppCompatActivity {
                     public void onActivityResult(ActivityResult result) {
                         if (null != result.getData()) {
                             Intent resultIntent = result.getData();
-                            int numOfPushUpsDone = resultIntent.getIntExtra("NumPushUpsDone", 0);
-                            String numOfPushUpsForTarget = resultIntent.getStringExtra("NumPushUpsTarget");
-                            ((Button) findViewById(R.id.pushuprecordButton)).setVisibility(View.GONE);
-                            ((TextView) findViewById(R.id.pushuprecordnumreps)).setText(String.valueOf(numOfPushUpsDone));
-                            ((TextView) findViewById(R.id.pushuprecordrepstarget)).setText(String.valueOf(numOfPushUpsForTarget));
+                            int numOfPushUpsDone = resultIntent.getIntExtra("NumPushUpsDone", -1);
+                            int numOfPushUpsForTarget = resultIntent.getIntExtra("NumPushUpsTarget", -1);
+                            if (numOfPushUpsDone != -1 && numOfPushUpsForTarget != -1) {
+                                ((Button) findViewById(R.id.pushuprecordButton)).setVisibility(View.GONE);
+                                ((TextView) findViewById(R.id.pushuprecordnumreps)).setText(String.valueOf(numOfPushUpsDone));
+                                ((TextView) findViewById(R.id.pushuprecordrepstarget)).setText(String.valueOf(numOfPushUpsForTarget));
+                            }
                         }
                     }
                 });
