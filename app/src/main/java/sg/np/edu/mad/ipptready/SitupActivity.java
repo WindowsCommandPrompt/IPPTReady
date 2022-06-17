@@ -5,11 +5,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -31,6 +34,7 @@ public class SitupActivity extends AppCompatActivity {
     TextView remainingSeconds;
     CountDownTimer myCountDown;
     boolean isRunning = false;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class SitupActivity extends AppCompatActivity {
                 if (isRunning) {
                     myCountDown.cancel();
                     remainingSeconds.setText("60");
+                    Toast.makeText(SitupActivity.this, "Timer has been reset", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(SitupActivity.this, "Timer has not started yet", Toast.LENGTH_SHORT).show();
@@ -66,6 +71,15 @@ public class SitupActivity extends AppCompatActivity {
     }
 
     private void finishSitup(){
+        final VibrationEffect vibrationEffect1;
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            vibrationEffect1 = VibrationEffect.createOneShot(3000, VibrationEffect.DEFAULT_AMPLITUDE);
+            vibrator.cancel();
+            vibrator.vibrate(vibrationEffect1);
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("1 minute is up! Have you reached your target?");
         builder.setCancelable(false);
@@ -99,7 +113,7 @@ public class SitupActivity extends AppCompatActivity {
 
     private void countDownTimer(){
 
-        myCountDown = new CountDownTimer(61000, 1000) {
+        myCountDown = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 remainingSeconds.setText(String.valueOf(millisUntilFinished / 1000));

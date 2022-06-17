@@ -89,7 +89,9 @@ public class SitupTargetActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SitupTargetActivity.this, "Directing to Routines page", Toast.LENGTH_SHORT).show();
-                                    finish();
+                                    Intent recordIntent =  new Intent();
+                                    recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(recordIntent);
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
