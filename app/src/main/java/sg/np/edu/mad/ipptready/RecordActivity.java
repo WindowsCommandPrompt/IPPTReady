@@ -216,7 +216,7 @@ public class RecordActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            Intent recordIntent = new Intent(RecordActivity.this, PushupActivity.class);
+            Intent recordIntent = new Intent(RecordActivity.this, PushupTargetActivity.class);
 
             recordIntent.putExtra("Email", EmailAddress);
             recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
