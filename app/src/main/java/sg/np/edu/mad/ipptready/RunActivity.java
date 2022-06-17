@@ -24,7 +24,10 @@ import android.widget.*;
 //import com.google.android.gms.location.*;
 //import com.google.android.gms.tasks.*;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
@@ -50,7 +53,7 @@ public class RunActivity extends AppCompatActivity {
 
     public RunActivity() { }
 
-    public JSONObject unparseJSON() throws JSONException {
+    /*public JSONObject unparseJSON() throws JSONException {
         InputStream is = getResources().openRawResource(R.raw.ipptscore);
         JSONObject jObject = null;
         try {
@@ -62,9 +65,9 @@ public class RunActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return jObject;
-    }
+    }*/
 
-    public HashMap<String, ArrayList<ArrayList<String>>> unpackagePartialJSON() throws JSONException {
+    /*public HashMap<String, ArrayList<ArrayList<String>>> unpackagePartialJSON() throws JSONException {
         String timingPortionAll = "";
         String timingPortionFirst = "";
         String timingPortionSecond = "";
@@ -100,7 +103,7 @@ public class RunActivity extends AppCompatActivity {
         Log.d("TIMINGINDICATORLENGTH", "" + new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw))); //correct
         returnItem.put("Timings", new ArrayList<ArrayList<String>>(Arrays.asList(timingListRaw)));
         return returnItem;
-    }
+    }*/
 
     /*
     private int calculation2Point4KMScore(String capturedTiming) throws JSONException {
@@ -375,14 +378,21 @@ public class RunActivity extends AppCompatActivity {
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
-        try {
+        /*try {
             Log.d("TAG", "" + unpackagePartialJSON());
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        Bundle bundle = getIntent().getExtras();
+        String Email = bundle.getString("Email");
+        String IPPTCycleID = bundle.getString("IPPTCycleId");
+        String IPPTRoutineId = bundle.getString("IPPTRoutineId");
+
+
 
         //Build the countdown
-        mainStopwatch = new CountDownTimer(10, 1000){
+        mainStopwatch = new CountDownTimer(1000, 1000){
             @Override
             public void onTick(long millisUntilFinished) {
                 int minutes = Integer.parseInt(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString().split(":")[0]);
@@ -439,20 +449,18 @@ public class RunActivity extends AppCompatActivity {
                     //take note of the timing that is within the TextView
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
                     Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
-                    int runRecordScore = 0;
-                    /*
-                    try {
-                        runRecordScore = calculation2Point4KMScore(capturedTiming);
-                        Log.d("AMICALLED??", "Yes I was called");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Intent recordBackIntent = new Intent();
-                    recordBackIntent.putExtra("Timing", capturedTiming);
-                    setResult(Activity.RESULT_OK, recordBackIntent);
-                    finish();
+                    int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+                    addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Intent recordBackIntent = new Intent();
+                            recordBackIntent.putExtra("Timing", totalSeconds);
+                            setResult(Activity.RESULT_OK, recordBackIntent);
+                            finish();
+                        }
+                    });
 
-                     */
+                    //Log.d("AMICALLED??", "Yes I was called");
                 }
             )
             .setNegativeButton(
@@ -557,6 +565,36 @@ public class RunActivity extends AppCompatActivity {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first before you can terminate the stopwatch. Common sense", Toast.LENGTH_SHORT).show();
         });
     }
+
+    public void addRunToDatabase(int totalSeconds, String EmailAddress, String IPPTCycleId, String IPPTRoutineId, OnCompleteListener<Void> onCompleteVoidListener) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> Run = new HashMap<>();
+        Run.put("TimeTakenFinished", totalSeconds);
+
+        db.collection("IPPTUser")
+                .document(EmailAddress)
+                .collection("IPPTCycle")
+                .document(IPPTCycleId)
+                .collection("IPPTRoutine")
+                .document(IPPTRoutineId)
+                .collection("IPPTRecord")
+                .document("RunRecord")
+                .set(Run)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(RunActivity.this, "Run timing recorded!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(RunActivity.this, "Error recording run timing", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnCompleteListener(onCompleteVoidListener);
+    }
+
 
     @Override
     public void onConfigurationChanged(Configuration config){

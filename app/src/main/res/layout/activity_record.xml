@@ -164,10 +164,9 @@
                 android:id="@+id/runrecordtimetakenfinished"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="31dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="63dp"
                 app:layout_constraintStart_toEndOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/runrecordtimetakentotal" />
+                app:layout_constraintTop_toTopOf="@+id/textView21" />
 
             <Button
                 android:id="@+id/runrecordButton"
@@ -181,42 +180,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
             <TextView
-                android:id="@+id/runrecordtotaldistancetravelled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="67dp"
-                app:layout_constraintStart_toEndOf="@+id/textView23"
-                app:layout_constraintTop_toTopOf="@+id/textView23" />
-
-            <TextView
-                android:id="@+id/textView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/total_distance_ran"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-            <TextView
-                android:id="@+id/textView22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/time_taken_in_total"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-            <TextView
                 android:id="@+id/textView21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/time_taken_to_run_2_4km"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="32dp"
+                android:text="Time Taken (min):"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22" />
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
 
             <TextView
                 android:id="@+id/textView20"
@@ -230,15 +201,6 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/runrecordtimetakentotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="64dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintStart_toEndOf="@+id/textView22"
-                app:layout_constraintTop_toBottomOf="@+id/runrecordtotaldistancetravelled" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
