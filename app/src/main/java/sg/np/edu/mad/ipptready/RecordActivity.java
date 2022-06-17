@@ -102,13 +102,12 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (null != result) {
-                            /*
                             Intent resultIntent = result.getData();
                             String timeFinished = resultIntent.getStringExtra("Timing");
                             if (null != timeFinished) {
                                 ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
+                                ((Button) findViewById(R.id.runrecordButton)).setVisibility(View.GONE);
                             }
-                             */
                         }
                     }
                 });
