@@ -73,11 +73,11 @@ public class PushupActivity extends AppCompatActivity {
                     ((LinearLayout) findViewById(R.id.pushUpRecordTimingInterface)).setVisibility(View.GONE);
                     ((LinearLayout) findViewById(R.id.pushUpActivityEnterRecords)).setVisibility(View.VISIBLE);
                     //Get the text from the edit text field...
-                    int numPushUpsDone = Integer.parseInt(((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString());
                     String numTargetInitial = ((EditText) findViewById(R.id.pushUpTarget)).getText().toString();
 
                     //If the user would like to save the data to the database....
                     ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
+                        int numPushUpsDone = Integer.parseInt(((EditText) findViewById(R.id.numberOfPushUpsThatTheUserDid)).getText().toString());
                         if (numPushUpsDone >= 0){
                             //now push into the database. .
                             addPushupToDatabase(numPushUpsDone, email, cycleID, routineID, (Task<Void> task) -> {
@@ -102,10 +102,6 @@ public class PushupActivity extends AppCompatActivity {
             .setCancelable(false);
 
         ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(function -> {
-            Toast.makeText(this, "The timer has not been activated, please activate the timer before you can perform the other actions", Toast.LENGTH_SHORT).show();
-        });
-
-        ((LinearLayout) findViewById(R.id.pauseTimer)).setOnClickListener(function -> {
             Toast.makeText(this, "The timer has not been activated, please activate the timer before you can perform the other actions", Toast.LENGTH_SHORT).show();
         });
 

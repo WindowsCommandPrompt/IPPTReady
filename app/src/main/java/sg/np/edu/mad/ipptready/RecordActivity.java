@@ -144,8 +144,7 @@ public class RecordActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (Activity.RESULT_OK == result.getResultCode() &&
-                                null != result.getData()) {
+                        if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int numOfPushUpsDone = resultIntent.getIntExtra("NumPushUpsDone", 0);
                             String numOfPushUpsForTarget = resultIntent.getStringExtra("NumPushUpsTarget");

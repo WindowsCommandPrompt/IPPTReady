@@ -95,6 +95,7 @@ public class SitupTargetActivity extends AppCompatActivity {
                                     recordIntent.putExtra("NumReps", completedSitupsNumber);
                                     recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     setResult(Activity.RESULT_OK, recordIntent);
+                                    startActivity(recordIntent);
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
