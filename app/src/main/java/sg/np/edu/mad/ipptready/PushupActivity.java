@@ -51,7 +51,7 @@ public class PushupActivity extends AppCompatActivity {
             .setNeutralButton(
                 "LET ME THINK FIRST",
                 (DialogInterface di, int i) -> {
-
+                    di.dismiss();
                 }
             )
             .setCancelable(false);
@@ -129,6 +129,30 @@ public class PushupActivity extends AppCompatActivity {
                 });
             });
         });
+    }
+
+    //When the user wants to click on the back icon on the navigation bar
+    //GET CONFIRMATION FROM THE USER FIRST
+    @Override
+    public void onBackPressed()  {
+        AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
+        confirmQuit
+                .setTitle("Confirm end cycle?")
+                .setMessage("Are you sure you want to terminate the current run routine? Do note that your progress will not be saved.")
+                .setPositiveButton(
+                        "YES",
+                        (DialogInterface di, int i) -> {
+                            finish();
+                        }
+                )
+                .setNegativeButton(
+                        "NO",
+                        (DialogInterface di, int i) -> {
+                            di.dismiss();
+                        }
+                )
+                .setCancelable(false);
+        confirmQuit.create().show();
     }
 
     @Override
