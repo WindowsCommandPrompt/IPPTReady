@@ -7,7 +7,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
 
 public class DetailedInformationActivity extends AppCompatActivity {
 

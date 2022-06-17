@@ -10,7 +10,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

@@ -2,42 +2,20 @@ package sg.np.edu.mad.ipptready;
 
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.*;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.graphics.*;
-import android.location.*;
 import android.os.*;
-import android.text.Layout;
 import android.util.Log;
 import android.widget.*;
-
-//import com.google.android.gms.location.*;
-//import com.google.android.gms.tasks.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.*;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 

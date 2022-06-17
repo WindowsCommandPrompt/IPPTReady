@@ -1,12 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +45,7 @@ public class WatchVideo extends YouTubeBaseActivity {
             }
         };
 
-        youtubePlayerView.initialize("AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU", initializedListener);
+        youtubePlayerView.initialize(youtubeAPIKEY, initializedListener);
         //AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58
         //AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU
     }

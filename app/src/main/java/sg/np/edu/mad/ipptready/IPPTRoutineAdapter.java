@@ -1,7 +1,5 @@
 package sg.np.edu.mad.ipptready;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;

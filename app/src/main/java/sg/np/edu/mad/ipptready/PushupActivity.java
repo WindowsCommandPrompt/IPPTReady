@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.*;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.*;
 

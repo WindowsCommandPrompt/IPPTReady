@@ -4,19 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 public class HomeActivity extends AppCompatActivity {
