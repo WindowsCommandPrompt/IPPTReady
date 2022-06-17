@@ -54,7 +54,6 @@ public class RecordActivity extends AppCompatActivity {
         // "Email", String : Email Address of the user.
         // "IPPTCycleId", String : Id of the IPPTCycle
         // "IPPTRoutineId", String : Id of the IPPTRoutine
-        // "IPPTRecordId", String : Id of the IPPTRecord
 
         Toast GenericErrorToast = Toast.makeText(this,
                 "Unexpected error occurred",
@@ -197,7 +196,6 @@ public class RecordActivity extends AppCompatActivity {
             recordIntent.putExtra("Email", EmailAddress);
             recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
             recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-            recordIntent.putExtra("IPPTRecordId", "RunRecord");
 
             GoRun.launch(recordIntent);
         }
@@ -228,7 +226,6 @@ public class RecordActivity extends AppCompatActivity {
             recordIntent.putExtra("Email", EmailAddress);
             recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
             recordIntent.putExtra("IPPTRoutineId", IPPTRoutineId);
-            recordIntent.putExtra("IPPTRecordId", "PushupRecord");
 
             GoPushup.launch(recordIntent);
         }
