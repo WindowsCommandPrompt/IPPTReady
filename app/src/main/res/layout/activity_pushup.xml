@@ -18,7 +18,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <LinearLayout
                 android:id = "@+id/pushUpRecordTimingInterface"
-                android:visibility = "gone"
+                android:visibility = "visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -212,14 +212,15 @@
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+            <!--Master layout-->
             <LinearLayout
                 android:id="@+id/pushUpActivityEnterRecords"
                 android:layout_width="match_parent"
-                android:layout_height="2000px"
+                android:layout_height="1500px"
                 android:background="@color/sd"
                 android:orientation="vertical"
                 android:gravity = "center"
-                android:visibility="visible">
+                android:visibility="gone">
                 <!--Add the relevant fields into the -->
                 <TextView
                     android:layout_height = "wrap_content"
@@ -241,13 +242,15 @@
                     <Button
                         android:id = "@+id/dontSet"
                         android:layout_marginTop = "75dp"
-                        android:layout_width="306dp"
-                        android:text = "LET'S SAVE IT"
+                        android:layout_width="0px"
+                        android:layout_weight = "1"
+                        android:text = "NOT FOR NOW"
                         android:layout_height="wrap_content"/>
                     <Button
-                        android:id = "@+id/setPushUpActivity"
                         android:layout_marginTop = "75dp"
-                        android:layout_width="306dp"
+                        android:id = "@+id/setPushUpActivity"
+                        android:layout_width="0px"
+                        android:layout_weight = "1"
                         android:text = "LET'S SAVE IT"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
