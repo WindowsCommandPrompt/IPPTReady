@@ -178,7 +178,7 @@ public class RoutineActivity extends AppCompatActivity {
                                     setCreateRoutineButton();
                                 }
                                 else {
-                                    ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(currentIpptRoutine.IPPTScore));
+                                    //((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(currentIpptRoutine.IPPTScore));
                                     DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(currentIpptRoutine.DateCreated));
                                     findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
@@ -256,10 +256,7 @@ public class RoutineActivity extends AppCompatActivity {
                                                                             if (task.isSuccessful()) {
                                                                                 if (!task.getResult().isEmpty()) {
                                                                                     currentIpptRoutine = task.getResult().iterator().next().toObject(IPPTRoutine.class);
-                                                                                    ((TextView)findViewById(R.id.routineipptscoreText))
-                                                                                           .setText(String.valueOf(
-                                                                                                    currentIpptRoutine.IPPTScore)
-                                                                                            );
+                                                                                    //((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(currentIpptRoutine.IPPTScore));
                                                                                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                                                                                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText(
                                                                                             dateFormat.format(currentIpptRoutine.DateCreated)
@@ -298,7 +295,7 @@ public class RoutineActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            ((TextView)findViewById(R.id.routineipptscoreText)).setText("");
+            //((TextView)findViewById(R.id.routineipptscoreText)).setText("");
             ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
             currentIpptRoutine.completeIPPTRoutine(EmailAddress,
                     IPPTCycleId,
@@ -369,12 +366,12 @@ public class RoutineActivity extends AppCompatActivity {
 
         @Override
         public void onActivityResult(ActivityResult result) {
-            if (null != result) {
+            if (null != result.getData()) {
                 Intent resultIntent = result.getData();
                 boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
                 if (isCompleted) {
                     findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
-                    ((TextView)findViewById(R.id.routineipptscoreText)).setText("");
+                    //((TextView)findViewById(R.id.routineipptscoreText)).setText("");
                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
                     findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -383,7 +380,7 @@ public class RoutineActivity extends AppCompatActivity {
                     });
                 }
                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
-                ((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
+                //((TextView)findViewById(R.id.routineipptscoreText)).setText(String.valueOf(updatedScore));
             }
         }
     }
