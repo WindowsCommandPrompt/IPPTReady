@@ -68,7 +68,7 @@
                                     android:layout_marginLeft="15dp"
                                     android:gravity="center"
                                     android:text="Target number of sit ups: "
-                                    android:textSize="29px" />
+                                    android:textSize="20dp" />
 
                                 <TextView
                                     android:id="@+id/targetNumberOfSitups"

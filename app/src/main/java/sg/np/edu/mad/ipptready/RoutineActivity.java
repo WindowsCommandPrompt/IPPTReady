@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -208,7 +209,7 @@ public class RoutineActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Date todayDate = new Date();
                                 for (DocumentSnapshot document : task.getResult()) {
-                                    Date documentDate = (Date) document.get("DateCreated");
+                                    Date documentDate = (Date) document.get("DateCreated", Date.class);
                                     if (documentDate.getYear() == todayDate.getYear() && documentDate.getMonth() == todayDate.getMonth() && documentDate.getDay() == todayDate.getDay())
                                     {
                                         Toast.makeText(RoutineActivity.this, "Come back tomorrow to start a new Routine :)", Toast.LENGTH_SHORT).show();
@@ -334,11 +335,7 @@ public class RoutineActivity extends AppCompatActivity {
                 if (isCompleted) {
                     findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
-                    findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        }
-                    });
+                    setCreateRoutineButton();
                 }
                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
                 currentIpptRoutine.IPPTScore = updatedScore;
@@ -349,7 +346,6 @@ public class RoutineActivity extends AppCompatActivity {
     }
 
     private void setCreateRoutineButton() {
-        ((Button)findViewById(R.id.completecreateroutineButton)).setText("Create A New Routine");
         findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CreateRoutineOnClickListener());
         findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
             @Override

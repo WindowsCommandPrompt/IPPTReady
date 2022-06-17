@@ -66,6 +66,7 @@ public class SitupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isRunning) {
+                    isRunning = false;
                     myCountDown.cancel();
                     remainingSeconds.setText("60");
                     Toast.makeText(SitupActivity.this, "Timer has been reset", Toast.LENGTH_SHORT).show();

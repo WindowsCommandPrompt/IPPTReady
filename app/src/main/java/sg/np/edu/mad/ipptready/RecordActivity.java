@@ -221,28 +221,28 @@ public class RecordActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     if (!task.getResult().isEmpty()) {
                                         completed = 0;
-                                        int totalTimeRun = 0, totalSitups = 0, totalPushups = 0;
+                                        long totalTimeRun = 0, totalSitups = 0, totalPushups = 0;
                                         for (DocumentSnapshot document : task.getResult()) {
                                             if (document.getId().equals("RunRecord")) {
-                                                totalTimeRun = (int) document.get("TimeTakenFinished");
+                                                totalTimeRun = (long) document.get("TimeTakenFinished");
                                                 completed++;
                                             }
                                             else if (document.getId().equals("SitupRecord")) {
-                                                totalSitups = (int) document.get("NumsReps");
+                                                totalSitups = (long) document.get("NumsReps");
                                                 completed++;
                                             }
 
                                             else if(document.getId().equals("PushupRecord")) {
-                                                totalPushups = (int) document.get("NumsReps");
+                                                totalPushups = (long) document.get("NumsReps");
                                                 completed++;
                                             }
                                         }
                                         if (completed == 3) {
                                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                                            int finalTotalTimeRun = totalTimeRun;
-                                            int finalTotalSitups = totalSitups;
-                                            int finalTotalPushups = totalPushups;
+                                            long finalTotalTimeRun = totalTimeRun;
+                                            long finalTotalSitups = totalSitups;
+                                            long finalTotalPushups = totalPushups;
                                             final int[] totalScore = {0};
                                             db.collection("IPPTUser")
                                                     .document(EmailAddress)
@@ -285,7 +285,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                 }
 
                                                                 int ageGroupIndex = ageGroup - 1;
-                                                                int roundedTime = finalTotalTimeRun + (10 - finalTotalTimeRun%10);
+                                                                long roundedTime = finalTotalTimeRun + (10 - finalTotalTimeRun%10);
 
                                                                 Resources res = getResources();
                                                                 InputStream is = res.openRawResource(R.raw.ipptscore);
@@ -402,7 +402,7 @@ public class RecordActivity extends AppCompatActivity {
                                                     Toast.makeText(RecordActivity.this, "Well Done! Returning to Routines page", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent();
                                                     intent.putExtra("isCompleted", true);
-                                                    intent.putExtra("IPPTScore", totalScore[0]);
+                                                    intent.putExtra("UpdatedScore", totalScore[0]);
                                                     setResult(Activity.RESULT_OK, intent);
                                                     finish();
                                                 }

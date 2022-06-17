@@ -62,14 +62,15 @@
                                     android:layout_height = "wrap_content"
                                     android:layout_width = "match_parent"
                                     android:orientation = "horizontal">
+
                                     <TextView
-                                        android:id = "@+id/textViewIdentifier"
-                                        android:layout_width = "wrap_content"
-                                        android:layout_height = "match_parent"
-                                        android:gravity = "center"
-                                        android:textSize = "29px"
+                                        android:id="@+id/textViewIdentifier"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:layout_marginLeft="15dp"
-                                        android:text = "Target number of push ups: "/>
+                                        android:gravity="center"
+                                        android:text="Target number of push ups: "
+                                        android:textSize="20dp" />
                                     <TextView
                                         android:id = "@+id/targetNumberOfPushUps"
                                         android:layout_width="match_parent"
