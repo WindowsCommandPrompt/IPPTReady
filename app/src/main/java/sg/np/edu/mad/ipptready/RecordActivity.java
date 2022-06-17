@@ -243,6 +243,7 @@ public class RecordActivity extends AppCompatActivity {
     @Override
     @MainThread
     public void onBackPressed() {
+        super.onBackPressed();
         Intent backButtonIntent = new Intent();
         backButtonIntent.putExtra("UpdatedScore", runRecordScore +
                 situpRecordScore +
