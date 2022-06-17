@@ -44,6 +44,8 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/push_up"
                 android:textSize="24sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -131,6 +133,8 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/sit_up"
                 android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -219,6 +223,8 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/_2_4km_run"
                 android:textSize="24sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

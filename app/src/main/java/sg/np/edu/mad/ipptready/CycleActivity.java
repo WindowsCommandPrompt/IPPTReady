@@ -274,6 +274,9 @@ public class CycleActivity extends AppCompatActivity {
                                                                 }
                                                             });
                                                 }
+                                                else {
+                                                    Toast.makeText(CycleActivity.this, "Complete current routines first!", Toast.LENGTH_SHORT).show();
+                                                }
                                             }
                                         }
                                     });
