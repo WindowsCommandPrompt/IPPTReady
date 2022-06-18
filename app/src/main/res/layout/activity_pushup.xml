@@ -226,18 +226,11 @@
                     android:layout_height = "wrap_content"
                     android:orientation = "horizontal">
                     <Button
-                        android:id = "@+id/dontSet"
-                        android:layout_marginTop = "75dp"
-                        android:layout_width="0px"
-                        android:layout_weight = "1"
-                        android:text = "NOT FOR NOW"
-                        android:layout_height="wrap_content"/>
-                    <Button
                         android:layout_marginTop = "75dp"
                         android:id = "@+id/setPushUpActivity"
                         android:layout_width="0px"
                         android:layout_weight = "1"
-                        android:text = "LET'S SAVE IT"
+                        android:text = "Record Push-Ups"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
             </LinearLayout>

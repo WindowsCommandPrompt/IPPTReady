@@ -44,6 +44,7 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
         this.ipptRoutineContext = currentContext;
         this.EmailAddress = EmailAddress;
         this.IPPTCycleId = IPPTCycleId;
+        this.routineActivity = routineActivity;
     }
 
     @NonNull

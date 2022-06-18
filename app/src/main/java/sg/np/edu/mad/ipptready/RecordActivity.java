@@ -203,7 +203,7 @@ public class RecordActivity extends AppCompatActivity {
                                     }
                                 });
         Button completeButton = findViewById(R.id.recordcompletebutton);
-        if (completed == 3 && ipptRoutine.isFinished) {
+        if (ipptRoutine.isFinished) {
             completeButton.setVisibility(View.GONE);
         }
 

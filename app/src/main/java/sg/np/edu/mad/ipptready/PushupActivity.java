@@ -30,7 +30,7 @@ public class PushupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pushup);
 
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
-        AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
+        //AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
 
         Intent intent = getIntent();
         String cycleID = intent.getStringExtra("IPPTCycleId");
@@ -40,13 +40,16 @@ public class PushupActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(String.valueOf(NumPushups));
 
-        confirmationNotSaveData
+        /*confirmationNotSaveData
             .setTitle("Are you sure?")
             .setMessage("Are you sure you do not want to save your data (at least in a really secure location)?")
             .setPositiveButton(
                 "YES",
                 (DialogInterface di, int i) -> {
                     Intent recordBackIntent = new Intent(PushupActivity.this, RecordActivity.class);
+                    recordBackIntent.putExtra("Email", getIntent().getStringExtra("Email"));
+                    recordBackIntent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
+                    recordBackIntent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
                     startActivity(recordBackIntent);
                     finish();
                 }
@@ -57,7 +60,7 @@ public class PushupActivity extends AppCompatActivity {
                     di.dismiss();
                 }
             )
-            .setCancelable(false);
+            .setCancelable(false);*/
 
         timeIsUp
             .setTitle("Times up!")
@@ -79,6 +82,9 @@ public class PushupActivity extends AppCompatActivity {
                                     Intent recordBackIntent = new Intent(PushupActivity.this, RecordActivity.class);
                                     recordBackIntent.putExtra("NumPushUpsDone", numPushUpsDone);
                                     recordBackIntent.putExtra("NumPushUpsTarget", NumPushups);
+                                    recordBackIntent.putExtra("Email", getIntent().getStringExtra("Email"));
+                                    recordBackIntent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
+                                    recordBackIntent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
                                     setResult(Activity.RESULT_OK, recordBackIntent);
                                     startActivity(recordBackIntent);
                                     finish();
@@ -88,11 +94,6 @@ public class PushupActivity extends AppCompatActivity {
                         else {
                             Toast.makeText(this, "Uh Oh! Please try entering another number that is greater than zero!", Toast.LENGTH_SHORT).show();
                         }
-                    });
-
-                    //If the user would NOT like to save the data to the database...
-                    ((Button) findViewById(R.id.dontSet)).setOnClickListener(functionAs -> {
-                        confirmationNotSaveData.create().show();
                     });
                 }
             )
