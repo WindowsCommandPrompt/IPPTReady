@@ -47,7 +47,7 @@ Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher.
   </ol> 
   <li align = "justify"><b>YouTube API </b></li> 
   <ol> 
-    <li align = "justify"> Developer:<b> Google PLC </b></li> 
+    <li align = "justify"> Developer:<b> Google LLC </b></li> 
     <li align = "justify"> Software Version: <b>2.0.0</b></li> 
     <li align = "justify"> Software Type: <b> Application Programming Interface (API) </b></li> 
   </ol> 
