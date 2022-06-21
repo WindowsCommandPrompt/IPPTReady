@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+        updateUI(account);
     }
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -69,21 +70,7 @@ public class LoginActivity extends AppCompatActivity {
             // The Task returned from this call is always completed, no need to attach
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.d(DEBUG, e.toString());
-            updateUI(null);
+            updateUI(task.getResult());
         }
     }
 
@@ -141,6 +128,5 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
-        else Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
     }
 }
