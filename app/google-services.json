@@ -7,6 +7,46 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:533393606931:android:6992ccb9f2fae3eb4532e6",
+        "android_client_info": {
+          "package_name": "sg.np.edu.mad.ipptmoderate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533393606931-8ec93hn93tb0si62ssvssdc4jp7q679e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.np.edu.mad.ipptmoderate",
+            "certificate_hash": "59e7f8c889f06f8c39c60ff3a996e04a7e1d6024"
+          }
+        },
+        {
+          "client_id": "533393606931-gi37ghr7qjkjaouelvuerjahpfdcjclg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU"
+        },
+        {
+          "current_key": "AIzaSyD1Sz5nRGv3XRepNxht6SqFNxWDPg9Be4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533393606931-gi37ghr7qjkjaouelvuerjahpfdcjclg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:533393606931:android:b62e3bc942a3af7a4532e6",
         "android_client_info": {
           "package_name": "sg.np.edu.mad.ipptready"
@@ -19,6 +59,14 @@
           "android_info": {
             "package_name": "sg.np.edu.mad.ipptready",
             "certificate_hash": "b5446e5e902f381648408c48fc50c89c470a97a7"
+          }
+        },
+        {
+          "client_id": "533393606931-9hllo9vbfuhne4ug4teleecv9vvf4u5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.np.edu.mad.ipptready",
+            "certificate_hash": "682b38945023dd44c4e5ba55ec0470472b7041e2"
           }
         },
         {
@@ -54,6 +102,14 @@
           }
         },
         {
+          "client_id": "533393606931-khjv3k4ncodg3lqrmaus2r2llcck2bgi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sg.np.edu.mad.ipptready",
+            "certificate_hash": "69c9c6a6acd0543f493ca81d3e09600caa229523"
+          }
+        },
+        {
           "client_id": "533393606931-v6nqmhrt32u7gdif3tp8plre4dhlq78s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -71,39 +127,7 @@
           "current_key": "AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU"
         },
         {
-          "current_key": "AIzaSyDF5OFjAoS8pkTypCjQJrlILCxssPdvt8c"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "533393606931-gi37ghr7qjkjaouelvuerjahpfdcjclg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:533393606931:android:8a5036a007a8d6264532e6",
-        "android_client_info": {
-          "package_name": "sg.np.edu.mad.ipptready_test"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "533393606931-gi37ghr7qjkjaouelvuerjahpfdcjclg.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU"
-        },
-        {
-          "current_key": "AIzaSyDF5OFjAoS8pkTypCjQJrlILCxssPdvt8c"
+          "current_key": "AIzaSyD1Sz5nRGv3XRepNxht6SqFNxWDPg9Be4A"
         }
       ],
       "services": {

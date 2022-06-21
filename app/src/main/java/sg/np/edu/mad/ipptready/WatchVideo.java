@@ -11,7 +11,7 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 public class WatchVideo extends YouTubeBaseActivity {
     YouTubePlayerView youtubePlayerView;
-    String youtubeAPIKEY = "AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58";
+    final public static String youtubeAPIKEY = "AIzaSyD1Sz5nRGv3XRepNxht6SqFNxWDPg9Be4A";
     TextView videoTitle;
     TextView videoDescription;
 
@@ -46,7 +46,5 @@ public class WatchVideo extends YouTubeBaseActivity {
         };
 
         youtubePlayerView.initialize(youtubeAPIKEY, initializedListener);
-        //AIzaSyCwAQeCpPkjrhV-e5Gh__Ny2njKlyiCP58
-        //AIzaSyAvNGZVAdLBll7AwyxEdFaZBfB-0QDsHMU
     }
 }
