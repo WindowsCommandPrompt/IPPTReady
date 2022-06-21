@@ -67,9 +67,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         if (holder.getAdapterPosition() == totalVideos - 1) {
             int orientation = ctx.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                videoEntryParams.bottomMargin = 1350;
+                videoEntryParams.bottomMargin = 1500;
             } else {
-                videoEntryParams.bottomMargin = 140;
+                videoEntryParams.bottomMargin = 300;
             }
 
         }
