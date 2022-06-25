@@ -1,12 +1,37 @@
 # MAD-Assignment
-We have developed a mobile application called <b> IPPTReady </b> for Android for our MAD Assignment in 2022
+We have developed a mobile application called <b> IPPTReady </b> for Android for our MAD Assignment in 2022.
 
 <br> 
 <hr> 
 <br> 
 
 ## Collaborators 
-Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher.
+<table> 
+  <tr> 
+    <th>Group member name</th> 
+    <th>Group member student ID</th> 
+  </tr> 
+  <tr> 
+    <td>Li Zhe Yun</td> 
+    <td>S10222023J</td> 
+  </tr> 
+  <tr> 
+    <td>Joshua Ng</td> 
+    <td> </td> 
+  </tr> 
+  <tr>
+    <td>Tan Zhen Xuan Raiden</td> 
+    <td> </td> 
+  </tr>
+  <tr> 
+    <td>Bryan Koh</td> 
+    <td> </td> 
+  </tr> 
+  <tr> 
+    <td>Ho Kuan Zher</td> 
+    <td> </td> 
+  </tr> 
+</table> 
 
 <br> 
 <hr>
@@ -26,11 +51,82 @@ Li Zhe Yun, Joshua Ng, Tan Zhenxuan Raiden, Bryan Koh, and Ho Kuan Zher.
 
 ## Features of our application 
 <ol> 
-  <li align = "justify"> Users will be able to view how other people who may or may not be preparing for National Service, through viewing videos that have been directly extracted from the YouTube database via the YouTube API!</li> 
-  <li align = "justify"> Users will be able to create their own training cycles to keep track of their training progress through IPPTCycle. Users would be able to keep track of their exercise progresses through the </li>
-  <li align = "justify"> Users will be able to learn more about the </li> 
+  
 </ol> 
 
+
+<br> 
+<hr> 
+<br> 
+
+## Individual group members configurations
+<table> 
+  <tr> 
+    <th>Group member name</th> 
+    <th>Group member contributions</th>
+  </tr> 
+  <tr> 
+    <td>Li Zhe Yun</td> 
+    <td> 
+      <ol>
+        <li align = "justify">Conceptualized the initial design of implementing a stopwatch in the Run, and a countdown timer in the SitUp and PushUp activities</li> 
+        <li align = "justify">Conceptualized the initial design of implementing a 
+        <li align = "justify">Implemented the stopwatch in the Run activity, and then implemented a countdown timer in the SitUp and the PushUp activities</li> 
+        <li align = "justify">Implemented the rough user interface for the Run activity, PushUp activity and the SitUp activity</li> 
+        <li align = "justify">Conceptualized the initial design of </li> 
+      </ol> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td>Joshua Ng</td> 
+    <td>
+      <ol> 
+        <li>Managed the entire incoming and outgoing traffic into and out of the Firebase Firestore database to ensure that all the required data has been recorded in the correct collection and the correct document within the Firebase Firestore database</li> 
+        <li>Helped to implement the basic structure of our codes needed for our first-iteration</li> 
+        <li>Conceptualized the initial design of the home page of the application when the user has logged into the application using a google account</li>
+        <li>
+      </ol> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td>Bryan Koh</td> 
+    <td>
+      <ol> 
+        <li align = "justify">Helped to refine the code that has been written for the PushUp, SitUp and the Run activities, such that the codes were more efficient</li> 
+        <li align = "justify">Helped to implement the count down timer within the SitUp activity</li> 
+      </ol> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td>Tan Zhen Xuan Raiden</td> 
+    <td> 
+      <ol> 
+        <li align = "justify">Conceptualized the initial design of the Information activity</li> 
+        <li align = "justify">Implemented the user interface for the information activity based on the initial conceptualized design made earlier</li> 
+      </ol> 
+    </td> 
+  </tr> 
+  <tr> 
+    <td>Ho Kuan Zher</td> 
+    <td> 
+      <ol> 
+        <li align = "justify">Conceptualized the initial design of the profile activity</li> 
+        <li align = "justify">Implemented the user interface for the profile activity based on the initial conceptualized design made earlier</li> 
+        <li align = "justify">Ensured that the user profile information is extracted from the Firebase Firestore database from the correct collection and the correct document and then displaying the required information in the correct TextView(s) within the activity layout</li> 
+        <li align = "justify">Ensured that the user is able to exit the profile activity</li> 
+      </ol> 
+    </td> 
+  </tr> 
+    
+</table> 
+
+<br> 
+<hr> 
+<br> 
+
+## Appendices
+<ol> 
+</ol> 
 
 <br> 
 <hr> 
