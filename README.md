@@ -95,6 +95,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Helped to ensure that our codes are efficient, through reducing the need for writing redundant code, or repeated code, over and over again</li>
         <li align = "justify">Implemented the idea of using a google sign in services that would enable the user to be able to sign into the application using  valid google account</li> 
         <li align = "justify">Implemented the account handling procedure within the application, which includes the creation of new IPPTReacy user profile accounts for the mobile application, and logging user in if they have already registered themselves under the application</li>
+        <li align = "justify">Conceptualized the initial design of the account creation activity that the user can use to register with the application</li> 
+        <li align = "justify">Implemented the initial design of the account creation activity</li>
       </ol> 
     </td> 
   </tr> 
@@ -119,6 +121,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Conceptualized the initial design of the Information activity</li> 
         <li align = "justify">Implemented the user interface for the information activity based on the initial conceptualized design made earlier</li> 
         <li align = "justify">Ensured that the user is able to exit the information activity and navigate to the other activities</li>
+        <li align = "justify">Provided all the drawables (vector assets) needed to be implemented into the information activity layout</li>  
       </ol> 
     </td> 
   </tr> 
