@@ -64,7 +64,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
 <hr> 
 <br> 
 
-## Individual group members configurations
+## Individual group members contributions
 <table> 
   <tr> 
     <th>Group member name</th> 
@@ -81,7 +81,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Ensured that the user is able to exit the Run and PushUp activity to navigate to other activities within the application</li> 
         <li align = "justify">Added multiple user dialogs which prompts the user for permissions before actually performing an action programmatically within the application. This is to let the user what actually happens once the user clicks on a certain button, container, present within the layout</li> 
         <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized</li> 
-        <li align = "justify">Ensured that the timing that is recorded within the </li> 
+        <li align = "justify">Ensured that the timing that is recorded within the Run activity and the number of push ups done from the PushUp activity has been successfully recorded and transferred from one intent to another and eventually into the Firebase Firestore database</li> 
       </ol> 
     </td> 
   </tr> 
@@ -93,8 +93,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Helped to create the classes and the layouts needed to develop the skeleton for our mobile application for the first-iteration, to ensure that our application will be up and running</li> 
         <li align = "justify">Conceptualized the initial design of the home page of the application when the user has logged into the application using a google account</li>
         <li align = "justify">Helped to ensure that our codes are efficient, through reducing the need for writing redundant code, or repeated code, over and over again</li>
-        <li align = "justify">Implemented the idea of </li>
-        <li align = "justify"></li> 
+        <li align = "justify">Implemented the idea of using a google sign in services that would enable the user to be able to sign into the application using  valid google account</li> 
+        <li align = "justify">Implemented the account handling procedure within the application, which includes the creation of new IPPTReacy user profile accounts for the mobile application, and logging user in if they have already registered themselves under the application</li>
       </ol> 
     </td> 
   </tr> 
@@ -106,10 +106,9 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Helped to implement the count down timer within the SitUp activity</li>
         <li align = "justify">Implemented the user interface for the SitUp activity</li> 
         <li align = "justify">Ensured that the user would be able to exit the SitUp activity and navigate to the other activities</li> 
-        <li align = "justify">Ensured that the data is passed from one activity to another and eventually posted to the Firebase Firestore database through the usage of the <code>Intent</code> class</li> 
+        <li align = "justify">Ensured that the data is correctly passed from one activity to another and eventually posted to the Firebase Firestore database through the usage of the <code>Intent</code> class</li> 
         <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
-        <li align = "justify"></li> 
       </ol> 
     </td> 
   </tr> 
@@ -133,8 +132,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Ensured that the user is able to exit the profile activity</li> 
       </ol> 
     </td> 
-  </tr> 
-    
+  </tr>  
 </table> 
 
 <br> 
@@ -143,6 +141,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
 
 ## Appendices
 <ol> 
+  <li align = "justify"></li>
+  <li align = "justify"></li>
 </ol> 
 
 <br> 
