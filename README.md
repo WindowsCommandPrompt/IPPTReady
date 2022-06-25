@@ -51,7 +51,12 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
 
 ## Features of our application 
 <ol> 
-  
+  <li align = "justify">Create and complete your cycles and routines to track and record your scores!</li> 
+  <li align = "justify">Track your 2.4km, Sit-up, Push-up in the routines and calculate your score according to the Individual Physical Proficiency Test standard!</li>
+  <li align = "justify">View your past cycles and routines to know how well you did in the past!</li>
+  <li align = "justify">Watch videos related to the Individual Physical Proficiency Test to hone your skills!</li>
+  <li align = "justify">Read about the rules and guidelines of the Individual Physical Proficiency Test to know more about it!</li>
+  <li align = "justify">View your profile to see your details!</li> 
 </ol> 
 
 
@@ -70,10 +75,13 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td> 
       <ol>
         <li align = "justify">Conceptualized the initial design of implementing a stopwatch in the Run, and a countdown timer in the SitUp and PushUp activities</li> 
-        <li align = "justify">Conceptualized the initial design of implementing a 
+        <li align = "justify">Conceptualized the initial design for the Run activity, including where the stopwatch should be positioned with the Run activity, that includes the start and stop buttons needed for the user to start and stop the timer</li>
         <li align = "justify">Implemented the stopwatch in the Run activity, and then implemented a countdown timer in the SitUp and the PushUp activities</li> 
-        <li align = "justify">Implemented the rough user interface for the Run activity, PushUp activity and the SitUp activity</li> 
-        <li align = "justify">Conceptualized the initial design of </li> 
+        <li align = "justify">Implemented the rough user interface for the Run activity, PushUp activity based on the initial conceptualized design</li> 
+        <li align = "justify">Ensured that the user is able to exit the Run and PushUp activity to navigate to other activities within the application</li> 
+        <li align = "justify">Added multiple user dialogs which prompts the user for permissions before actually performing an action programmatically within the application. This is to let the user what actually happens once the user clicks on a certain button, container, present within the layout</li> 
+        <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized</li> 
+        <li align = "justify">Ensured that the timing that is recorded within the </li> 
       </ol> 
     </td> 
   </tr> 
@@ -81,10 +89,12 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>Joshua Ng</td> 
     <td>
       <ol> 
-        <li>Managed the entire incoming and outgoing traffic into and out of the Firebase Firestore database to ensure that all the required data has been recorded in the correct collection and the correct document within the Firebase Firestore database</li> 
-        <li>Helped to implement the basic structure of our codes needed for our first-iteration</li> 
-        <li>Conceptualized the initial design of the home page of the application when the user has logged into the application using a google account</li>
-        <li>
+        <li align = "justify">Managed the entire incoming and outgoing traffic into and out of the Firebase Firestore database to ensure that all the required data has been recorded in the correct collection and the correct document within the Firebase Firestore database</li> 
+        <li align = "justify">Helped to create the classes and the layouts needed to develop the skeleton for our mobile application for the first-iteration, to ensure that our application will be up and running</li> 
+        <li align = "justify">Conceptualized the initial design of the home page of the application when the user has logged into the application using a google account</li>
+        <li align = "justify">Helped to ensure that our codes are efficient, through reducing the need for writing redundant code, or repeated code, over and over again</li>
+        <li align = "justify">Implemented the idea of </li>
+        <li align = "justify"></li> 
       </ol> 
     </td> 
   </tr> 
@@ -93,7 +103,13 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <ol> 
         <li align = "justify">Helped to refine the code that has been written for the PushUp, SitUp and the Run activities, such that the codes were more efficient</li> 
-        <li align = "justify">Helped to implement the count down timer within the SitUp activity</li> 
+        <li align = "justify">Helped to implement the count down timer within the SitUp activity</li>
+        <li align = "justify">Implemented the user interface for the SitUp activity</li> 
+        <li align = "justify">Ensured that the user would be able to exit the SitUp activity and navigate to the other activities</li> 
+        <li align = "justify">Ensured that the data is passed from one activity to another and eventually posted to the Firebase Firestore database through the usage of the <code>Intent</code> class</li> 
+        <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
+        <li align = "justify">Conceptualized the initial design of the Video activity</li>
+        <li align = "justify"></li> 
       </ol> 
     </td> 
   </tr> 
@@ -103,6 +119,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
       <ol> 
         <li align = "justify">Conceptualized the initial design of the Information activity</li> 
         <li align = "justify">Implemented the user interface for the information activity based on the initial conceptualized design made earlier</li> 
+        <li align = "justify">Ensured that the user is able to exit the information activity and navigate to the other activities</li>
       </ol> 
     </td> 
   </tr> 
