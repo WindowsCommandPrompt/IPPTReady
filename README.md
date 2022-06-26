@@ -203,8 +203,55 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
   <tr> 
     <td>Use case specifications</td> 
-    <td> </td> 
-    <td> </td> 
+    <td> 
+      <h3>Use case specification table no.1</h3>
+      <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td align = "justify">Login Account</td> 
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td align = "justify">The user logs and validates into his/her account and credentials respectively using Google. </td>
+        </tr>
+        <tr> 
+          <td><b>Actor(s)</b></td> 
+          <td align = "justify">User, Firebase, Google </td>
+        </tr>
+        <tr>
+          <td><b>Pre-condition(s)</b></td> 
+          <td align = "justify">The user must have a valid google account. </td> 
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td align = "justify">The user is taken to the main page. </td>
+        </tr>
+        <tr>
+          <td><b>Basic Flow</b></td>
+          <td align = "justify">
+            <ol>
+              <li> UC starts when user presses the “Sign In with Google” button on the login page. </li> 
+              <li> Takes User to UC, “Validate google account”, point 2 of Basic Flow. </li>
+              <li> Firebase checks for users with specified email address and password. </li> 
+              <li> UC Ends. </li> 
+            </ol> 
+          </td>
+        </tr>
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td align = "justify">
+            <ol> 
+              <li align = "justify">Firebase does not have an account with the specified email address and password provided by the user.</li>  
+              <li align = "justify">Takes user to UC, “Create Account”, point 5 of Basic Flow. </li> 
+              <li align = "justify">UC Ends.</li>  
+            </ol> 
+          </td>
+        </tr> 
+      </table> 
+      <br> 
+      <h3> Use case specification no. 2 </h3>
+    </td> 
+    <td align = "justify">We did the use case specifications to ensure that we are always going to our plan</td> 
   </tr>
 </table> 
 
