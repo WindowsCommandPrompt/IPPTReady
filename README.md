@@ -295,10 +295,77 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         </tr> 
       </table> 
       <br> 
-      <h3> User specification no. 3</h3>
+      <h3> User specification no. 3 </h3> 
+      <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td></td> 
+        </tr> 
+        <tr> 
+          <td><b>Description </b></td> 
+          <td></td> 
+        </tr> 
+      </table> 
+      <br> 
+      <h3> User specification no. 4</h3>
+      <table> 
+        <tr>
+          <td><b>Use case name</b></td> 
+          <td>Do 2.4km run</td>
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td align = "justify">The user records a 2.4km run. The timing and scoring are stored to the IPPT Record of IPPT Routine of the user in the database. </td>
+        </tr>
+        <tr> 
+          <td><b>Actor(s)</b></td> 
+          <td align = "justify">User, Firebase Database, Location Services</td>
+        </tr>
+        <tr>
+          <td><b>Pre-condition(s)</b></td> 
+          <td align = "justify">The user must have an existing IPPT Routine that has an unrecorded score for the 2.4km section. </td> 
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td align = "justify">The 2.4km section of the IPPT Routine would be recorded. </td>
+        </tr>
+        <tr> 
+          <td><b> Basic Flow </b></td> 
+          <td align = "justify">
+            <ol> 
+              <li align = "justify">The UC starts when the user clicks the record button of the 2.4km section of the IPPT Routine page.</li> 
+              <li align = "justify">The User goes to a page with a timer, start button, and a back button, and is prompted to use his/her location services.</li> 
+              <li align = "justify">The User agrees to using his/her location services and presses the start button, a countdown from 5 to 0 seconds is started after which his/her running distance is tracked and the timer starts running.</li> 
+              <li align = "justify">After reaching 2.4 distance travelled, the timer saves his/her running time for 2.4km.</li> 
+              <li align = "justify">The timing and score for the 2.4 section of the IPPT Routine is stored to the user in the database.</li> 
+              <li align = "justify">The User presses the stop button when he/she is done running.</li> 
+              <li align = "justify">The User returns to the IPPT Routine page, and the score is calculated and displayed to the user. The record button is removed from the 2.4km section of the IPPT Routine page.</li> 
+              <li align = "justify">UC Ends</li> 
+          </td> 
+        </tr> 
+        <tr>
+          <td><b>Alternate Flows</b></td>
+          <td>
+            3.1.1 The User disagrees to using his/her running distance <br>  
+            3.1.2 The User is taken back to the IPPT Routine page <br> 
+            3.1.3 The User goes back to point 1 of Main Flow <br> 
+            3.1.4 UC Ends 
+            <br> 
+            <br> 
+            3.2.1 The User presses the back arrow on the page and goes back to the IPPT Routine page <br> 
+            3.2.2 The User goes back to point 1 of the Main Flow <br> 
+            3.2.3 UC Ends 
+            <br> 
+            <br>
+            4.1. The User stops before 2.4km distance reached. <br> 
+            4.2 The IPPT Routine page does not display a score for that section and the record button will still be present. <br> 
+            4.3 UC Ends. <br> 
+          </td> 
+        </tr> 
+      </table> 
     </td> 
     </td> 
-    <td align = "justify">We did the use case specifications to ensure that we are always going to our plan</td> 
+    <td align = "justify">We did the use case specifications to ensure that we will get a clearer picture of how our application will behave and function at the end of assignment 2</td> 
   </tr>
 </table> 
 
