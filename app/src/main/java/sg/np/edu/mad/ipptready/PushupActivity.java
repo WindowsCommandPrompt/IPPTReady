@@ -68,14 +68,17 @@ public class PushupActivity extends AppCompatActivity {
             .setPositiveButton(
                 "OK",
                 (DialogInterface di, int i) -> {
+                    // change layouts in order to key in completed pushups
                     ((LinearLayout) findViewById(R.id.pushUpRecordTimingInterface)).setVisibility(View.GONE);
                     ((LinearLayout) findViewById(R.id.pushUpActivityEnterRecords)).setVisibility(View.VISIBLE);
 
+                    // When submitting completed pushups
                     ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
                         EditText numberOfPushUpsThatTheUserDid = findViewById(R.id.numberOfPushUpsThatTheUserDid);
                         Integer numPushUpsDone = Integer.parseInt((numberOfPushUpsThatTheUserDid).getText().toString());
+                        // Check if numPushUpsDone is a valid number
                         if (numPushUpsDone >= 0 || numPushUpsDone != null){
-                            //now push into the database. .
+                            // Push into the firebase...
                             addPushupToDatabase(numPushUpsDone, NumPushups, email, cycleID, routineID, new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -103,12 +106,13 @@ public class PushupActivity extends AppCompatActivity {
             Toast.makeText(this, "Please activate the timer before you can perform the other actions", Toast.LENGTH_SHORT).show();
         });
 
-        //Once the timer has been activated by the user....
+        // Once the timer has been activated by the user....
         ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(function -> {
-            //We only want the timer to be clicked on once, which that means we will need to disable the layout after the
             ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
             Toast.makeText(this, "The timer has begun!", Toast.LENGTH_SHORT).show();
             long timeAvailable = Long.parseLong(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString()) * 1000;
+
+            // Countdown timer
             CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 10){
                 @Override
                 public void onTick(long millisLeft) {
@@ -129,17 +133,17 @@ public class PushupActivity extends AppCompatActivity {
                 }
             }.start();
 
-            //If the user would like to reset the timer
+            // If the user would like to reset the timer
             ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(thenFunctionAs -> {
                 Toast.makeText(this, "The stopwatch has been reset", Toast.LENGTH_SHORT).show();
-                mainCountdownTimer.cancel(); //The stopwatch will stop..
-                ((TextView) findViewById(R.id.timing_indicator_text)).setText("60");  //initialize the amount of time remaining back to
-                ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(true); //We will have to re-enable the button again
-                //The user would have to manually the start the timer by himself...OBVIOUSLY
+                mainCountdownTimer.cancel();
+                ((TextView) findViewById(R.id.timing_indicator_text)).setText("60");
+                ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(true);
+                // when timer begins again later
                 ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(onUserClick -> {
-                    Toast.makeText(this, "Starting timer...", Toast.LENGTH_SHORT).show(); //Display the Toast message which states that the timer is resuming...
-                    mainCountdownTimer.start(); //start the stopwatch again....
-                    ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false); //Disable the button again...
+                    Toast.makeText(this, "Starting timer...", Toast.LENGTH_SHORT).show();
+                    mainCountdownTimer.start();
+                    ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
                 });
 
                 //The user can only click on the resetTimer once
@@ -150,8 +154,6 @@ public class PushupActivity extends AppCompatActivity {
         });
     }
 
-    //When the user wants to click on the back icon on the navigation bar
-    //GET CONFIRMATION FROM THE USER FIRST
     @Override
     public void onBackPressed()  {
         AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
@@ -191,7 +193,7 @@ public class PushupActivity extends AppCompatActivity {
         }
     }
 
-    //THIS WILL BE THE METHOD WHERE WE WILL PUSH THE INFORMATION INTO THE DATABASE.
+    // Firestore code
     public void addPushupToDatabase(int pushUps, int target, String EmailAddress, String IPPTCycleID, String IPPTRoutineID, OnCompleteListener<Void> onCompleteVoidListener){
         FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
         HashMap<String, Object> numOfPushupsDone = new HashMap<String, Object>();

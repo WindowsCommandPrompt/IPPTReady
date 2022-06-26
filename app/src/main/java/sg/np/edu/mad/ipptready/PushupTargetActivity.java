@@ -19,9 +19,10 @@ public class PushupTargetActivity extends AppCompatActivity {
 
         AlertDialog.Builder woahThatIsTooMuch = new AlertDialog.Builder(this);
 
+        // If user keys in more than 60 push ups...
         woahThatIsTooMuch
                 .setTitle("HOLD ON!")
-                .setMessage("You have set the target number of push-ups to be more than 60 times. Are you sure you will be able to finish those repetitions within 1 minute?")
+                .setMessage("You have set the target number of push-ups to be more than 60. Are you sure you will be able to finish those repetitions within 1 minute?")
                 .setPositiveButton(
                     "YES",
                     (DialogInterface di, int i) -> {
@@ -44,18 +45,22 @@ public class PushupTargetActivity extends AppCompatActivity {
                 )
                 .setCancelable(false);
 
+        // When target push up is set
         ((Button) findViewById(R.id.setPushUpActivity)).setOnClickListener(function -> {
             try{
+                // Get target pushups from EditText
                 targetPushUps = Integer.parseInt(((EditText) findViewById(R.id.pushUpTarget)).getText().toString());
                 if (targetPushUps < 0) {
                     ((EditText) findViewById(R.id.pushUpTarget)).setText("");
                     Toast.makeText(this, "The value cannot be less than 0, please try again", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    // if target pushups is > 60, create and show woahThatIsTooMuch alert
                     if (targetPushUps > 60){
                         woahThatIsTooMuch.create().show();
                     }
                     else{
+                        // Prepare intent to timer
                         Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
                         intent.putExtra("NumPushups", targetPushUps);
                         intent.putExtra("Email", getIntent().getStringExtra("Email"));
