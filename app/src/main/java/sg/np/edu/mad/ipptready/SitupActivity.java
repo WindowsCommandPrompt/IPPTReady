@@ -104,6 +104,7 @@ public class SitupActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
             }
         });
         // Return to sit-up target
