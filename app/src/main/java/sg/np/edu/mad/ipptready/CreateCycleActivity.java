@@ -31,16 +31,17 @@ public class CreateCycleActivity extends AppCompatActivity {
         Toast GenericErrorToast = Toast.makeText(this,
                 "Unexpected error occurred",
                 Toast.LENGTH_SHORT);
-        Intent intent = getIntent();
-        dateCreated = (Date)intent.getSerializableExtra("DateCreated");
-        if (null == dateCreated &&
-            null == savedInstanceState) {
-            dateCreated = (Date) savedInstanceState.getSerializable("DateCreated");
-            if (null == dateCreated) {
-                // show generic error message to user
-                GenericErrorToast.show();
-                finish();
-            }
+
+        if (null != getIntent()) {
+            Intent intent = getIntent();
+            dateCreated = (Date)intent.getSerializableExtra("DateCreated");
+        }
+        else if (null != savedInstanceState) {
+            dateCreated = (Date)savedInstanceState.getSerializable("DateCreated");
+        }
+        else {
+            GenericErrorToast.show();
+            finish();
         }
 
         if (null != dateCreated) {
@@ -60,6 +61,11 @@ public class CreateCycleActivity extends AppCompatActivity {
                     finish();
                 }
             });
+        }
+        else {
+            // Missing data in intent or saveInstanceState
+            GenericErrorToast.show();
+            finish();
         }
     }
 

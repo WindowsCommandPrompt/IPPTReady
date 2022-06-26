@@ -15,7 +15,7 @@ import java.io.ObjectInputStream;
 
 public class HomeActivity extends AppCompatActivity {
     private String EmailAddress;
-    private byte[] SerializedUser;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class HomeActivity extends AppCompatActivity {
 
         // Input from LoginActivity:
         // "Email", String : Email Address of the user
-        // "User", byteArray : string Object to serialize back to User Object, contains
+        // "User", Serializable : string Object to serialize back to User Object, contains
         //      info about the user
 
         // Output to CycleActivity:
         // "Email", String : Email Address of the user
-        // "User", byteArray : serialized form of User Object
+        // "User", Serializable : serialized form of User Object
 
         // Note:        Make sure to save the Input data using the onSaveInstanceState(android.os.Bundle),
         //                  so that we don't need to retrieve the data again!
@@ -39,29 +39,20 @@ public class HomeActivity extends AppCompatActivity {
         Toast GenericErrorToast = Toast.makeText(this,
                 "Unexpected error occurred",
                 Toast.LENGTH_SHORT);
-        Intent intent = getIntent();
-        EmailAddress = intent.getStringExtra("Email");
-        SerializedUser = intent.getByteArrayExtra("User");
 
-        if (null == EmailAddress ||
-            null == SerializedUser) {
-            EmailAddress = savedInstanceState.getString("Email");
-            SerializedUser = savedInstanceState.getByteArray("User");
-            if (null == EmailAddress ||
-                null == SerializedUser) {
-                // show generic error message if all else fails ...
-                GenericErrorToast.show();
-            }
+        if (null != getIntent()) {
+            Intent intent = getIntent();
+            EmailAddress = intent.getStringExtra("Email");
+            // Java is not a very typesafe language!
+            user = (User)intent.getSerializableExtra("User");
         }
-
-        User user = null;
-        ByteArrayInputStream bis = new ByteArrayInputStream(SerializedUser);
-        try {
-            ObjectInputStream ois = new ObjectInputStream(bis);
-            user = (User)ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        else if (null != savedInstanceState) {
+            EmailAddress = savedInstanceState.getString("Email");
+            user = (User)savedInstanceState.getSerializable("User");
+        }
+        else {
+            // If all else fails..
             GenericErrorToast.show();
-            e.printStackTrace();
             finish();
         }
 
@@ -74,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
                     Intent CycleIntent = new Intent(HomeActivity.this, CycleActivity.class);
 
                     CycleIntent.putExtra("Email", EmailAddress);
-                    CycleIntent.putExtra("User", SerializedUser);
+                    CycleIntent.putExtra("User", user);
                     startActivity(CycleIntent);
                 }
             });
@@ -86,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                     Intent ProfileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
 
                     ProfileIntent.putExtra("Email", EmailAddress);
-                    ProfileIntent.putExtra("User", SerializedUser);
+                    ProfileIntent.putExtra("User", user);
                     startActivity(ProfileIntent);
                 }
             });
@@ -108,18 +99,23 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(InformationIntent);
                 }
             });
-        }
 
-        // set name of user in home activity
-        TextView name = findViewById(R.id.nameTextHome);
-        name.setText(user.Name);
+            // set name of user in home activity
+            TextView name = findViewById(R.id.nameTextHome);
+            name.setText(user.Name);
+        }
+        else {
+            // somehow data missing from the intent or the saveInstanceState
+            GenericErrorToast.show();
+            finish();
+        }
     }
 
     @Override
     protected  void onSaveInstanceState(@NonNull Bundle outState) {
         // write code here!
         outState.putString("Email", EmailAddress);
-        outState.putByteArray("User", SerializedUser);
+        outState.putSerializable("User", user);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
     }

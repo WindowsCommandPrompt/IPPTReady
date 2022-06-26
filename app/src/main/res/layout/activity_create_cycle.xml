@@ -46,6 +46,7 @@
       android:ems="10"
       android:inputType="textPersonName"
       android:maxLength="50"
+      android:textColor="@color/black"
       android:textSize="20dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
@@ -68,12 +69,14 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
 
-  <Button
+  <androidx.appcompat.widget.AppCompatButton
       android:id="@+id/createcyclecreatenewcycleButton"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="30dp"
+      android:layout_width="149dp"
+      android:layout_height="43dp"
+      android:layout_marginBottom="32dp"
+      android:background="@drawable/createcycle_button"
       android:text="Create New Cycle"
+      android:textColor="@color/white"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
@@ -84,6 +87,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="20dp"
+      android:textColor="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.5"
       app:layout_constraintStart_toStartOf="parent"
