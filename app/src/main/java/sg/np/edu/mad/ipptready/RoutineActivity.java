@@ -110,6 +110,7 @@ public class RoutineActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            // set the view back to the activity after done loading
                             setContentView(R.layout.activity_routine);
                             recyclerView = findViewById(R.id.routineRecyclerView);
                             if (finalIpptCycle.isFinished) {
@@ -141,6 +142,7 @@ public class RoutineActivity extends AppCompatActivity {
                                     ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(currentIpptRoutine.DateCreated));
                                     findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
                                 }
+                                // set recyclerview with the list if list is not empty
                                 ipptRoutineAdapter = new IPPTRoutineAdapter(ipptRoutineList, RoutineActivity.this, EmailAddress,
                                         IPPTCycleId, RoutineActivity.this);
 
@@ -150,6 +152,7 @@ public class RoutineActivity extends AppCompatActivity {
                                 recyclerView.setAdapter(ipptRoutineAdapter);
                             }
                             else {
+                                // if no routines found, set with empty list
                                 Log.d("RoutineActivity", "Routine Collection is empty!");
                                 ipptRoutineAdapter = new IPPTRoutineAdapter(new ArrayList<IPPTRoutine>(), RoutineActivity.this,
                                         EmailAddress, IPPTCycleId, RoutineActivity.this);
@@ -206,6 +209,7 @@ public class RoutineActivity extends AppCompatActivity {
                                 Date todayDate = new Date();
                                 for (DocumentSnapshot document : task.getResult()) {
                                     Date documentDate = (Date) document.get("DateCreated", Date.class);
+                                    // check if the routine has been done today!
                                     if (documentDate.getYear() == todayDate.getYear() && documentDate.getMonth() == todayDate.getMonth() && documentDate.getDay() == todayDate.getDay())
                                     {
                                         Toast.makeText(RoutineActivity.this, "Come back tomorrow to start a new Routine :)", Toast.LENGTH_SHORT).show();
@@ -286,6 +290,7 @@ public class RoutineActivity extends AppCompatActivity {
             // "IPPTRoutine", byteArray : Serialized IPPTRoutine Object
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+            // get data for all the routines in the cycle
             db.collection("IPPTUser")
                     .document(EmailAddress)
                     .collection("IPPTCycle")
@@ -323,6 +328,7 @@ public class RoutineActivity extends AppCompatActivity {
 
     private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
 
+        // onResume will be calle after this ends!
         @Override
         public void onActivityResult(ActivityResult result) {
             if (null != result.getData()) {
@@ -337,6 +343,7 @@ public class RoutineActivity extends AppCompatActivity {
         }
     }
 
+    // to set back the completecreateRoutineButton
     private void setCreateRoutineButton() {
         findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CreateRoutineOnClickListener());
         findViewById(R.id.constraintLayout2).setOnClickListener(null);
@@ -352,6 +359,9 @@ public class RoutineActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    /* check if theres any current ippt routine, then
+        check if the current ippt routine is finished
+    */
     @Override
     protected void onResume() {
         Log.d("RoutineActivity", "onResume called!");
@@ -366,6 +376,7 @@ public class RoutineActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    // clean up after the activity finishes
     @Override
     protected void onDestroy() {
         if (null != GoRoutine) {

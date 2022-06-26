@@ -107,6 +107,7 @@ public class RecordActivity extends AppCompatActivity {
                     e.printStackTrace();
                     finish();
         }
+        // Register the three activity result launchers
         GoRun = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -202,6 +203,7 @@ public class RecordActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+        // get button and set onclicklistener
         Button completeButton = findViewById(R.id.recordcompletebutton);
         if (ipptRoutine.isFinished) {
             completeButton.setVisibility(View.GONE);
@@ -236,6 +238,7 @@ public class RecordActivity extends AppCompatActivity {
                                             }
                                         }
                                         if (completed == 3) {
+                                            // calculate all score after all is completed
                                             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
                                             long finalTotalTimeRun = totalTimeRun;
@@ -415,7 +418,7 @@ public class RecordActivity extends AppCompatActivity {
                 });
     }});
     }
-
+    // formats the seconds to a nice string for display
     private String SecondstoString(int seconds) {
         if (seconds == 0) {
             return null;
@@ -426,6 +429,7 @@ public class RecordActivity extends AppCompatActivity {
         return String.format("%d:%02d", minute, second);
     }
 
+    // Intialize all the intents for the respective activities
     private class RunRecordOnClickListener implements View.OnClickListener {
 
         @Override
@@ -478,7 +482,7 @@ public class RecordActivity extends AppCompatActivity {
         outState.putByteArray("IPPTRoutine", SerializedIPPTRoutine);
         super.onSaveInstanceState(outState);
     }
-
+    // handle the when the user back presses the recordactivity
     @Override
     @MainThread
     public void onBackPressed() {
