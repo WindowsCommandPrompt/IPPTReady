@@ -27,9 +27,12 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class VideoActivity extends AppCompatActivity {
-    private static final String DEBUG = "DEBUG";
-    Map<String, List<String>> videosList = new HashMap<String, List<String>>();
-    String videoIds = "";
+    // Global variables
+    private static final String DEBUG = "DEBUG"; // Debug tag
+    Map<String, List<String>> videosList = new HashMap<String, List<String>>(); // Hashmap to store videos based on their categories
+    String videoIds = ""; // String of video ids to be used to retrieve all video data at once
+
+    // Store order of activities (to be displayed in video activity)
     ArrayList<String> orderOfActivities = new ArrayList<String>() {
         {
             add("Warm up");
@@ -39,7 +42,7 @@ public class VideoActivity extends AppCompatActivity {
             add("Cool down");
         }
     };
-    ArrayList<Integer> noOfVideos = new ArrayList<>();
+    ArrayList<Integer> noOfVideos = new ArrayList<>(); // Store number of videos in each category
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class VideoActivity extends AppCompatActivity {
 
         }
 
+        // Get video links from Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("IPPTVideo").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -65,27 +69,31 @@ public class VideoActivity extends AppCompatActivity {
                     if (!snapshot.isEmpty()) {
                         for (int i = 0; i < snapshot.size(); i++) {
                             for (DocumentSnapshot document : snapshot) {
+                                // Turn into video object
                                 List<String> videoArray = document.toObject(Video.class).video;
-                                int number = 0;
+                                int number = 0; // variable for number of videos for the category
                                 if (document.getId().equals(orderOfActivities.get(i))) {
                                     videosList.put(orderOfActivities.get(i), videoArray);
                                     for (String videoId : videoArray) {
-                                        videoIds += videoId + ",";
-                                        number += 1;
+                                        videoIds += videoId + ","; // Add video id to string
+                                        number += 1; // Increment number of videos
                                         Log.d(DEBUG, orderOfActivities.get(i) + ":" + videoId);
                                     }
-                                    noOfVideos.add(number);
+                                    noOfVideos.add(number); // Store number of videos for the category
                                     break;
                                 }
                             }
                         }
 
+                        // remove last comma from videoIds string
                         videoIds = videoIds.substring(0, videoIds.length()-1);
 
-                        String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,description,thumbnails/medium/url),items/contentDetails/duration&key=" + WatchVideo.youtubeAPIKEY + "&id=" + videoIds;
+                        // YouTube DATA API V3 query link to retrieve video data (video titles, video descriptions, video thumbnail links)
+                        String jsonLink = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails,snippet&fields=items/snippet(title,description,thumbnails/medium/url),items/contentDetails/duration&key=" + WatchVideoActivity.youtubeAPIKEY + "&id=" + videoIds;
                         Log.d(DEBUG, jsonLink);
-                        String jsonString = "";
+                        String jsonString = ""; // Json result to be stored in this string
 
+                        // url object stores link to YouTube api query
                         URL url = null;
                         try {
                             url = new URL(jsonLink);
@@ -93,6 +101,7 @@ public class VideoActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                        // Establish connection to retrieve results
                         HttpURLConnection conn = null;
                         try {
                             conn = (HttpURLConnection) url.openConnection();
@@ -103,9 +112,10 @@ public class VideoActivity extends AppCompatActivity {
                             if (responseCode != 200) {
                                 throw new RuntimeException("HttpResponseCode: " + responseCode);
                             } else {
+                                // If connection successful, utilise Scanner to get results line by line
                                 Scanner scanner = new Scanner(url.openStream());
                                 while (scanner.hasNext()) {
-                                    jsonString += scanner.nextLine();
+                                    jsonString += scanner.nextLine(); // append each line to jsonString
                                 }
                                 scanner.close();
                             }
@@ -113,8 +123,10 @@ public class VideoActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                        // VideoAdapter initialized
                         VideoAdapter adapter = new VideoAdapter(videosList, jsonString, noOfVideos,VideoActivity.this);
 
+                        // RecyclerView
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
                         RecyclerView recyclerView = findViewById(R.id.videoRecyclerView);
                         recyclerView.setLayoutManager(layoutManager);
