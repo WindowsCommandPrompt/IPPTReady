@@ -328,7 +328,7 @@ public class RoutineActivity extends AppCompatActivity {
 
     private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
 
-        // onResume will be calle after this ends!
+        // onResume will be called after
         @Override
         public void onActivityResult(ActivityResult result) {
             if (null != result.getData()) {
@@ -376,7 +376,7 @@ public class RoutineActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    // clean up after the activity finishes
+    // remember to clean up the launchers after the activity finishes
     @Override
     protected void onDestroy() {
         if (null != GoRoutine) {
