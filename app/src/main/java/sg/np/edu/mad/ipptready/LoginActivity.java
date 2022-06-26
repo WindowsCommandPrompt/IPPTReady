@@ -37,17 +37,20 @@ public class LoginActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_login);
 
+        // Build google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
+        // set up google client
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        // Get last signedin account if there is any...
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
+        // Set up Sign in button
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
-
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,11 +59,14 @@ public class LoginActivity extends AppCompatActivity {
         });
         updateUI(account);
     }
+
+    // Sign in method (access google sign in intent)
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    // Get result from sign in intent
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -74,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    // Access Firestore on successful google login
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             Toast.makeText(this, "Google Login Success", Toast.LENGTH_SHORT).show();
@@ -86,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
+                        // If user has already have an account in IPPTReady
                         if (document.exists()) {
                             User user = document.toObject(User.class);
 
@@ -99,8 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                 oos.writeObject(user);
                                 loginIntent.putExtra("User", bos.toByteArray());
                             } catch (IOException e) {
-                                // If error occurred, display friendly message to user
-
+                                // if error
                                 Toast.makeText(LoginActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                                 return;
@@ -110,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(loginIntent);
 
                         } else {
+                            // Create an account if user has no account
                             Toast.makeText(LoginActivity.this, "Welcome to IPPTReady!", Toast.LENGTH_SHORT).show();
                             String personName = acct.getDisplayName();
 

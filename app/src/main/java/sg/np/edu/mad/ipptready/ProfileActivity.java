@@ -26,6 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
                 "Unexpected error occurred",
                 Toast.LENGTH_SHORT);
 
+        // get user information
         Intent intent = getIntent();
         EmailAddress = intent.getStringExtra("Email");
         SerializedUser = intent.getByteArrayExtra("User");
@@ -34,24 +35,22 @@ public class ProfileActivity extends AppCompatActivity {
         ByteArrayInputStream bis = new ByteArrayInputStream(SerializedUser);
         try {
             ObjectInputStream ois = new ObjectInputStream(bis);
-            // casting will work 100%! Clueless
             user = (User)ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // show generic error message ...
-
             GenericErrorToast.show();
             e.printStackTrace();
             finish();
         }
 
+        // Get TextViews from ProfileActivity layout
         TextView name = findViewById(R.id.name);
         TextView email = findViewById(R.id.email);
         TextView dob = findViewById(R.id.dateOfBirth);
 
-
         SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MMM/yyyy");
         String dateOfBirth = dateFormat.format(user.DOB);
 
+        // set name, email and dob on profile activity screen
         name.setText(user.Name);
         email.setText(EmailAddress);
         dob.setText(dateOfBirth);

@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
             SerializedUser = savedInstanceState.getByteArray("User");
             if (null == EmailAddress ||
                 null == SerializedUser) {
-                // show generic error message if  all else fails ...
+                // show generic error message if all else fails ...
                 GenericErrorToast.show();
             }
         }
@@ -58,11 +58,8 @@ public class HomeActivity extends AppCompatActivity {
         ByteArrayInputStream bis = new ByteArrayInputStream(SerializedUser);
         try {
             ObjectInputStream ois = new ObjectInputStream(bis);
-            // casting will work 100%! Clueless
             user = (User)ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            // show generic error message ...
-
             GenericErrorToast.show();
             e.printStackTrace();
             finish();
@@ -70,6 +67,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (null != EmailAddress &&
             null != user) {
+            // Onclicklistener for Cycle feature
             findViewById(R.id.cycleButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,6 +78,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(CycleIntent);
                 }
             });
+
+            // Onclicklistener for profile feature
             findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,6 +90,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(ProfileIntent);
                 }
             });
+
+            // Onclicklistener for video feature
             findViewById(R.id.videoButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -97,6 +99,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(VideoIntent);
                 }
             });
+
+            // Onclicklistener for info feature
             findViewById(R.id.infoButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +110,7 @@ public class HomeActivity extends AppCompatActivity {
             });
         }
 
+        // set name of user in home activity
         TextView name = findViewById(R.id.nameTextHome);
         name.setText(user.Name);
     }
