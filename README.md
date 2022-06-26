@@ -191,14 +191,14 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_2b6e704125994c3892abccda3b16f180~mv2.png" alt = "User story mapping for MAD assignment" /> 
     </td> 
-    <td align = "justify">This is an image of our use</td> 
+    <td align = "justify">This is an image of our user story mapping. Purpose of this user story mapping is to help our team to identify what will the user really want to achieve from using our application</td> 
   </tr> 
   <tr> 
     <td>Class domain diagram</td> 
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_2f33d0386d5d4da4af1fc6868dd6d211~mv2.png" alt = "Class domain diagram" />
     </td> 
-    <td align = "justify"></td> 
+    <td align = "justify">Helps us to implement the necessary classes for our application development</td> 
   </tr> 
   <tr> 
     <td>Use case specifications</td> 
