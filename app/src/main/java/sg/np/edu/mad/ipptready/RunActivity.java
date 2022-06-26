@@ -27,7 +27,7 @@ public class RunActivity extends AppCompatActivity {
 
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
 
-    //GET CONFIRMATION FROM THE USER FIRST
+    // When user decides to go back to previous screen
     @Override
     public void onBackPressed()  {
         AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
@@ -58,20 +58,13 @@ public class RunActivity extends AppCompatActivity {
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
 
-        /*try {
-            Log.d("TAG", "" + unpackagePartialJSON());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-
+        // Get bundle
         Bundle bundle = getIntent().getExtras();
         String Email = bundle.getString("Email");
         String IPPTCycleID = bundle.getString("IPPTCycleId");
         String IPPTRoutineId = bundle.getString("IPPTRoutineId");
 
-
-
-        //Build the countdown
+        // Build timer
         mainStopwatch = new CountDownTimer(1000, 1000){
             @Override
             public void onTick(long millisUntilFinished) {
@@ -119,14 +112,15 @@ public class RunActivity extends AppCompatActivity {
             }
         };
 
+        // Alert dialog to save data after stopping the timer
         saveCycleData
             .setTitle("Save data?")
             .setMessage("Are you sure you would like to save your data?")
             .setCancelable(false)
             .setPositiveButton(
-                "YES",
+                "Yes",
                 (DialogInterface di, int i) -> {
-                    //take note of the timing that is within the TextView
+                    // Get timing
                     String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
                     Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
                     int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
@@ -139,12 +133,10 @@ public class RunActivity extends AppCompatActivity {
                             finish();
                         }
                     });
-
-                    //Log.d("AMICALLED??", "Yes I was called");
                 }
             )
             .setNegativeButton(
-                "NO",
+                "No",
                 (DialogInterface di, int i) -> {
                     Intent recordBackIntent = new Intent();
 
@@ -153,21 +145,21 @@ public class RunActivity extends AppCompatActivity {
                 }
             );
 
-        //Build the messages accordingly...
+        // Alert dialog to terminate the timer
         confirmTerminateCycle
-            .setTitle("Terminate cycle?")
-            .setMessage("Are you sure you want to terminate this run cycle?")
+            .setTitle("Terminate run?")
+            .setMessage("Are you sure you want to terminate this run?")
             .setPositiveButton(
-                "YES",
+                "Yes",
                 (DialogInterface di, int i) -> {
                     //If the user presses yes THEN STOP THE TIMER
                     saveCycleData.create().show();
                 }
             )
             .setNegativeButton(
-                "NO",
+                "No",
                 (DialogInterface di, int i) -> {
-                    //If the user presses no then
+                    // If user rejects terminating cycle
                     arcdt.set(new CountDownTimer(1000, 1000){
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -211,13 +203,11 @@ public class RunActivity extends AppCompatActivity {
                         }
                         @Override
                         public void onFinish() {
-                            //Add the relevant event listener to terminate cycle
                             ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
                                 Toast.makeText(RunActivity.this, "The timer has been paused", Toast.LENGTH_SHORT);
                                 this.cancel();
                                 confirmTerminateCycle.create().show();
                             });
-                            //when the orientation of the screen has been changed
                             this.start();
                         }
                     });
@@ -226,14 +216,13 @@ public class RunActivity extends AppCompatActivity {
             )
             .setCancelable(false);
 
-        //Add the relevant event listener to start the cycle
+        // Start timer
         ((LinearLayout) findViewById(R.id.startCycle)).setOnClickListener(andThenFunctionAs -> {
-            //start the timer
             mainStopwatch.start();
             ((LinearLayout) findViewById(R.id.startCycle)).setClickable(false);
             ((LinearLayout) findViewById(R.id.startCycle)).setEnabled(false);
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Stopwatch has been activated", Toast.LENGTH_SHORT).show();
-            //Add the relevant event listener to terminate cycle
+            // set onclicklistener for terminating run
             ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
                 mainStopwatch.cancel();
                 confirmTerminateCycle.create().show();
@@ -241,11 +230,13 @@ public class RunActivity extends AppCompatActivity {
             });
         });
 
+        // onclicklistener for stop timer
         ((LinearLayout) findViewById(R.id.terminateCycle)).setOnClickListener(andThenFunctio -> {
-            Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Please start the stopwatch first before you can terminate the stopwatch. Common sense", Toast.LENGTH_SHORT).show();
+            Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "Timer has not started yet!", Toast.LENGTH_SHORT).show();
         });
     }
 
+    // Firestore code
     public void addRunToDatabase(int totalSeconds, String EmailAddress, String IPPTCycleId, String IPPTRoutineId, OnCompleteListener<Void> onCompleteVoidListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> Run = new HashMap<>();

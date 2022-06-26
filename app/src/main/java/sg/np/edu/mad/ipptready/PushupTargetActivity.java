@@ -21,10 +21,10 @@ public class PushupTargetActivity extends AppCompatActivity {
 
         // If user keys in more than 60 push ups...
         woahThatIsTooMuch
-                .setTitle("HOLD ON!")
+                .setTitle("Hold on!")
                 .setMessage("You have set the target number of push-ups to be more than 60. Are you sure you will be able to finish those repetitions within 1 minute?")
                 .setPositiveButton(
-                    "YES",
+                    "Yes",
                     (DialogInterface di, int i) -> {
                         Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
                         intent.putExtra("NumPushups", targetPushUps);
@@ -36,7 +36,7 @@ public class PushupTargetActivity extends AppCompatActivity {
                     }
                 )
                 .setNegativeButton(
-                    "NO",
+                    "No",
                     (DialogInterface di, int i) -> {
                         ((EditText) findViewById(R.id.pushUpTarget)).setText("60");
                         Toast.makeText(this, "Target has been set to 60 repetitions", Toast.LENGTH_SHORT);

@@ -40,28 +40,6 @@ public class PushupActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(String.valueOf(NumPushups));
 
-        /*confirmationNotSaveData
-            .setTitle("Are you sure?")
-            .setMessage("Are you sure you do not want to save your data (at least in a really secure location)?")
-            .setPositiveButton(
-                "YES",
-                (DialogInterface di, int i) -> {
-                    Intent recordBackIntent = new Intent(PushupActivity.this, RecordActivity.class);
-                    recordBackIntent.putExtra("Email", getIntent().getStringExtra("Email"));
-                    recordBackIntent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
-                    recordBackIntent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
-                    startActivity(recordBackIntent);
-                    finish();
-                }
-            )
-            .setNegativeButton(
-                "NO",
-                (DialogInterface di, int i) -> {
-                    di.dismiss();
-                }
-            )
-            .setCancelable(false);*/
-
         timeIsUp
             .setTitle("Times up!")
             .setMessage("It's time to key in the number of push ups that you have done for the past 1 minute")
@@ -158,16 +136,16 @@ public class PushupActivity extends AppCompatActivity {
     public void onBackPressed()  {
         AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
         confirmQuit
-                .setTitle("Confirm end cycle?")
-                .setMessage("Are you sure you want to terminate the current run routine? Do note that your progress will not be saved.")
+                .setTitle("Confirm end push-ups?")
+                .setMessage("Are you sure you want to terminate the current push-ups? Do note that your progress will not be saved.")
                 .setPositiveButton(
-                        "YES",
+                        "Yes",
                         (DialogInterface di, int i) -> {
                             finish();
                         }
                 )
                 .setNegativeButton(
-                        "NO",
+                        "No",
                         (DialogInterface di, int i) -> {
                             di.dismiss();
                         }
