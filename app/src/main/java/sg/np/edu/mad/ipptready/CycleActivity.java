@@ -207,6 +207,7 @@ public class CycleActivity extends AppCompatActivity {
                                                             "Cycle with name " + result.Name + " already exists!",
                                                             Toast.LENGTH_SHORT)
                                                             .show();
+                                                    recreate();
                                                 }
                                             }
                                         }
