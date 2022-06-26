@@ -24,7 +24,7 @@ public class DetailedInformationActivity extends AppCompatActivity {
 
         title = findViewById(R.id.infoName);
         details = findViewById(R.id.infoDetails);
-
+        // get from intent and set the text on display
         getData();
         setData();
     }

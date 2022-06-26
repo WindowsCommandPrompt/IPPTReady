@@ -72,7 +72,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 updateLabel();
             }
         };
-
+        // create datepickerdialog
         DatePickerDialog datePickerDialog= new DatePickerDialog(CreateAccountActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
 
@@ -88,7 +88,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // error checking for user details
                 if((dob.getText().toString()).equalsIgnoreCase(""))
                 {
                     dob.setHint("Please select date");
@@ -102,7 +102,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                     name.setError("Please enter a name!");
                     return;
                 }
-
+                // create new user
                 User user = new User();
                 user.Name = name.getText().toString();
                 try {
@@ -126,13 +126,13 @@ public class CreateAccountActivity extends AppCompatActivity {
             }
         });
     }
-
+    // get the date and set the dob text on display
     private void updateLabel(){
         String myFormat="dd/MM/yyyy";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         dob.setText(dateFormat.format(myCalendar.getTime()));
     }
-
+    // add the user to firebase method
     public void addNewUserToDatabase(String EmailAddress,
                                             User user,
                                             OnCompleteListener<Void> onCompleteVoidListener) {

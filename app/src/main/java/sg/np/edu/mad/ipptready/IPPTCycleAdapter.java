@@ -50,7 +50,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull IPPTCycleViewHolder holder, int position) {
         IPPTCycle ipptCycle = ipptCycleList.get(position);
-
+        // set view item's onclicklistener to go to corresponding cycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

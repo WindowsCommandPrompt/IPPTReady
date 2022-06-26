@@ -30,7 +30,7 @@ public class InformationAdapter extends RecyclerView.Adapter<InformationViewHold
         View view = inflater.inflate(R.layout.information_row, parent, false);
         return new InformationViewHolder(view);
     }
-
+    // set data on the view item
     @Override
     public void onBindViewHolder(@NonNull InformationViewHolder holder, int position) {
         holder.infoText1.setText(data1[position]);

@@ -60,6 +60,7 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     @Override
     public void onBindViewHolder(@NonNull IPPTRoutineViewHolder holder, int position) {
         IPPTRoutine ipptRoutine = ipptRoutineList.get(position);
+        // set view item's onclicklistener to go to corresponding routine
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
