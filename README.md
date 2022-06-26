@@ -80,7 +80,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Implemented the rough user interface for the Run activity, PushUp activity based on the initial conceptualized design</li> 
         <li align = "justify">Ensured that the user is able to exit the Run and PushUp activity to navigate to other activities within the application</li> 
         <li align = "justify">Added multiple user dialogs which prompts the user for permissions before actually performing an action programmatically within the application. This is to let the user what actually happens once the user clicks on a certain button, container, present within the layout</li> 
-        <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized</li> 
+        <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized, meaning that the stopwatch would be able to start and stop upon the user's interaction with the run activity, and the countdown timer would be able to reset itself and go back to the initial value of 60 seconds for the countdown timer within the SitUp activity</li> 
         <li align = "justify">Ensured that the timing that is recorded within the Run activity and the number of push ups done from the PushUp activity has been successfully recorded and transferred from one intent to another and eventually into the Firebase Firestore database</li> 
       </ol> 
     </td> 
@@ -152,28 +152,55 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <th>Screenshot description</th> 
   </tr> 
   <tr> 
-    <td>Screenshot 1</td> 
+    <td>Screenshot of the login page within the application</td> 
     <td><img src = "https://play-lh.googleusercontent.com/mSvZNqmucHyV_ftZbTvu2sV8FGsIkkgeXSxaFfHX_5JVwYz741PpWcJbuQzCHVWsjA=w5120-h2880-rw" alt = "Screenshot 1(Login page)"/></td> 
-    <td> </td> 
+    <td align = "justify">To your left shows an image where the user would be able to interact with the application and logs the user into the application. How does the user actually logs into application? The user can just simply tap on the 'Sign in with google' button to sign into the application with a valid google account. If the google account has not been registered with the application, the user can choose to register their gmail with the application</td> 
   </tr> 
   <tr> 
-    <td>Screenshot 2</td> 
+    <td>Screenshot of the home page within the application</td> 
     <td><img src = "https://play-lh.googleusercontent.com/cc2GvZyHtNu7-SPxvSrT817E2aYz7yL1jKKkyd7aRKv4Acm2jdLQWWHAwIFtWUz9nqc=w5120-h2880-rw" alt = "Screenshot 2(Home page)"</td> 
-    <td> </td> 
+    <td>To your left shows an image where </td> 
   </tr> 
   <tr> 
-    <td>Screenshot 3</td> 
+    <td>Screenshot of a portion of the recycler's view in the information activity</td> 
     <td><img src = "https://play-lh.googleusercontent.com/kcG9Whtl7AHdPIkBH-F8hRI7lfpPcWyaE8_xydYtJgM4G1FVnpisChAnjvv42FN6pQ=w5120-h2880-rw" alt = "Screenshot 3(Information activity recycler's view)" /></td> 
-    <td>To your left shows an image where the user would be able to interact with the application and logs the user into the application</td> 
+    <td align = "justify">To your left shows an image where the user would be able to learn more about the scoring criteria of the IPPT physical examination, users of the application would also be able to learn more about the </td> 
   </tr> 
   <tr> 
-    <td>Screenshot 4</td> 
+    <td>Screenshot of a portion of the recycler's view in the video activity</td> 
     <td><img src = "https://play-lh.googleusercontent.com/IGpNuPOQCt_sCw9xQM2kh9YsbL3Uj-I3TuzXikQaGMvGPgzAW6RlgXf01mpQX2tqTiU=w1052-h592-rw" alt = "Screenshot 4(Video activity recycler's view)"/></td> 
-    <td> </td> 
+    <td align = "justify"> </td> 
   </tr> 
 </table> 
 
 ### Diagrams that we did
+<table> 
+  <tr> 
+    <th>Diagram type</th> 
+    <th>Images</th> 
+    <th>Diagram description</th> 
+  </tr> 
+  <tr> 
+    <td>Use case diagram</td> 
+    <td>
+      <img src = "https://static.wixstatic.com/media/3e6e93_36ce8a343c3e453a9922ed0f1d74a2c5~mv2.png" alt = "Use case diagram for MAD assignment" />
+    </td> 
+    <td> </td> 
+  </tr> 
+  <tr> 
+    <td>User story mapping</td> 
+    <td>
+      <img src = "https://static.wixstatic.com/media/3e6e93_2b6e704125994c3892abccda3b16f180~mv2.png" alt = "User story mapping for MAD assignment" /> 
+    </td> 
+    <td> </td> 
+  </tr> 
+  <tr> 
+    <td>Class domain diagram</td> 
+    <td>
+      <img src = "https://static.wixstatic.com/media/3e6e93_2f33d0386d5d4da4af1fc6868dd6d211~mv2.png" alt = "Class domain diagram" />
+    </td> 
+    <td> </td> 
+</table> 
 
 <br> 
 <hr> 
