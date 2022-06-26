@@ -17,19 +17,19 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
   <tr> 
     <td>Joshua Ng</td> 
-    <td> </td> 
+    <td>S10205140B</td> 
   </tr> 
   <tr>
     <td>Tan Zhen Xuan Raiden</td> 
-    <td> </td> 
+    <td>S10223522</td> 
   </tr>
   <tr> 
     <td>Bryan Koh</td> 
-    <td> </td> 
+    <td>S10223617</td> 
   </tr> 
   <tr> 
     <td>Ho Kuan Zher</td> 
-    <td> </td> 
+    <td>S10223870</td> 
   </tr> 
 </table> 
 
@@ -143,10 +143,37 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
 <br> 
 
 ## Appendices
-<ol> 
-  <li align = "justify"></li>
-  <li align = "justify"></li>
-</ol> 
+
+### Application screenshots
+<table>
+  <tr> 
+    <th>Screenshot name</th> 
+    <th>Image</th> 
+    <th>Screenshot description</th> 
+  </tr> 
+  <tr> 
+    <td>Screenshot 1</td> 
+    <td><img src = "https://play-lh.googleusercontent.com/mSvZNqmucHyV_ftZbTvu2sV8FGsIkkgeXSxaFfHX_5JVwYz741PpWcJbuQzCHVWsjA=w5120-h2880-rw" alt = "Screenshot 1(Login page)"/></td> 
+    <td> </td> 
+  </tr> 
+  <tr> 
+    <td>Screenshot 2</td> 
+    <td><img src = "https://play-lh.googleusercontent.com/cc2GvZyHtNu7-SPxvSrT817E2aYz7yL1jKKkyd7aRKv4Acm2jdLQWWHAwIFtWUz9nqc=w5120-h2880-rw" alt = "Screenshot 2(Home page)"</td> 
+    <td> </td> 
+  </tr> 
+  <tr> 
+    <td>Screenshot 3</td> 
+    <td><img src = "https://play-lh.googleusercontent.com/kcG9Whtl7AHdPIkBH-F8hRI7lfpPcWyaE8_xydYtJgM4G1FVnpisChAnjvv42FN6pQ=w5120-h2880-rw" alt = "Screenshot 3(Information activity recycler's view)" /></td> 
+    <td>To your left shows an image where the user would be able to interact with the application and logs the user into the application</td> 
+  </tr> 
+  <tr> 
+    <td>Screenshot 4</td> 
+    <td><img src = "https://play-lh.googleusercontent.com/IGpNuPOQCt_sCw9xQM2kh9YsbL3Uj-I3TuzXikQaGMvGPgzAW6RlgXf01mpQX2tqTiU=w1052-h592-rw" alt = "Screenshot 4(Video activity recycler's view)"/></td> 
+    <td> </td> 
+  </tr> 
+</table> 
+
+### Diagrams that we did
 
 <br> 
 <hr> 
