@@ -32,13 +32,19 @@
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.4" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_create_cycle.xml" value="0.25" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.264" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_detailed_information.xml" value="0.17980072463768115" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_information.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_load_data.xml" value="0.1" />
-        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_login.xml" value="0.264" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_profile.xml" value="0.17980072463768115" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_pushup.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.264" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_routine.xml" value="0.4" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_run.xml" value="0.12" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/activity_video.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/cycle_recycleview.xml" value="0.536" />
+        <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/information_row.xml" value="0.4" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/routine_recycleview.xml" value="0.264" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout/video_recyclerview.xml" value="0.23802083333333332" />
         <entry key="app/src/main/res/layout/activity_create_cycle.xml" value="0.12" />

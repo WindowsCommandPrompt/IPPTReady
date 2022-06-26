@@ -126,8 +126,6 @@ public class RoutineActivity extends AppCompatActivity {
                                     if (!ipptRoutineItem.isFinished) {
                                         Log.d("RoutineActivity", "Routine Completed Detected!");
                                         currentIpptRoutine = ipptRoutineItem;
-                                        String ipptRoutineId = documentSnapshots.get(ipptRoutineList.indexOf(currentIpptRoutine))
-                                                .getId();
                                         ipptRoutineList.remove(currentIpptRoutine);
 
                                         findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
@@ -330,26 +328,18 @@ public class RoutineActivity extends AppCompatActivity {
             if (null != result.getData()) {
                 Intent resultIntent = result.getData();
                 boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
-                if (isCompleted) {
-                    findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
-                    ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
-                    setCreateRoutineButton();
+                if (isCompleted && null != currentIpptRoutine) {
+                    currentIpptRoutine.isFinished = true;
+                    int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
+                    currentIpptRoutine.IPPTScore = updatedScore;
                 }
-                int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
-                currentIpptRoutine.IPPTScore = updatedScore;
-                ipptRoutineList.add(currentIpptRoutine);
-                ipptRoutineAdapter.notifyItemChanged(ipptRoutineList.size() - 1);
             }
         }
     }
 
     private void setCreateRoutineButton() {
         findViewById(R.id.completecreateroutineButton).setOnClickListener(new RoutineActivity.CreateRoutineOnClickListener());
-        findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+        findViewById(R.id.constraintLayout2).setOnClickListener(null);
     }
 
     @Override
@@ -360,6 +350,20 @@ public class RoutineActivity extends AppCompatActivity {
         outState.putByteArray("IPPTCycle", SerializedIPPTCycle);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("RoutineActivity", "onResume called!");
+        if (null != currentIpptRoutine &&
+            currentIpptRoutine.isFinished) {
+            findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.routinedateCreatedText)).setText("");
+            setCreateRoutineButton();
+            ipptRoutineList.add(currentIpptRoutine);
+            ipptRoutineAdapter.notifyItemChanged(ipptRoutineList.size() - 1);
+        }
+        super.onResume();
     }
 
     @Override
