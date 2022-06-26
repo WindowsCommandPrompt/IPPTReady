@@ -159,17 +159,17 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   <tr> 
     <td>Screenshot of the home page within the application</td> 
     <td><img src = "https://play-lh.googleusercontent.com/cc2GvZyHtNu7-SPxvSrT817E2aYz7yL1jKKkyd7aRKv4Acm2jdLQWWHAwIFtWUz9nqc=w5120-h2880-rw" alt = "Screenshot 2(Home page)"</td> 
-    <td>To your left shows an image where </td> 
+    <td>To your left shows an image of the application's home page when the user has logged into the application. The user would be able to click on one of those icons and the user would be redirected to one of those activities within the application</td> 
   </tr> 
   <tr> 
     <td>Screenshot of a portion of the recycler's view in the information activity</td> 
     <td><img src = "https://play-lh.googleusercontent.com/kcG9Whtl7AHdPIkBH-F8hRI7lfpPcWyaE8_xydYtJgM4G1FVnpisChAnjvv42FN6pQ=w5120-h2880-rw" alt = "Screenshot 3(Information activity recycler's view)" /></td> 
-    <td align = "justify">To your left shows an image where the user would be able to learn more about the scoring criteria of the IPPT physical examination, users of the application would also be able to learn more about the </td> 
+    <td align = "justify">To your left shows an image where the user would be able to learn more about the scoring criteria of the IPPT physical examination, what are some of the awards that the user can obtain upon meeting certain criteria for the IPPT physical assessment, and what are some of the tips that the user can read up on to ensure that they will be able to pass the IPPT assessment. Other information related to the IPPT assessment which includes the computation of the scores can also be found within the Information Activity </td> 
   </tr> 
   <tr> 
     <td>Screenshot of a portion of the recycler's view in the video activity</td> 
     <td><img src = "https://play-lh.googleusercontent.com/IGpNuPOQCt_sCw9xQM2kh9YsbL3Uj-I3TuzXikQaGMvGPgzAW6RlgXf01mpQX2tqTiU=w1052-h592-rw" alt = "Screenshot 4(Video activity recycler's view)"/></td> 
-    <td align = "justify"> </td> 
+    <td align = "justify">Users would be able to learn more about how to execute sit-ups and push-ups the standard way. Don't know how to train for the 2.4 km run? Don't worry. Just watch those videos and you should be good to go for the IPPT assessment</td> 
   </tr> 
 </table> 
 
@@ -185,14 +185,14 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_36ce8a343c3e453a9922ed0f1d74a2c5~mv2.png" alt = "Use case diagram for MAD assignment" />
     </td> 
-    <td align = "justify">This is an image of our use case diagram as we did to help us in completing our MAD assignment</td> 
+    <td align = "justify">This is an image of our use case diagram as we did to help us in completing our MAD assignment. It is important to identify what are some of the main actors that we have</td> 
   </tr> 
   <tr> 
     <td>User story mapping</td> 
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_2b6e704125994c3892abccda3b16f180~mv2.png" alt = "User story mapping for MAD assignment" /> 
     </td> 
-    <td align = "justify"></td> 
+    <td align = "justify">This is an image of our use</td> 
   </tr> 
   <tr> 
     <td>Class domain diagram</td> 
@@ -200,7 +200,26 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
       <img src = "https://static.wixstatic.com/media/3e6e93_2f33d0386d5d4da4af1fc6868dd6d211~mv2.png" alt = "Class domain diagram" />
     </td> 
     <td align = "justify"></td> 
+  </tr> 
+  <tr> 
+    <td>Use case specifications</td> 
+    <td> </td> 
+    <td> </td> 
+  </tr>
 </table> 
+
+<br> 
+<hr> 
+<br> 
+
+## Research 
+
+<br> 
+<hr> 
+<br> 
+
+## Link to our application within the google play store
+<a href = "https://play.google.com/store/apps/details?id=sg.np.edu.mad.ipptready">Go to our application in google play store!</a>
 
 <br> 
 <hr> 
