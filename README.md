@@ -173,7 +173,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
 </table> 
 
-### Diagrams that we did
+### Diagrams that we did to help us with our MAD assignment
 <table> 
   <tr> 
     <th>Diagram type</th> 
@@ -185,21 +185,21 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_36ce8a343c3e453a9922ed0f1d74a2c5~mv2.png" alt = "Use case diagram for MAD assignment" />
     </td> 
-    <td> </td> 
+    <td align = "justify">This is an image of our use case diagram as we did to help us in completing our MAD assignment</td> 
   </tr> 
   <tr> 
     <td>User story mapping</td> 
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_2b6e704125994c3892abccda3b16f180~mv2.png" alt = "User story mapping for MAD assignment" /> 
     </td> 
-    <td> </td> 
+    <td align = "justify"></td> 
   </tr> 
   <tr> 
     <td>Class domain diagram</td> 
     <td>
       <img src = "https://static.wixstatic.com/media/3e6e93_2f33d0386d5d4da4af1fc6868dd6d211~mv2.png" alt = "Class domain diagram" />
     </td> 
-    <td> </td> 
+    <td align = "justify"></td> 
 </table> 
 
 <br> 
