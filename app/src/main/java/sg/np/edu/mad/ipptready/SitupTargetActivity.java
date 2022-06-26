@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SitupTargetActivity extends AppCompatActivity {
+    // Global variables created: targetSitups and targetSitupsNumber
     String targetSitups;
     Integer targetSitupsNumber = -1;
 
@@ -35,28 +36,36 @@ public class SitupTargetActivity extends AppCompatActivity {
         boolean situpsDone = false;
         TextView promptText = findViewById(R.id.situpTargetTextView);
 
+        // SitupTargetSet determines if the situps have been completed (if the situp timer has been completed)
         if (getIntent().getBooleanExtra("SitupTargetSet", false)) {
             situpsDone = true;
+            // change text
             promptText.setText("Enter number of sit-ups completed in 1 minute");
             Intent intent = getIntent();
+            // since EditText to receive actual situps, target situps to be retrieved from intent.
             targetSitupsNumber = intent.getIntExtra("Target Situps", 0);
         }
 
 
         EditText targetSitupsEditText = findViewById(R.id.situpTargetNumber);
 
+        // Determine if activity started from Records screen or Sit-up Timer screen
         if (!situpsDone) {
             findViewById(R.id.targetSitupButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // Get target situps.
                     targetSitups = targetSitupsEditText.getText().toString();
+                    // If field left blank
                     if(targetSitups.equalsIgnoreCase("")){
                         targetSitupsEditText.setHint("Please enter target sit-ups");
                         targetSitupsEditText.setError("Please enter a number!");
                         return;
                     }
                     else {
+                        // Set situp number as integer
                         targetSitupsNumber = Integer.parseInt(targetSitups);
+                        // Prepare intent to timer
                         Intent situpTimerIntent = new Intent(SitupTargetActivity.this, SitupActivity.class);
                         Bundle bundle = new Bundle();
                         Bundle receivedBundle = getIntent().getExtras();
@@ -72,29 +81,36 @@ public class SitupTargetActivity extends AppCompatActivity {
             });
         }
         else {
+            // Get intent
             Bundle receivedBundle = getIntent().getExtras();
             findViewById(R.id.targetSitupButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // Get completed situps from EditText
                     String completedSitups = targetSitupsEditText.getText().toString();
+                    // If field left blank
                     if(completedSitups.equalsIgnoreCase("")){
                         targetSitupsEditText.setHint("Please enter completed sit-ups");
                         targetSitupsEditText.setError("Please enter a number!");
                         return;
                     }
                     else {
+                        // Set completedSitups as integer
                         Integer completedSitupsNumber = Integer.parseInt(completedSitups);
+
+                        // Send information to Firestore
                         addSitupToDatabase(targetSitupsNumber, completedSitupsNumber, receivedBundle.getString("Email"), receivedBundle.getString("IPPTCycleId"), receivedBundle.getString("IPPTRoutineId"), new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onComplete(@NonNull Task<Void> task) { // If information is sent successfully
                                 if (task.isSuccessful()) {
+                                    // Prepare intent to record activity
                                     Toast.makeText(SitupTargetActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
-                                    Intent recordIntent =  new Intent();
+                                    Intent recordIntent =  new Intent(SitupTargetActivity.this, RecordActivity.class);
                                     recordIntent.putExtra("Target", targetSitupsNumber);
                                     recordIntent.putExtra("NumReps", completedSitupsNumber);
-                                    recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     setResult(Activity.RESULT_OK, recordIntent);
                                     startActivity(recordIntent);
+                                    finish();
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
@@ -108,6 +124,7 @@ public class SitupTargetActivity extends AppCompatActivity {
         }
     }
 
+    // Firestore code
     public void addSitupToDatabase(int target, int completed, String EmailAddress, String IPPTCycleId, String IPPTRoutineId, OnCompleteListener<Void> onCompleteVoidListener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> Situp = new HashMap<>();
