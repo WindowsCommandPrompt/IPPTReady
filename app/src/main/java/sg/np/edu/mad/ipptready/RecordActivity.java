@@ -109,7 +109,8 @@ public class RecordActivity extends AppCompatActivity {
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (null != result.getData()) {
+                        recreate();
+                        /*if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int totalSeconds = resultIntent.getIntExtra("Timing", 0);
                             String timeFinished = SecondstoString(totalSeconds);
@@ -117,14 +118,15 @@ public class RecordActivity extends AppCompatActivity {
                                 ((TextView)findViewById(R.id.runrecordtimetakenfinished)).setText(timeFinished);
                                 ((Button) findViewById(R.id.runrecordButton)).setVisibility(View.GONE);
                             }
-                        }
+                        }*/
                     }
                 });
         GoSitup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (null != result.getData()) {
+                        recreate();
+                        /*if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int target = resultIntent.getIntExtra("Target", -1);
                             int numberOfSitupsCompleted = resultIntent.getIntExtra("NumReps", -1);
@@ -133,14 +135,15 @@ public class RecordActivity extends AppCompatActivity {
                                 ((TextView)findViewById(R.id.situprecordnumreps)).setText(String.valueOf(target));
                                 ((TextView)findViewById(R.id.situprecordrepstarget)).setText(String.valueOf(numberOfSitupsCompleted));
                             }
-                        }
+                        }*/
                     }
                 });
         GoPushup = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
-                        if (null != result.getData()) {
+                        recreate();
+                        /*if (null != result.getData()) {
                             Intent resultIntent = result.getData();
                             int numOfPushUpsDone = resultIntent.getIntExtra("NumPushUpsDone", -1);
                             int numOfPushUpsForTarget = resultIntent.getIntExtra("NumPushUpsTarget", -1);
@@ -149,7 +152,7 @@ public class RecordActivity extends AppCompatActivity {
                                 ((TextView) findViewById(R.id.pushuprecordnumreps)).setText(String.valueOf(numOfPushUpsDone));
                                 ((TextView) findViewById(R.id.pushuprecordrepstarget)).setText(String.valueOf(numOfPushUpsForTarget));
                             }
-                        }
+                        }*/
                     }
                 });
         // get the records from the ippt routine
@@ -400,10 +403,6 @@ public class RecordActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     Toast.makeText(RecordActivity.this, "Well Done! Returning to Routines page", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent();
-                                                    intent.putExtra("isCompleted", true);
-                                                    intent.putExtra("UpdatedScore", totalScore[0]);
-                                                    setResult(Activity.RESULT_OK, intent);
                                                     finish();
                                                 }
                                             });

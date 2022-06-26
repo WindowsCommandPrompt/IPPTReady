@@ -60,14 +60,8 @@ public class PushupActivity extends AppCompatActivity {
                             addPushupToDatabase(numPushUpsDone, NumPushups, email, cycleID, routineID, new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Intent recordBackIntent = new Intent(PushupActivity.this, RecordActivity.class);
-                                    recordBackIntent.putExtra("NumPushUpsDone", numPushUpsDone);
-                                    recordBackIntent.putExtra("NumPushUpsTarget", NumPushups);
-                                    recordBackIntent.putExtra("Email", getIntent().getStringExtra("Email"));
-                                    recordBackIntent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
-                                    recordBackIntent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
-                                    setResult(Activity.RESULT_OK, recordBackIntent);
-                                    startActivity(recordBackIntent);
+                                    // finish activity
+                                    Toast.makeText(PushupActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
                                     finish();
                                 }
                             });

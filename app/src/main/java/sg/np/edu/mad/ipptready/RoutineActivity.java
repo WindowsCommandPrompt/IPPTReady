@@ -327,19 +327,9 @@ public class RoutineActivity extends AppCompatActivity {
     }
 
     private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
-
-        // onResume will be called after
         @Override
         public void onActivityResult(ActivityResult result) {
-            if (null != result.getData()) {
-                Intent resultIntent = result.getData();
-                boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
-                if (isCompleted && null != currentIpptRoutine) {
-                    currentIpptRoutine.isFinished = true;
-                    int updatedScore = resultIntent.getIntExtra("UpdatedScore", currentIpptRoutine.IPPTScore);
-                    currentIpptRoutine.IPPTScore = updatedScore;
-                }
-            }
+            recreate();
         }
     }
 

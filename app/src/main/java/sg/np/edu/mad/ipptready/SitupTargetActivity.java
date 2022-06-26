@@ -1,10 +1,12 @@
 package sg.np.edu.mad.ipptready;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -103,14 +105,20 @@ public class SitupTargetActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) { // If information is sent successfully
                                 if (task.isSuccessful()) {
-                                    // Prepare intent to record activity
-                                    Toast.makeText(SitupTargetActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
-                                    Intent recordIntent =  new Intent(SitupTargetActivity.this, RecordActivity.class);
-                                    recordIntent.putExtra("Target", targetSitupsNumber);
-                                    recordIntent.putExtra("NumReps", completedSitupsNumber);
-                                    setResult(Activity.RESULT_OK, recordIntent);
-                                    startActivity(recordIntent);
-                                    finish();
+                                    AlertDialog.Builder alertRecorded = new AlertDialog.Builder(SitupTargetActivity.this);
+                                    alertRecorded
+                                            .setTitle("Sit-ups Recorded")
+                                            .setMessage("Sit-ups has been successfully recorded for this routine!")
+                                            .setCancelable(false)
+                                            .setPositiveButton(
+                                                    "Ok",
+                                                    (DialogInterface di, int i) -> {
+                                                        // finish activity
+                                                        Toast.makeText(SitupTargetActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                    }
+                                            );
+                                    alertRecorded.create().show();
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();

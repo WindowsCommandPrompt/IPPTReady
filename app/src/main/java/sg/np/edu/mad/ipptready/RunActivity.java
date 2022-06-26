@@ -127,9 +127,8 @@ public class RunActivity extends AppCompatActivity {
                     addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Intent recordBackIntent = new Intent();
-                            recordBackIntent.putExtra("Timing", totalSeconds);
-                            setResult(Activity.RESULT_OK, recordBackIntent);
+                            // finish activity
+                            Toast.makeText(RunActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });
