@@ -84,8 +84,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
             Toast.makeText(this, "Google Login Success", Toast.LENGTH_SHORT).show();
-            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-            String personEmail = acct.getEmail();
+            String personEmail = account.getEmail();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference userRef = db.collection("IPPTUser").document(personEmail);
             userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -99,19 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             loginIntent.putExtra("Email", personEmail);
-
-                            // Serialize User to Home
-                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                            try {
-                                ObjectOutputStream oos = new ObjectOutputStream(bos);
-                                oos.writeObject(user);
-                                loginIntent.putExtra("User", bos.toByteArray());
-                            } catch (IOException e) {
-                                // if error
-                                Toast.makeText(LoginActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                                e.printStackTrace();
-                                return;
-                            }
+                            loginIntent.putExtra("User", user);
 
                             Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
                             startActivity(loginIntent);
@@ -119,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // Create an account if user has no account
                             Toast.makeText(LoginActivity.this, "Welcome to IPPTReady!", Toast.LENGTH_SHORT).show();
-                            String personName = acct.getDisplayName();
+                            String personName = account.getDisplayName();
 
                             Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
 

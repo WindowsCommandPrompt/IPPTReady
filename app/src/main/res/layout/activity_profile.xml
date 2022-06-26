@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ProfileActivity">
@@ -15,10 +15,13 @@
             android:id="@+id/nameLabel3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="76dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="64dp"
+            android:fontFamily="sans-serif-medium"
             android:text="Name:"
             android:textColor="@color/black"
+            android:textSize="16sp"
+            android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -26,56 +29,53 @@
             android:id="@+id/dateOfBirth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
             android:layout_marginTop="32dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/dobLabel"
+            app:layout_constraintStart_toStartOf="@+id/email"
             app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="32dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/emailLabel"
+            app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="76dp"
+            android:layout_marginStart="64dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/nameLabel3"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toTopOf="@+id/nameLabel3" />
 
         <TextView
             android:id="@+id/dobLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif-medium"
             android:text="Date Of Birth:"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/emailLabel"
+            app:layout_constraintTop_toTopOf="@+id/dateOfBirth" />
 
         <TextView
             android:id="@+id/emailLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="40dp"
+            android:fontFamily="sans-serif-medium"
             android:text="Email:"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameLabel3" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/nameLabel3"
+            app:layout_constraintTop_toTopOf="@+id/email" />
 
         <TextView
             android:id="@+id/textView14"
@@ -87,6 +87,7 @@
             android:textColor="@color/black"
             android:textSize="50dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,13 +95,14 @@
             android:id="@+id/textView8"
             android:layout_width="130dp"
             android:layout_height="43dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="sans-serif-black"
             android:text="Profile"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="34sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 

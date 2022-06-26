@@ -107,11 +107,7 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
                                                                 if (isCompleted) {
                                                                     routineActivity.findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
                                                                     ((TextView)routineActivity.findViewById(R.id.routinedateCreatedText)).setText("");
-                                                                    routineActivity.findViewById(R.id.constraintLayout2).setOnClickListener(new View.OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(View view) {
-                                                                        }
-                                                                    });
+                                                                    routineActivity.findViewById(R.id.constraintLayout2).setOnClickListener(null);
                                                                 }
                                                                 int updatedScore = resultIntent.getIntExtra("UpdatedScore", ipptRoutine.IPPTScore);
                                                                 ipptRoutine.IPPTScore = updatedScore;

@@ -2,19 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/textView37"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:text="_____________________________________________________"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/view_item">
 
     <TextView
         android:id="@+id/routineipptScore"
@@ -39,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
         android:text="IPPT Score:"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif-medium"
         android:text="Date Created:"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
