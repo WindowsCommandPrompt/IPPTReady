@@ -89,12 +89,12 @@ public class SitupTargetActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(SitupTargetActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
-                                    Intent recordIntent =  new Intent();
+                                    Intent recordIntent =  new Intent(SitupTargetActivity.this, RecordActivity.class);
                                     recordIntent.putExtra("Target", targetSitupsNumber);
                                     recordIntent.putExtra("NumReps", completedSitupsNumber);
-                                    recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     setResult(Activity.RESULT_OK, recordIntent);
                                     startActivity(recordIntent);
+                                    finish();
                                 }
                                 else {
                                     Toast.makeText(SitupTargetActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
