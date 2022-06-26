@@ -44,9 +44,6 @@ public class RecordActivity extends AppCompatActivity {
         IPPTCycleId,
         IPPTRoutineId;
     private byte[] SerializedIPPTRoutine;
-    private int runRecordScore,
-        situpRecordScore,
-        pushupRecordScore;
     ActivityResultLauncher<Intent> GoRun,
         GoSitup,
         GoPushup;
@@ -155,7 +152,7 @@ public class RecordActivity extends AppCompatActivity {
                         }
                     }
                 });
-
+        // get the records from the ippt routine
         ipptRoutine.getRecordsList(EmailAddress,
                                 IPPTCycleId,
                                 new OnCompleteListener<QuerySnapshot>() {
@@ -164,6 +161,7 @@ public class RecordActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             if (!task.getResult().isEmpty()) {
                                                 for (DocumentSnapshot document : task.getResult()) {
+                                                    // get the records and set the UI
                                                     if (document.getId().equals("RunRecord")) {
                                                         completed++;
                                                         RunRecord runRecord = document.toObject(RunRecord.class);
@@ -252,6 +250,7 @@ public class RecordActivity extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                             if (task.isSuccessful()) {
+                                                                // get the age group from the DOB of the person
                                                                 int YEAR = ((Date) task.getResult().get("DOB", Date.class)).getYear();
                                                                 int correctedYEAR = new Date().getYear() - YEAR;
                                                                 int ageGroup = 0;
@@ -284,10 +283,10 @@ public class RecordActivity extends AppCompatActivity {
                                                                 } else if (correctedYEAR >= 58 && correctedYEAR <= 60) {
                                                                     ageGroup = 14;
                                                                 }
-
+                                                                // get the index based on the age group
                                                                 int ageGroupIndex = ageGroup - 1;
                                                                 long roundedTime = finalTotalTimeRun + (10 - finalTotalTimeRun%10);
-
+                                                                // get the json file and parse it
                                                                 Resources res = getResources();
                                                                 InputStream is = res.openRawResource(R.raw.ipptscore);
                                                                 JSONObject jsonObject = null;
@@ -301,7 +300,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                 }
 
                                                                 int scoreRun = 0, scoreSitup = 0, scorePushup = 0;
-
+                                                                // calculate the 2.4 run portion of the score
                                                                 if (roundedTime < 510) {
                                                                     scoreRun = 50;
                                                                 }
@@ -322,7 +321,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                         e.printStackTrace();
                                                                     }
                                                                 }
-
+                                                                // calculate the sit-up portion of the score
                                                                 if (finalTotalSitups > 60) {
                                                                     scoreSitup = 25;
                                                                 }
@@ -343,7 +342,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                         e.printStackTrace();
                                                                     }
                                                                 }
-
+                                                                // calculate push-up portion of the score
                                                                 if (finalTotalPushups > 60) {
                                                                     scorePushup = 25;
                                                                 }
@@ -364,7 +363,7 @@ public class RecordActivity extends AppCompatActivity {
                                                                         e.printStackTrace();
                                                                     }
                                                                 }
-
+                                                                // add up and set the ippt score in firebase
                                                                 totalScore[0] = scorePushup + scoreRun + scoreSitup;
 
                                                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -396,7 +395,7 @@ public class RecordActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                     });
-
+                                            // set the isFinished field to true on Firebase if all the activities are done
                                             finalIpptRoutine.completeIPPTRoutine(EmailAddress, IPPTCycleId, new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -482,18 +481,7 @@ public class RecordActivity extends AppCompatActivity {
         outState.putByteArray("IPPTRoutine", SerializedIPPTRoutine);
         super.onSaveInstanceState(outState);
     }
-    // handle the when the user back presses the recordactivity
-    @Override
-    @MainThread
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent backButtonIntent = new Intent();
-        backButtonIntent.putExtra("UpdatedScore", runRecordScore +
-                situpRecordScore +
-                pushupRecordScore);
-        setResult(Activity.RESULT_OK, backButtonIntent);
-    }
-
+    // remember to clean up the launchers after the activity finishes
     @Override
     public void onDestroy() {
         GoRun.unregister();
