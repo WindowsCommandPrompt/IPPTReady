@@ -74,55 +74,45 @@ public class PushupActivity extends AppCompatActivity {
             )
             .setCancelable(false);
 
-        ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(function -> {
-            Toast.makeText(this, "Please activate the timer before you can perform the other actions", Toast.LENGTH_SHORT).show();
-        });
+        // Countdown timer
+        long timeAvailable = Long.parseLong(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString()) * 1000;
+        CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 10){
+            @Override
+            public void onTick(long millisLeft) {
+                ((TextView) findViewById(R.id.timing_indicator_text)).setText(Long.toString(millisLeft / 1000));
+            }
+            @Override
+            public void onFinish() {
+                final VibrationEffect vibrationEffect1;
+                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    vibrationEffect1 = VibrationEffect.createOneShot(2500, VibrationEffect.DEFAULT_AMPLITUDE);
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect1);
+                }
+
+                timeIsUp.create().show();
+            }
+        };
 
         // Once the timer has been activated by the user....
         ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(function -> {
             ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
             Toast.makeText(this, "The timer has begun!", Toast.LENGTH_SHORT).show();
-            long timeAvailable = Long.parseLong(((TextView) findViewById(R.id.timing_indicator_text)).getText().toString()) * 1000;
+            mainCountdownTimer.start();
+        });
 
-            // Countdown timer
-            CountDownTimer mainCountdownTimer = new CountDownTimer(timeAvailable, 10){
-                @Override
-                public void onTick(long millisLeft) {
-                    ((TextView) findViewById(R.id.timing_indicator_text)).setText(Long.toString(millisLeft / 1000));
-                }
-                @Override
-                public void onFinish() {
-                    final VibrationEffect vibrationEffect1;
-                    vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                        vibrationEffect1 = VibrationEffect.createOneShot(2500, VibrationEffect.DEFAULT_AMPLITUDE);
-                        vibrator.cancel();
-                        vibrator.vibrate(vibrationEffect1);
-                    }
-
-                    timeIsUp.create().show();
-                }
-            }.start();
-
-            // If the user would like to reset the timer
-            ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(thenFunctionAs -> {
+        ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(function -> {
+            if (!((LinearLayout) findViewById(R.id.startTimer)).isEnabled()){
                 Toast.makeText(this, "The stopwatch has been reset", Toast.LENGTH_SHORT).show();
                 mainCountdownTimer.cancel();
                 ((TextView) findViewById(R.id.timing_indicator_text)).setText("60");
                 ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(true);
-                // when timer begins again later
-                ((LinearLayout) findViewById(R.id.startTimer)).setOnClickListener(onUserClick -> {
-                    Toast.makeText(this, "Starting timer...", Toast.LENGTH_SHORT).show();
-                    mainCountdownTimer.start();
-                    ((LinearLayout) findViewById(R.id.startTimer)).setEnabled(false);
-                });
-
-                //The user can only click on the resetTimer once
-                ((LinearLayout) findViewById(R.id.resetTimer)).setOnClickListener(onUserClick -> {
-                    Toast.makeText(this, "The timer has been reset", Toast.LENGTH_SHORT);
-                });
-            });
+            }
+            else {
+                Toast.makeText(this, "Please activate the timer before you can perform the other actions", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
