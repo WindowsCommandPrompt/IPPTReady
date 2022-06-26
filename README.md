@@ -105,7 +105,6 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <ol> 
         <li align = "justify">Helped to refine the code that has been written for the PushUp, SitUp and the Run activities, such that the codes were more efficient</li> 
-        <li align = "justify">Helped to implement the count down timer within the SitUp activity</li>
         <li align = "justify">Implemented the user interface for the SitUp activity</li> 
         <li align = "justify">Ensured that the user would be able to exit the SitUp activity and navigate to the other activities</li> 
         <li align = "justify">Ensured that the data is correctly passed from one activity to another and eventually posted to the Firebase Firestore database through the usage of the <code>Intent</code> class</li> 
@@ -250,6 +249,54 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
       </table> 
       <br> 
       <h3> Use case specification no. 2 </h3>
+      <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td align = "justify">Validate login / signup</td> 
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td align = "justify">The user logs In or signs Up for the system. Firebase stores the new account if the user signs up. The user is taken to the main page. </td>
+        </tr>
+        <tr> 
+          <td><b>Actor(s)</b></td> 
+          <td align = "justify">User, Firebase Database </td>
+        </tr>
+        <tr>
+          <td><b>Pre-condition(s)</b></td> 
+          <td align = "justify">The user must have a valid google account. </td> 
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td align = "justify">The user will be able to sign into the main page </td>
+        </tr>
+        <tr>
+          <td><b>Basic Flow</b></td>
+          <td align = "justify">
+            <ol>
+              <li align = "justify">Prompt the user for his or her email address.</li> 
+              <li align = "justify">Prompt the user for the password. </li>
+              <li align = "justify">The application would then search for matching email address, along with a matching password to confirm the authenticity of the user.  </li> 
+              <li align = "justify">Firebase Database would then return the required data to the application </li> 
+              <li align = "justify">The application then redirects starts a new activity and redirects the user to the main user interface where the user would be able to interact with the application.  </li> 
+              <li align = "justify">Use case ends.  </li> 
+            </ol> 
+          </td>
+        </tr>
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td align = "justify">
+            <ol> 
+              <li align = "justify">Firebase Database cannot find a matching username and / or email address.</li>  
+              <li align = "justify">Displays an error message telling the user that either the email address or the password entered is incorrect. </li> 
+              <li align = "justify">Prompt the user to enter his or her email address and / or password in the relevant fields again. (Returns to step 1 in the main flow) </li>  
+            </ol> 
+          </td>
+        </tr> 
+      </table> 
+      <br> 
+      <h3> User specification no. 3</h3>
+    </td> 
     </td> 
     <td align = "justify">We did the use case specifications to ensure that we are always going to our plan</td> 
   </tr>
