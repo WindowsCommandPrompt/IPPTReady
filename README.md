@@ -299,15 +299,189 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
       <table> 
         <tr> 
           <td><b>Use case name</b></td> 
-          <td></td> 
+          <td>Retrieve video details</td> 
         </tr> 
         <tr> 
-          <td><b>Description </b></td> 
-          <td></td> 
+          <td><b>Brief Description</b></td> 
+          <td>Allows the user to be able to retrieve the required video information from the YouTube API </td> 
+        </tr> 
+        <tr>
+          <td><b>Actor(s)</b></td> 
+          <td>User, YouTube</td> 
+        </tr> 
+        <tr>
+          <td><b>Pre-condition(s)</b></td>
+          <td>The user must be logged into the application using a valid email address and password. </td>
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td>YouTube will then show the videos within the application, within a recycler view embedded within an activity</td> 
+        </tr> 
+        <tr> 
+          <td><b>Main Flow</b></td>
+          <td>
+            <ol> 
+              <li align = "justify">The user would then use the search bar within the application to search for a certain exercise video. </li>
+              <li align = "justify">The application would then assess the current internet connection of the device.   </li>
+              <li align = "justify">The application would then store the search query entered within the search bar as a query string to be sent via HTTP request to https://youtube.com.  </li>
+              <li align = "justify">The YouTube API would then process the query string and look for the videos that contain at least one word within the query string </li>
+              <li align = "justify">Returns the matching videos to the application via HTTP. </li>
+              <li align = "justify">End use case.  </li>
+            </ol> 
+          </td>
+        </tr> 
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td>
+            4.1 If there are no matching videos found on YouTube then the YouTube API will return a 404 Not Found HTTP error code back to the mobile application.<br>  
+            4.2 The application will then display the error message accordingly. Prompting the user to search for the video using another search keyword.   <br> 
+            4.3 Go back to point number 3 in the main flow <br> 
+            <br> 
+            2.1 If the user is not connected to the internet, then the application will display another error message saying that the internet connection has timed out.  <br> 
+            2.2 Prompts the user to check the internet connectivity of his or her device  <br> 
+            2.3 Go back to point 2 of the main flow  <br> 
+          </td>
+        </tr> 
+      </table> 
+      <br>
+      <h3> User specification no. 4 </h3> 
+      <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td>Update / retrieve IPPT cycles </td> 
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td>To allow the user to view past IPPT cycles, and at the same time add them to the list of IPPT cycles. </td> 
+        </tr> 
+        <tr>
+          <td><b>Actor(s)</b></td> 
+          <td>User, Firebase Database </td> 
+        </tr> 
+        <tr>
+          <td><b>Pre-condition(s)</b></td>
+          <td>The user has set the Firebase Database configurations correctly to allow the application to have access to the database when the application is launched. </td>
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td>The Firebase database will provide a suitable response to the request made. </td> 
+        </tr> 
+        <tr> 
+          <td><b>Main Flow</b></td>
+          <td>
+            <ol> 
+              <li align = "justify">The application makes a HTTP request to the server and then the server would retrieve the required data from the Firebase Database.  </li> 
+              <li align = "justify">The Firebase Database then sends the data back to the application via another HTTP request.  </li> 
+              <li align = "justify">The application will then display the data accordingly and should there be a need where the data needs to be modified to a certain manner, the application will modify and display the data accordingly.</li> 
+              <li align = "justify">UC Ends</li> 
+            </ol> 
+          </td>
+        </tr> 
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td>
+            1.1 If the user is not connected to the internet, then the application will display another error message saying that the internet connection has timed out.  <br> 
+            1.2 Prompts the user to check the internet connectivity of his or her device  <br> 
+            1.3 Go back to point 2 of the main flow <br> 
+            <br> 
+            2.1 If there is no record found then it would return a message back to the application that there is no related data found.  <br> 
+            2.2 Go back to point 1 in the main flow. <br> 
+          </td>
         </tr> 
       </table> 
       <br> 
-      <h3> User specification no. 4</h3>
+      <h3> User specification no. 5</h3> 
+            <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td>Update / retrieve IPPT Session </td> 
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td>The user to view past IPPT records, and at the same time add on the list of IPPT records.  </td> 
+        </tr> 
+        <tr>
+          <td><b>Actor(s)</b></td> 
+          <td>User, Firebase database </td> 
+        </tr> 
+        <tr>
+          <td><b>Pre-condition(s)</b></td>
+          <td>The user has set the Firebase Database configurations correctly to allow the application to have access to the database when the application is launched.</td>
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td>The Firebase database will provide a suitable response to the request made.</td> 
+        </tr> 
+        <tr> 
+          <td><b>Main Flow</b></td>
+          <td>
+            <ol> 
+              <li align = "justify">The application makes an HTTP request to the server and then the server would retrieve the required data from the Firebase Database.  </li> 
+              <li align = "justify">The Firebase Database then sends the data back to the application via another HTTP request.  </li> 
+              <li align = "justify">The application will then display the data accordingly in the correct location at the correct point of time and should there be a need where the data needs to be modified to a certain manner, the application will modify and display the data accordingly.</li> 
+              <li align = "justify">Use case ends.</li> 
+            </ol> 
+          </td>
+        </tr> 
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td>
+            1.1 If the user is not connected to the internet, then the application will display another error message saying that the internet connection has timed out.  <br> 
+            1.2 Prompts the user to check the internet connectivity of his or her device  <br> 
+            1.3 Go back to point 2 of the main flow <br>
+            <br> 
+            2.1 If there is no record found then it would return a message back to the application that there is no related data found.  <br> 
+            2.2 Go back to point 1 in the main flow.  <br> 
+          </td>
+        </tr> 
+      </table> 
+      <br> 
+      <h3> User specification no. 6 </h3> 
+      <table> 
+        <tr> 
+          <td><b>Use case name</b></td> 
+          <td>Update sit-up/push-up</td> 
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td>The user records sit-up/push-up. The scoring is stored to the IPPT Record of the IPPT Routine of the user in the database. </td> 
+        </tr> 
+        <tr>
+          <td><b>Actor(s)</b></td> 
+          <td>User, Firebase </td> 
+        </tr> 
+        <tr>
+          <td><b>Pre-condition(s)</b></td>
+          <td>The user must have an existing IPPT Routine that has an unrecorded score for the sit-up/push-up section. </td>
+        </tr>
+        <tr>
+          <td><b>Post-condition(s)</b></td>
+          <td>The sit-up/push-up section of the IPPT Routine would be recorded. </td> 
+        </tr> 
+        <tr> 
+          <td><b>Main Flow</b></td>
+          <td>
+            <ol> 
+              <li align = "justify">The UC starts when the user clicks the record button of the push up / sit up section of the IPPT Routine page.</li> 
+              <li align = "justify">The User goes to a page with a timer, start button, and a back button.</li> 
+              <li align = "justify">The User presses the start button and a countdown from 60 to 0 seconds is started.</li> 
+              <li align = "justify">After the 1 minute is up, the user is prompt to enter the number of sit-up/push-up that he/she achieved.</li> 
+              <li align = "justify">The User returns to the IPPT Routine page, and the score is calculated and displayed to the user. The record button is removed from the sit-up/push-up section of the IPPT Routine page.</li>
+              <li align = "justify">UC Ends</li>
+            </ol> 
+          </td>
+        </tr> 
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td>
+            3.1. The User presses the back arrow on the page and goes back to the IPPT Routine page. <br> 
+            3.2. The User goes back to point 1 of Main Flow. <br> 
+            3.3. UC Ends. <br> 
+          </td>
+        </tr> 
+      </table> 
+      <br> 
+      <h3> User specification no. 7</h3>
       <table> 
         <tr>
           <td><b>Use case name</b></td> 
@@ -363,17 +537,59 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
           </td> 
         </tr> 
       </table> 
+      <br> 
+      <h3> User specification no. 8 </h3> 
+      <table>
+        <tr> 
+          <td><b>Use case name</b></td>
+          <td>Manage user location</td>
+        </tr> 
+        <tr> 
+          <td><b>Brief Description</b></td> 
+          <td>To get the current location of the user on the Earth in bearings expressed in floating point double precision number</td>
+        </tr> 
+        <tr>
+          <td><b>Actor(s)</b></td> 
+          <td>User, FusedLocationProviderClient, Google Maps</td> 
+        </tr> 
+        <tr>
+          <td><b>Pre-condition</b></td> 
+          <td>The user will need to be connected to both the internet and GPS for the user case to work</td>
+        </tr>
+        <tr> 
+          <td><b>Post-condition</b></td> 
+          <td>It will return the current user’s location, latitude and longitude respectively</td> 
+        </tr>
+        <tr>
+          <td><b>Main Flow </b></td> 
+          <td>
+            <ol> 
+              <li align = "justify">The application will check if the device is connected to the GPS.</li>
+              <li align = "justify">The application will communicate with the GPS once every 5 seconds through the FusedLocationProviderClient</li>
+              <li align = "justify">The FusedLocationProviderClient will then look for the device and determine its current location in terms of a <code>Location</code> object </li>
+              <li align = "justify">The application would then display the latitude and longitude in the respective TextView(s)</li>
+              <li align = "justify">End use case</li>
+            </ol> 
+          </td>
+        </tr>
+        <tr> 
+          <td><b>Alternate Flows</b></td> 
+          <td>
+            1.1 If the device cannot connect to Location Services, if the user has not given it permission to do so, then it will display an error message saying that the device is not connected to GPS.  <br> 
+            1.2 Prompt the user to allow the application to gain access to Location Services.  <br> 
+            1.3 Go back to point 1 in main flow.  <br> 
+            <br> 
+            1.1 If the GPS connection is poor, the application will then display an error saying that there is currently poor reception. <br>  
+            1.2 Prompt the user to check the GPS connection again.  <br> 
+            1.3 Go back to point 1 in main flow.  <br> 
+          </td> 
+        </tr> 
+      </table> 
     </td> 
     </td> 
     <td align = "justify">We did the use case specifications to ensure that we will get a clearer picture of how our application will behave and function at the end of assignment 2</td> 
   </tr>
 </table> 
-
-<br> 
-<hr> 
-<br> 
-
-## Research 
 
 <br> 
 <hr> 
@@ -400,6 +616,12 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <li align = "justify"> Developer:<b> Google LLC </b></li> 
     <li align = "justify"> Software Version: <b>2.0.0</b></li> 
     <li align = "justify"> Software Type: <b> Application Programming Interface (API) </b></li> 
+  </ol> 
+  <li align = "justify"><b>Miro</b></li> 
+  <ol> 
+    <li align = "justify"> Developer: <b> Miro LLC </b></li> 
+    <li align = "justify"> Software Version: <b> Unknown </b></li> 
+    <li align = "justify"> Software Type: <b>Designer</b></li> 
   </ol> 
 </ol>
 
