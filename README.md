@@ -105,11 +105,14 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>
       <ol> 
         <li align = "justify">Helped to refine the code that has been written for the PushUp, SitUp and the Run activities, such that the codes were more efficient</li> 
-        <li align = "justify">Implemented the user interface for the SitUp activity</li> 
+        <li align = "justify">Implemented the user interface and logic for the SitUp activity</li> 
         <li align = "justify">Ensured that the user would be able to exit the SitUp activity and navigate to the other activities</li> 
-        <li align = "justify">Ensured that the data is correctly passed from one activity to another and eventually posted to the Firebase Firestore database through the usage of the <code>Intent</code> class</li> 
+        <li align = "justify">Ensured that the data is correctly passed from one activity to another</li> 
+        <li align = "justify">Ensured that all data is posted to Firebase Firestore correctly</li> 
         <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
+        <li align = "justify>Completed implementations of Videos and Watching Videos features</li>
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
+        <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>                   
       </ol> 
     </td> 
   </tr> 
