@@ -93,7 +93,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Helped to create the classes and the layouts needed to develop the skeleton for our mobile application for the first-iteration, to ensure that our application will be up and running</li> 
         <li align = "justify">Conceptualized the initial design of the home page of the application when the user has logged into the application using a google account</li>
         <li align = "justify">Helped to ensure that our codes are efficient, through reducing the need for writing redundant code, or repeated code, over and over again</li>
-        <li align = "justify">Implemented the idea of using a google sign in services that would enable the user to be able to sign into the application using  valid google account</li> 
+        <li align = "justify">Implemented the idea of using a google sign in services that would enable the user to be able to sign into the application usingvalid google account</li> 
         <li align = "justify">Implemented the account handling procedure within the application, which includes the creation of new IPPTReacy user profile accounts for the mobile application, and logging user in if they have already registered themselves under the application</li>
         <li align = "justify">Conceptualized the initial design of the account creation activity that the user can use to register with the application</li> 
         <li align = "justify">Implemented the initial design of the account creation activity</li>
@@ -104,13 +104,14 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>Bryan Koh</td> 
     <td>
       <ol> 
+        <li align = "justify">Helped implementation for Google Sign-In.</li> 
         <li align = "justify">Helped to refine the code that has been written for the PushUp, SitUp and the Run activities, such that the codes were more efficient</li> 
         <li align = "justify">Implemented the user interface and logic for the SitUp activity</li> 
-        <li align = "justify">Ensured that the user would be able to exit the SitUp activity and navigate to the other activities</li> 
-        <li align = "justify">Ensured that the data is correctly passed from one activity to another</li> 
-        <li align = "justify">Ensured that all data is posted to Firebase Firestore correctly</li> 
+        <li align = "justify">Ensured that the user would be able to exit the routine activities and navigate to the other activities</li> 
+        <li align = "justify">Ensured that the data is correctly passed from one activity to another. Fixed buggy codes related to this.</li> 
+        <li align = "justify">Ensured that all data is posted to Firebase Firestore correctly. Fixed buggy codes related to this.</li> 
         <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
-        <li align = "justify>Completed implementations of Videos and Watching Videos features</li>
+        <li align = "justify>Implemented Videos and Watching Videos features</li>
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
         <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>                   
       </ol> 
