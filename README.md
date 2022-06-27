@@ -111,7 +111,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Ensured that the data is correctly passed from one activity to another. Fixed buggy codes related to this.</li> 
         <li align = "justify">Ensured that all data is posted to Firebase Firestore correctly. Fixed buggy codes related to this.</li> 
         <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
-        <li align = "justify>Implemented Videos and Watching Videos features</li>
+        <li align = "justify">Implemented Videos and Watching Videos features</li>
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
         <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>                   
       </ol> 
