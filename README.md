@@ -12,7 +12,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <th>Group member student ID</th> 
   </tr> 
   <tr> 
-    <td>Li Zhe Yun</td> 
+    <td>Li Zheyun</td> 
     <td>S10222023J</td> 
   </tr> 
   <tr> 
@@ -20,16 +20,16 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
     <td>S10205140B</td> 
   </tr> 
   <tr>
-    <td>Tan Zhen Xuan Raiden</td> 
-    <td>S10223522</td> 
+    <td>Tan Zhenxuan Raiden</td> 
+    <td>S10223522D</td> 
   </tr>
   <tr> 
     <td>Bryan Koh</td> 
-    <td>S10223617</td> 
+    <td>S10223617B</td> 
   </tr> 
   <tr> 
     <td>Ho Kuan Zher</td> 
-    <td>S10223870</td> 
+    <td>S10223870D</td> 
   </tr> 
 </table> 
 
