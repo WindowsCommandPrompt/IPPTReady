@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,18 +45,19 @@
                     -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:orientation="vertical">
-
+                            <!--This RelativeLayout over here is responsible
+                            for defining the timer box used within the application -->
+                            <!--TODO: -->
                             <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="1500px"
-                                android:gravity="center">
+                                android:layout_height="wrap_content">
                                 <!--android:elevation is set to 1 here by default-->
                                 <ImageView
                                     android:id="@+id/timing_indicator_base"
@@ -120,6 +121,18 @@
                                     </RelativeLayout>
                                 </LinearLayout>
                             </RelativeLayout>
+                            <!--Define another layout which -->
+                            <LinearLayout
+                                android:layout_width = "match_parent"
+                                android:layout_height = "wrap_content">
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100px"
+                                    card_view:cardCornerRadius = "512px"
+                                    card_view:cardBackgroundColor = "@color/waveColor"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+                                </androidx.cardview.widget.CardView>
+                            </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
