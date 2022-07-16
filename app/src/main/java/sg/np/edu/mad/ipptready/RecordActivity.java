@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -402,6 +405,7 @@ public class RecordActivity extends AppCompatActivity {
                                             finalIpptRoutine.completeIPPTRoutine(EmailAddress, IPPTCycleId, new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                    removeAlarm();
                                                     Toast.makeText(RecordActivity.this, "Well Done! Returning to Routines page", Toast.LENGTH_SHORT).show();
                                                     finish();
                                                 }
@@ -416,6 +420,15 @@ public class RecordActivity extends AppCompatActivity {
                 });
     }});
     }
+
+    private void removeAlarm()
+    {
+        Intent routineAlertIntent = new Intent(this, RoutineAlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, routineAlertIntent, 0);
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+    }
+
     // formats the seconds to a nice string for display
     private String SecondstoString(int seconds) {
         if (seconds == 0) {

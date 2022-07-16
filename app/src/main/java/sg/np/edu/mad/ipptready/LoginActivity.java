@@ -3,8 +3,18 @@ package sg.np.edu.mad.ipptready;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,17 +35,34 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String DEBUG = "DEBUG";
     GoogleSignInClient mGoogleSignInClient;
     private static int RC_SIGN_IN = 100;
+    public static final String CHANNEL_ID = "Routine Notification";
+    public static final String isFirstInstantiated_KEY = "isFirstInstantiated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_login);
+
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        if (!sharedPref.getBoolean(isFirstInstantiated_KEY, false)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Testing Notification",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                NotificationManager manager = getSystemService(NotificationManager.class);
+                manager.createNotificationChannel(channel);
+            }
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean( isFirstInstantiated_KEY, true);
+            editor.apply();
+        }
 
         // Build google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -51,12 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set up Sign in button
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
+        signInButton.setOnClickListener(view -> signIn());
         updateUI(account);
     }
 

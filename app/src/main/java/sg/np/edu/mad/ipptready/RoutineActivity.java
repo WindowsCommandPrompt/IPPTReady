@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,6 +36,7 @@ import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -244,7 +248,6 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                     dateFormat.format(currentIpptRoutine.DateCreated)
                                                                             );
                                                                             findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
-
                                                                             findViewById(R.id.constraintLayout2).setOnClickListener(new GoRecordOnClickListener());
 
                                                                             String IPPTRoutineId = task.getResult().iterator().next().getId();
@@ -261,6 +264,9 @@ public class RoutineActivity extends AppCompatActivity {
                                                                                 e.printStackTrace();
                                                                                 return;
                                                                             }
+
+                                                                            addAlarm();
+
                                                                             if (null != GoRoutine) {
                                                                                 GoRoutine.launch(recordIntent);
                                                                             }
@@ -324,6 +330,18 @@ public class RoutineActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void addAlarm()
+    {
+        Intent routineAlertIntent = new Intent(getApplicationContext(), RoutineAlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, routineAlertIntent, 0);
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis() + 60000);
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
