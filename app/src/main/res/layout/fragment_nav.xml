@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".navFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:background="@drawable/border">
+
+        <ImageButton
+            android:id="@+id/infoButtonNav"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:adjustViewBounds="false"
+            android:background="@drawable/navbutton"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/homeButtonNav"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/videoButtonNav"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/info" />
+
+        <ImageButton
+            android:id="@+id/videoButtonNav"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:adjustViewBounds="false"
+            android:background="@drawable/navbutton"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/infoButtonNav"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/cycleButtonNav"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/multimedia" />
+
+        <ImageButton
+            android:id="@+id/cycleButtonNav"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:adjustViewBounds="false"
+            android:background="@drawable/navbutton"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/videoButtonNav"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/runner" />
+
+        <ImageButton
+            android:id="@+id/homeButtonNav"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:adjustViewBounds="false"
+            android:background="@drawable/navbutton"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/infoButtonNav"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/logout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
