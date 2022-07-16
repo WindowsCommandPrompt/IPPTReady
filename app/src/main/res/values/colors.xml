@@ -15,4 +15,11 @@
     <color name="red">#FFFF0000</color>
     <color name="green">#FF00FF00</color>
     <color name="orange">#FFFFA500</color>
+    <color name="greenmid">#55c97c</color>
+    <color name="greenmid2">#77d496</color>
+    <color name="greenmid3">#bbe9cb</color>
+    <color name="greendark">#39965e</color>
+    <color name="greendark2">#105c24</color>
+    <color name="darkblue1">#A623395D</color>
+    <color name="darkbluegreen">#116754</color>
 </resources>

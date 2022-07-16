@@ -2,6 +2,7 @@ package sg.np.edu.mad.ipptready;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +15,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 
 public class HomeActivity extends AppCompatActivity {
-    private String EmailAddress;
-    private User user;
+    public String EmailAddress;
+    public User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +59,14 @@ public class HomeActivity extends AppCompatActivity {
 
         if (null != EmailAddress &&
             null != user) {
+
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragmentWeather, new WeatherFragment());
+            ft.replace(R.id.fragmentMenu, new navFragment());
+            ft.commit();
+
             // Onclicklistener for Cycle feature
-            findViewById(R.id.cycleButton).setOnClickListener(new View.OnClickListener() {
+            /*findViewById(R.id.cycleButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent CycleIntent = new Intent(HomeActivity.this, CycleActivity.class);
@@ -70,15 +77,12 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            // Onclicklistener for profile feature
-            findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
+            // Onclicklistener for info feature
+            findViewById(R.id.infoButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent ProfileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
-
-                    ProfileIntent.putExtra("Email", EmailAddress);
-                    ProfileIntent.putExtra("User", user);
-                    startActivity(ProfileIntent);
+                    Intent InformationIntent = new Intent(HomeActivity.this, InformationActivity.class);
+                    startActivity(InformationIntent);
                 }
             });
 
@@ -91,12 +95,18 @@ public class HomeActivity extends AppCompatActivity {
                 }
             });
 
-            // Onclicklistener for info feature
-            findViewById(R.id.infoButton).setOnClickListener(new View.OnClickListener() {
+            */
+
+
+            // Onclicklistener for profile feature
+            findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent InformationIntent = new Intent(HomeActivity.this, InformationActivity.class);
-                    startActivity(InformationIntent);
+                    Intent ProfileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
+
+                    ProfileIntent.putExtra("Email", EmailAddress);
+                    ProfileIntent.putExtra("User", user);
+                    startActivity(ProfileIntent);
                 }
             });
 
