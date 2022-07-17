@@ -46,8 +46,9 @@ public class HomeActivity extends AppCompatActivity {
 
         if (null != getIntent()) {
             Intent intent = getIntent();
-            EmailAddress = intent.getStringExtra("Email");
             // Java is not a very typesafe language!
+
+            EmailAddress = intent.getStringExtra("Email");
             user = (User)intent.getSerializableExtra("User");
         }
         else if (null != savedInstanceState) {

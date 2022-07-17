@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IPPTCycle {
-    public static final String colFrom = "IPPTCycle";
-    public static final String NAME = "Name";
-    public static final String DATE_CREATED = "DOB";
+    private static final String colFrom = "IPPTCycle";
+    private static final String NAME = "Name";
+    private static final String DATE_CREATED = "DOB";
+    private static final String IS_FINISHED = "isFinished";
 
     public static Task<QuerySnapshot> getCyclesFromUser(DocumentReference userDocRef) {
         return userDocRef.collection(colFrom)
@@ -44,7 +45,9 @@ public class IPPTCycle {
         return cycleDocRef.set(updatedCycleMap, SetOptions.merge());
     }
 
-    public static Task<Void> deleteCycle(DocumentReference cycleDocRef) {
-        return cycleDocRef.delete();
+    public static Task<Void> finishCycle(DocumentReference cycleDocRef) {
+        Map<String, Object> finishedCycleMap = new HashMap<>();
+        finishedCycleMap.put(IS_FINISHED, true);
+        return cycleDocRef.set(finishedCycleMap, SetOptions.merge());
     }
 }

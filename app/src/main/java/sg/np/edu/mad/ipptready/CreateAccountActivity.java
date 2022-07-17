@@ -18,13 +18,18 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.type.DateTime;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private String EmailAddress;
@@ -48,8 +53,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // Output to HomeActivity:
         // "Email" : Email Address of the user
-        // "User" : Serialized using ByteArrayOutputStream and ObjectOutputStream class,
-        //      see Line 109 of Login Activity for sample.
+        // "User" : Serializable Object of user
 
         Intent intent = getIntent();
         EmailAddress = intent.getStringExtra("Email");
@@ -102,27 +106,29 @@ public class CreateAccountActivity extends AppCompatActivity {
                     name.setError("Please enter a name!");
                     return;
                 }
-                // create new user
-                User user = new User();
-                user.Name = name.getText().toString();
+                Name = name.getText().toString();
+                Date DOB = null;
+
                 try {
-                    user.DOB = new SimpleDateFormat("dd/MM/yyyy").parse(dob.getText().toString());
+                    DOB = new SimpleDateFormat("dd/MM/yyyy").parse(dob.getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                addNewUserToDatabase(EmailAddress, user, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CreateAccountActivity.this, "Directing to login page", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                        else {
-                            Toast.makeText(CreateAccountActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }
-                });
+                FirebaseDocChange firebaseDocChange = IPPTUser.createNewUser(EmailAddress, Name, DOB);
+                firebaseDocChange.changeTask
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(CreateAccountActivity.this, "Directing to login page", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                                else {
+                                    Toast.makeText(CreateAccountActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            }
+                        });
             }
         });
     }
@@ -133,29 +139,4 @@ public class CreateAccountActivity extends AppCompatActivity {
         dob.setText(dateFormat.format(myCalendar.getTime()));
     }
     // add the user to firebase method
-    public void addNewUserToDatabase(String EmailAddress,
-                                            User user,
-                                            OnCompleteListener<Void> onCompleteVoidListener) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> User = new HashMap<>();
-        User.put("Name", user.Name);
-        User.put("DOB", user.DOB);
-
-        db.collection("IPPTUser")
-                .document(EmailAddress)
-                .set(User)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(CreateAccountActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateAccountActivity.this, "Error creating account", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnCompleteListener(onCompleteVoidListener);
-    }
 }

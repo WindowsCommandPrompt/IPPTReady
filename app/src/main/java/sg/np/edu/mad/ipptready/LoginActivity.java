@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String DEBUG = "DEBUG";
     GoogleSignInClient mGoogleSignInClient;
@@ -105,45 +107,53 @@ public class LoginActivity extends AppCompatActivity {
     // Access Firestore on successful google login
     private void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-            Toast.makeText(this, "Google Login Success", Toast.LENGTH_SHORT).show();
             String personEmail = account.getEmail();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference userRef = db.collection("IPPTUser").document(personEmail);
-            userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        // If user has already have an account in IPPTReady
-                        if (document.exists()) {
-                            User user = document.toObject(User.class);
+            String personName = account.getDisplayName();
 
-                            Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                            loginIntent.putExtra("Email", personEmail);
-                            loginIntent.putExtra("User", user);
-
-                            Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
-                            startActivity(loginIntent);
-
-                        } else {
-                            // Create an account if user has no account
-                            Toast.makeText(LoginActivity.this, "Welcome to IPPTReady!", Toast.LENGTH_SHORT).show();
-                            String personName = account.getDisplayName();
-
-                            Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
-
-                            Bundle userDetails = new Bundle();
-                            userDetails.putString("Email", personEmail);
-                            userDetails.putString("Name", personName);
-
-                            createAccountIntent.putExtras(userDetails);
-                            startActivity(createAccountIntent);
+            IPPTUser.getUserFromEmail(personEmail)
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                if (documentSnapshot.exists()) {
+                                    goToHomePage(documentSnapshot);
+                                }
+                                else {
+                                    createAccount(personEmail, personName);
+                                }
+                            }
+                            else {
+                                Toast.makeText(LoginActivity.this, "An error occured, please try again.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    } else {
-                        Log.d(DEBUG, "get failed with ", task.getException());
-                    }
-                }
-            });
+                    });
         }
+    }
+
+
+    private void goToHomePage(DocumentSnapshot userDocumentSnapshot) {
+        User user = userDocumentSnapshot.toObject(User.class);
+
+        Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
+        loginIntent.putExtra("Email", userDocumentSnapshot.getReference().getId());
+        loginIntent.putExtra("User", user);
+
+        Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
+        startActivity(loginIntent);
+    }
+
+    private void createAccount(String EmailAddress,
+                               String Name) {
+        Toast.makeText(LoginActivity.this, "Creating an Account...", Toast.LENGTH_SHORT).show();
+
+        Intent createAccountIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+
+        createAccountIntent.putExtra("Email", EmailAddress);
+        createAccountIntent.putExtra("Name", Name);
+
+        startActivity(createAccountIntent);
     }
 }
