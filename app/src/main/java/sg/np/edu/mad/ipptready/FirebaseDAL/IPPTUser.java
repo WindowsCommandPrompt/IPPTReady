@@ -13,10 +13,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IPPTUser {
-    private static final String colFrom = "IPPTUser";
+    public static final String colFrom = "IPPTUser";
     private static final String NAME = "Name";
     private static final String DOB = "DOB";
     private static final String EMAIL_ADDRESS = "EmailAddress";
+
+    public static DocumentReference getUserDocFromId(String userDocId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return db.collection(colFrom)
+                .document(userDocId);
+    }
 
     public static Task<DocumentSnapshot> getUserFromEmail(String EmailAddress) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

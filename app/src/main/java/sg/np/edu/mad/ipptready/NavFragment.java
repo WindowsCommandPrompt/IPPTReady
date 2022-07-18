@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import java.util.Objects;
 
-public class navFragment extends Fragment {
+public class NavFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

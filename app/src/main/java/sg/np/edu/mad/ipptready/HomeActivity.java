@@ -4,18 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 public class HomeActivity extends AppCompatActivity {
     public String EmailAddress;
@@ -66,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragmentWeather, new WeatherFragment());
-            ft.replace(R.id.fragmentMenu, new navFragment());
+            ft.replace(R.id.fragmentMenu, new NavFragment());
             ft.commit();
 
             // Onclicklistener for Cycle feature

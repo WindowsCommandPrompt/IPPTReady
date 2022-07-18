@@ -2,6 +2,7 @@ package sg.np.edu.mad.ipptready.FirebaseDAL;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
@@ -13,6 +14,18 @@ public class IPPTRoutine {
     private static final String colFrom = "IPPTRoutine";
     private static final String DATE_CREATED = "DateCreated";
     private static final String IPPTSCORE = "IPPTScore";
+
+    public static DocumentReference getCycleDocFromId(String userDocId,
+                                                      String cycleDocId,
+                                                      String routineDocId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return db.collection(IPPTUser.colFrom)
+                .document(userDocId)
+                .collection(IPPTCycle.colFrom)
+                .document(cycleDocId)
+                .collection(colFrom)
+                .document(routineDocId);
+    }
 
     public static Task<QuerySnapshot> getRoutinesFromCycle(DocumentReference cycleDocRef) {
         return cycleDocRef.collection(colFrom)

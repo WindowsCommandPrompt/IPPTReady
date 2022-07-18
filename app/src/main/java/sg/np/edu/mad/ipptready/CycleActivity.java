@@ -1,15 +1,5 @@
 package sg.np.edu.mad.ipptready;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +10,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,10 +36,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
+
 public class CycleActivity extends AppCompatActivity {
     private String EmailAddress;
     //private byte[] SerializedUser;
     private User user;
+    private DocumentReference userDocRef;
 
     // Objects loaded in the activities
     private RecyclerView recyclerView;
@@ -80,8 +82,10 @@ public class CycleActivity extends AppCompatActivity {
 
         if (null != getIntent()) {
             Intent intent = getIntent();
-            EmailAddress = intent.getStringExtra("Email");
             // still not a typesafe language!
+
+            EmailAddress = intent.getStringExtra("Email");
+            userDocRef = IPPTUser.getUserDocFromId(EmailAddress);
             user = (User)intent.getSerializableExtra("User");
         }
         else if (null != savedInstanceState) {
@@ -97,6 +101,7 @@ public class CycleActivity extends AppCompatActivity {
         // if got user and EmailAddress, go!
         if (null != EmailAddress &&
             null != user) {
+
             user.getCyclesList(EmailAddress,
                     new OnCompleteListener<QuerySnapshot>() {
                         @Override
