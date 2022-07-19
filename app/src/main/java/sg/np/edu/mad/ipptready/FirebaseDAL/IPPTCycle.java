@@ -38,7 +38,6 @@ public class IPPTCycle implements Serializable {
 
     public static DocumentReference getCycleDocFromId(DocumentReference userDocRef,
                                                       String cycleDocId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         return userDocRef.collection(colFrom).document(cycleDocId);
     }
 

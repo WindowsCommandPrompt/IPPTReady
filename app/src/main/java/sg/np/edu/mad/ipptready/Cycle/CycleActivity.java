@@ -139,7 +139,8 @@ public class CycleActivity extends AppCompatActivity {
                                         }
                                     }
                                     else {
-                                        Toast.makeText(CycleActivity.this, "Failed to retrieve IPPT Cycles!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CycleActivity.this, "Failed to retrieve IPPT Cycles!", Toast.LENGTH_SHORT)
+                                                .show();
                                         finish();
                                     }
                                 }
@@ -179,8 +180,6 @@ public class CycleActivity extends AppCompatActivity {
     private class CreateCycleOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            setCompleteCycleButton();
-
             // Go to CreateCycleActivity...
             createCycleActivityLauncher.launch(new Date());
         }
@@ -219,14 +218,14 @@ public class CycleActivity extends AppCompatActivity {
     }
 
     public static class RoutineOnClickListener implements  View.OnClickListener {
-        public FirebaseViewItem<IPPTCycle> ipptCycleFirebaseViewItem;
+        public FirebaseViewItem<IPPTCycle> ipptCycleViewItem;
         public Context context;
         public String userId;
 
         public RoutineOnClickListener(Context context, FirebaseViewItem<IPPTCycle> ipptCycleViewItem,
                                       String userId) {
             this.context =context;
-            ipptCycleFirebaseViewItem = ipptCycleViewItem;
+            this.ipptCycleViewItem = ipptCycleViewItem;
             this.userId = userId;
         }
 
@@ -237,7 +236,8 @@ public class CycleActivity extends AppCompatActivity {
             Intent intent = new Intent(context, RoutineActivity.class);
 
             intent.putExtra("userId", userId);
-            intent.putExtra("cycleId", ipptCycleFirebaseViewItem.documentReference.getId());
+            intent.putExtra("cycleId", ipptCycleViewItem.documentReference.getId());
+            intent.putExtra("isFinished", ipptCycleViewItem.viewItem.isFinished);
 
             context.startActivity(intent);
         }
@@ -289,6 +289,7 @@ public class CycleActivity extends AppCompatActivity {
             if (null != result) {
                 notFinishedCycle = new FirebaseViewItem<>(result.item, IPPTCycle.getCycleDocFromId(userDocRef, result.documentId));
                 setCycleTextViewFields(notFinishedCycle);
+                setCompleteCycleButton();
             }
             else {
                 setCreateCycleButton();

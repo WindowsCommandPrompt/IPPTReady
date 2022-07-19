@@ -18,17 +18,16 @@ public class IPPTRoutine {
     private static final String IPPTSCORE = "IPPTScore";
 
     public Date DateCreated;
-    public int IPPTScore;
+    public long IPPTScore;
 
     public IPPTRoutine(Map<String, Object> routineMap) {
         DateCreated = ((Timestamp)routineMap.get(DATE_CREATED)).toDate();
-        IPPTScore = (null != routineMap.get(IPPTSCORE)) ? (int)routineMap.get(IPPTSCORE)
+        IPPTScore = (null != routineMap.get(IPPTSCORE)) ? (long)routineMap.get(IPPTSCORE)
                 : -1;
     }
 
     public static DocumentReference getCycleDocFromId(DocumentReference cycleDocRef,
                                                       String routineDocId) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         return cycleDocRef.collection(colFrom).document(routineDocId);
     }
 

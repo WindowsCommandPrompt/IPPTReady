@@ -46,6 +46,7 @@ import sg.np.edu.mad.ipptready.RoutineAlertReceiver;
 public class RoutineActivity extends AppCompatActivity {
     private String userId;
     private String cycleId;
+    private boolean isFinished;
     private DocumentReference cycleDocRef;
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -54,7 +55,8 @@ public class RoutineActivity extends AppCompatActivity {
     private IPPTRoutineAdapter ipptRoutineAdapter;
     public ActivityResultLauncher<Intent> GoRoutine;
 
-    private FirebaseViewItem<IPPTRoutine> notFinishedRoutine = null;
+    private FirebaseViewItem<IPPTRoutine> notFinishedRoutine;
+    private List<FirebaseViewItem<IPPTRoutine>> finishedRoutines;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,11 +86,13 @@ public class RoutineActivity extends AppCompatActivity {
             Intent intent =getIntent();
             userId = intent.getStringExtra("userId");
             cycleId = intent.getStringExtra("cycleId");
+            isFinished = intent.getBooleanExtra("isFinished", false);
             cycleDocRef = IPPTCycle.getCycleDocFromId(IPPTUser.getUserDocFromId(userId), cycleId);
         }
         else if (null != savedInstanceState) {
             userId = savedInstanceState.getString("userId");
             cycleId = savedInstanceState.getString("cycleId");
+            isFinished = savedInstanceState.getBoolean("isFinished");
             cycleDocRef = IPPTCycle.getCycleDocFromId(IPPTUser.getUserDocFromId(userId), cycleId);
         }
         else {
@@ -103,9 +107,9 @@ public class RoutineActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             setRoutineView();
                             QuerySnapshot querySnapshot = task.getResult();
+                            finishedRoutines = new ArrayList<>();
 
                             if (!querySnapshot.isEmpty()) {
-                                ArrayList<FirebaseViewItem<IPPTRoutine>> finishedRoutines = new ArrayList<>();
 
                                 for (DocumentSnapshot documentSnapshot : querySnapshot) {
                                     FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem = new FirebaseViewItem<>(new IPPTRoutine(documentSnapshot.getData()),
@@ -118,7 +122,7 @@ public class RoutineActivity extends AppCompatActivity {
                                 }
 
                                 if (null != notFinishedRoutine) {
-
+                                    setRoutineTextViewFields(notFinishedRoutine);
                                 }
                                 else
                                     setCreateRoutineButton();
@@ -126,11 +130,14 @@ public class RoutineActivity extends AppCompatActivity {
                                 setRecycleViewContent(finishedRoutines);
                             }
                             else {
-
+                                setRecycleViewContent(finishedRoutines);
+                                setCreateRoutineButton();
                             }
                         }
                         else {
-
+                            Toast.makeText(RoutineActivity.this, "Failed to retrieve IPPT Cycles!", Toast.LENGTH_SHORT)
+                                    .show();
+                            finish();
                         }
                     }
                 });
@@ -139,22 +146,24 @@ public class RoutineActivity extends AppCompatActivity {
     private void setRoutineView() {
         setContentView(R.layout.activity_routine);
         recyclerView = findViewById(R.id.routineRecyclerView);
+
+        if (isFinished)
+            findViewById(R.id.constraintLayout2).setVisibility(View.GONE);
     }
 
-    private void setRecycleViewContent(List<FirebaseViewItem<IPPTRoutine>> ipptCycleList) {
-        /*ipptRoutineAdapter = new IPPTCycleAdapter(ipptCycleList, CycleActivity.this,
+    private void setRecycleViewContent(List<FirebaseViewItem<IPPTRoutine>> ipptRoutineList) {
+        ipptRoutineAdapter = new IPPTRoutineAdapter(ipptRoutineList, RoutineActivity.this,
                 userId,
-                );
+                cycleId);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(ipptCycleAdapter);*/
+        recyclerView.setAdapter(ipptRoutineAdapter);
     }
 
-    private void setCycleTextViewFields(FirebaseViewItem<IPPTCycle> ipptCycleViewItem) {
-        ((TextView)findViewById(R.id.cyclenameText)).setText(ipptCycleViewItem.viewItem.Name);
-        ((TextView)findViewById(R.id.cycledateCreatedText)).setText(dateFormat.format(ipptCycleViewItem.viewItem.DateCreated));
+    private void setRoutineTextViewFields(FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem) {
+        ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(ipptRoutineViewItem.viewItem.DateCreated));
     }
 
     private void addAlarm()
@@ -172,23 +181,12 @@ public class RoutineActivity extends AppCompatActivity {
     private class CreateRoutineOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Log.d("RoutineActivity", "Creating new Routine, going to RecordActivity");
-
         }
     }
 
     private class GoRecordOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            Log.d("CycleActivity", "View Clicked! Going to RecordActivity...");
-
-        }
-    }
-
-    private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            recreate();
         }
     }
 
@@ -198,11 +196,19 @@ public class RoutineActivity extends AppCompatActivity {
         findViewById(R.id.constraintLayout2).setOnClickListener(null);
     }
 
+    private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            recreate();
+        }
+    }
+
     @Override
     protected  void onSaveInstanceState(@NonNull Bundle outState) {
         // write code here!
         outState.putString("userId", userId);
         outState.putString("cycleId", cycleId);
+        outState.putBoolean("isFinished", isFinished);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
     }

@@ -27,28 +27,26 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import sg.np.edu.mad.ipptready.IPPTRoutine;
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseViewItem;
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTRoutine;
 import sg.np.edu.mad.ipptready.R;
 import sg.np.edu.mad.ipptready.RecordActivity;
 
 public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHolder> {
-    private List<IPPTRoutine> ipptRoutineList;
-    private Context ipptRoutineContext;
-    private String EmailAddress,
-        IPPTCycleId;
-    private RoutineActivity routineActivity;
+    private List<FirebaseViewItem<IPPTRoutine>> ipptRoutineList;
+    private Context context;
+    private String userId;
+    private String cycleId;
     private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    public IPPTRoutineAdapter(List<IPPTRoutine> ipptRoutineList,
-                              Context currentContext,
-                              String EmailAddress,
-                              String IPPTCycleId,
-                              RoutineActivity routineActivity) {
+    public IPPTRoutineAdapter(List<FirebaseViewItem<IPPTRoutine>> ipptRoutineList,
+                              Context context,
+                              String userId,
+                              String cycleId) {
         this.ipptRoutineList = ipptRoutineList;
-        this.ipptRoutineContext = currentContext;
-        this.EmailAddress = EmailAddress;
-        this.IPPTCycleId = IPPTCycleId;
-        this.routineActivity = routineActivity;
+        this.context = context;
+        this.userId = userId;
+        this.cycleId = cycleId;
     }
 
     @NonNull
@@ -63,74 +61,11 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
 
     @Override
     public void onBindViewHolder(@NonNull IPPTRoutineViewHolder holder, int position) {
-        IPPTRoutine ipptRoutine = ipptRoutineList.get(position);
-        // set view item's onclicklistener to go to corresponding routine
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent recordIntent = new Intent(IPPTRoutineAdapter.this.ipptRoutineContext, RecordActivity.class);
+        FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem = ipptRoutineList.get(position);
 
-                recordIntent.putExtra("Email", EmailAddress);
-                recordIntent.putExtra("IPPTCycleId", IPPTCycleId);
 
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("IPPTUser")
-                        .document(EmailAddress)
-                        .collection("IPPTCycle")
-                        .document(IPPTCycleId)
-                        .collection("IPPTRoutine")
-                        .whereEqualTo("DateCreated", ipptRoutine.DateCreated)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot documentSnapshot = task.getResult().iterator().next();
-                                    if (documentSnapshot.exists()) {
-                                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                                        try {
-                                            ObjectOutputStream oos = new ObjectOutputStream(bos);
-                                            oos.writeObject(ipptRoutine);
-                                            recordIntent.putExtra("IPPTRoutine", bos.toByteArray());
-                                        } catch (IOException e) {
-                                            // If error occurred, display friendly message to user
-
-                                            Toast.makeText(IPPTRoutineAdapter.this.ipptRoutineContext, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                                            e.printStackTrace();
-                                            return;
-                                        }
-                                        recordIntent.putExtra("IPPTRoutineId", documentSnapshot.getId());
-                                        if (null == routineActivity.GoRoutine) {
-                                            routineActivity.GoRoutine = routineActivity.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                                                    new ActivityResultCallback<ActivityResult>() {
-                                                        @Override
-                                                        public void onActivityResult(ActivityResult result) {
-                                                            if (null != result) {
-                                                                Intent resultIntent = result.getData();
-                                                                boolean isCompleted = resultIntent.getBooleanExtra("isCompleted", false);
-                                                                if (isCompleted) {
-                                                                    routineActivity.findViewById(R.id.completecreateroutineButton).setVisibility(View.VISIBLE);
-                                                                    ((TextView)routineActivity.findViewById(R.id.routinedateCreatedText)).setText("");
-                                                                    routineActivity.findViewById(R.id.constraintLayout2).setOnClickListener(null);
-                                                                }
-                                                                int updatedScore = resultIntent.getIntExtra("UpdatedScore", ipptRoutine.IPPTScore);
-                                                                ipptRoutine.IPPTScore = updatedScore;
-                                                                ipptRoutineList.add(ipptRoutine);
-                                                                notifyItemChanged(ipptRoutineList.size() - 1);
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                        routineActivity.GoRoutine.launch(recordIntent);
-                                    }
-                                }
-                            }
-                        });
-            }
-        });
-
-        holder.ipptScoreTextView.setText(String.valueOf(ipptRoutine.IPPTScore));
-        holder.DateCreatedTextView.setText(dateFormat.format(ipptRoutine.DateCreated));
+        holder.ipptScoreTextView.setText(String.valueOf(ipptRoutineViewItem.viewItem.IPPTScore));
+        holder.DateCreatedTextView.setText(dateFormat.format(ipptRoutineViewItem.viewItem.DateCreated));
     }
 
     @Override
