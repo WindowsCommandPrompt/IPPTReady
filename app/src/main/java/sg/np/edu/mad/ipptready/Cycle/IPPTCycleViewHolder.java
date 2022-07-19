@@ -1,9 +1,11 @@
-package sg.np.edu.mad.ipptready;
+package sg.np.edu.mad.ipptready.Cycle;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import sg.np.edu.mad.ipptready.R;
 
 public class IPPTCycleViewHolder extends RecyclerView.ViewHolder {
     protected TextView nameTextView;

@@ -1,28 +1,45 @@
 package sg.np.edu.mad.ipptready.FirebaseDAL;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IPPTCycle {
+public class IPPTCycle implements Serializable {
     public static final String colFrom = "IPPTCycle";
     private static final String NAME = "Name";
-    private static final String DATE_CREATED = "DOB";
+    private static final String DATE_CREATED = "DateCreated";
     private static final String IS_FINISHED = "isFinished";
 
-    public static DocumentReference getCycleDocFromId(String userDocId,
+    public String Name;
+    public Date DateCreated;
+    public boolean isFinished;
+
+    public IPPTCycle(Map<String, Object> cycleMap) {
+        Name = (String) cycleMap.get(NAME);
+        DateCreated = ((Timestamp)cycleMap.get(DATE_CREATED)).toDate();
+        isFinished = cycleMap.containsKey(IS_FINISHED) ? (boolean) cycleMap.get(IS_FINISHED)
+                : false;
+    }
+
+    public IPPTCycle(String Name, Date DateCreated) {
+        this.Name = Name;
+        this.DateCreated = DateCreated;
+    }
+
+    public static DocumentReference getCycleDocFromId(DocumentReference userDocRef,
                                                       String cycleDocId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        return db.collection(IPPTUser.colFrom)
-                .document(userDocId)
-                .collection(colFrom)
-                .document(cycleDocId);
+        return userDocRef.collection(colFrom).document(cycleDocId);
     }
 
     public static Task<QuerySnapshot> getCyclesFromUser(DocumentReference userDocRef) {
@@ -32,7 +49,7 @@ public class IPPTCycle {
 
     public static FirebaseDocChange createNewCycle(DocumentReference userDocRef,
                                                    String Name,
-                                                  DateTime DateCreated) {
+                                                  Date DateCreated) {
         FirebaseDocChange newCycle = new FirebaseDocChange();
         newCycle.documentReference = userDocRef.collection(colFrom)
                 .document();

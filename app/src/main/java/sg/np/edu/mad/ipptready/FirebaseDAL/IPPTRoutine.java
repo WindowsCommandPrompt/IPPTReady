@@ -15,16 +15,10 @@ public class IPPTRoutine {
     private static final String DATE_CREATED = "DateCreated";
     private static final String IPPTSCORE = "IPPTScore";
 
-    public static DocumentReference getCycleDocFromId(String userDocId,
-                                                      String cycleDocId,
+    public static DocumentReference getCycleDocFromId(DocumentReference cycleDocRef,
                                                       String routineDocId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        return db.collection(IPPTUser.colFrom)
-                .document(userDocId)
-                .collection(IPPTCycle.colFrom)
-                .document(cycleDocId)
-                .collection(colFrom)
-                .document(routineDocId);
+        return cycleDocRef.collection(colFrom).document(routineDocId);
     }
 
     public static Task<QuerySnapshot> getRoutinesFromCycle(DocumentReference cycleDocRef) {

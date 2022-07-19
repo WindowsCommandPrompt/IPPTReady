@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Objects;
+import sg.np.edu.mad.ipptready.Cycle.CycleActivity;
 
 public class NavFragment extends Fragment {
 

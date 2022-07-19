@@ -46,7 +46,7 @@
             android:name=".VideoActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateCycleActivity"
+            android:name=".Cycle.CreateCycleActivity"
             android:exported="false" />
         <activity
             android:name=".RecordActivity"
@@ -55,7 +55,7 @@
             android:name=".RoutineActivity"
             android:exported="false" />
         <activity
-            android:name=".CycleActivity"
+            android:name=".Cycle.CycleActivity"
             android:exported="false" />
         <activity
             android:name=".CreateAccountActivity"
