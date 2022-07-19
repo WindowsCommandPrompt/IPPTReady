@@ -1,4 +1,4 @@
-package sg.np.edu.mad.ipptready;
+package sg.np.edu.mad.ipptready.Routine;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +26,10 @@ import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import sg.np.edu.mad.ipptready.IPPTRoutine;
+import sg.np.edu.mad.ipptready.R;
+import sg.np.edu.mad.ipptready.RecordActivity;
 
 public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHolder> {
     private List<IPPTRoutine> ipptRoutineList;

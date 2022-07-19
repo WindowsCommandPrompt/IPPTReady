@@ -52,7 +52,7 @@
             android:name=".RecordActivity"
             android:exported="false" />
         <activity
-            android:name=".RoutineActivity"
+            android:name=".Routine.RoutineActivity"
             android:exported="false" />
         <activity
             android:name=".Cycle.CycleActivity"

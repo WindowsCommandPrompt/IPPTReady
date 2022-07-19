@@ -25,8 +25,7 @@ public class NavFragment extends Fragment {
             public void onClick(View v) {
                 Intent CycleIntent = new Intent(getActivity(), CycleActivity.class);
 
-                CycleIntent.putExtra("Email", ((HomeActivity) getActivity()).EmailAddress);
-                CycleIntent.putExtra("User", ((HomeActivity) getActivity()).user);
+                CycleIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
                 startActivity(CycleIntent);
             }
         });

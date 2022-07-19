@@ -1,7 +1,6 @@
 package sg.np.edu.mad.ipptready.Cycle;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,22 +13,21 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import sg.np.edu.mad.ipptready.R;
-import sg.np.edu.mad.ipptready.RoutineActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTCycle;
 import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseViewItem;
 
 public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> {
     private List<FirebaseViewItem<IPPTCycle>> ipptCycleList;
     private Context ipptCycleContext;
-    private String EmailAddress;
+    private String userId;
     private static DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTCycleAdapter(List<FirebaseViewItem<IPPTCycle>> ipptCycleList,
                             Context currentContext,
-                            String EmailAddress) {
+                            String userId) {
         this.ipptCycleList = ipptCycleList;
         this.ipptCycleContext = currentContext;
-        this.EmailAddress = EmailAddress;
+        this.userId = userId;
     }
 
     @NonNull
@@ -46,7 +44,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
     public void onBindViewHolder(@NonNull IPPTCycleViewHolder holder, int position) {
         FirebaseViewItem<IPPTCycle> ipptCycle = ipptCycleList.get(position);
         // set view item's onclicklistener to go to corresponding cycle
-        holder.itemView.setOnClickListener(new CycleActivity.RoutineOnClickListener(ipptCycleContext, ipptCycle));
+        holder.itemView.setOnClickListener(new CycleActivity.RoutineOnClickListener(ipptCycleContext, ipptCycle, userId));
 
         holder.nameTextView.setText(ipptCycle.viewItem.Name);
         holder.DateCreatedTextView.setText(dateFormat.format(ipptCycle.viewItem.DateCreated));

@@ -1,9 +1,11 @@
-package sg.np.edu.mad.ipptready;
+package sg.np.edu.mad.ipptready.Routine;
 
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import sg.np.edu.mad.ipptready.R;
 
 public class IPPTRoutineViewHolder extends RecyclerView.ViewHolder {
     protected TextView ipptScoreTextView;

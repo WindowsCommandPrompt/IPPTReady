@@ -10,7 +10,6 @@ import sg.np.edu.mad.ipptready.R;
 public class IPPTCycleViewHolder extends RecyclerView.ViewHolder {
     protected TextView nameTextView;
     protected TextView DateCreatedTextView;
-    protected View parentView;
 
     public IPPTCycleViewHolder(View v) {
         super(v);

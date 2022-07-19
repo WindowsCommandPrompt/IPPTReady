@@ -25,8 +25,7 @@ public class HomeActivity extends AppCompatActivity {
         //      info about the user
 
         // Output to CycleActivity:
-        // "Email", String : Email Address of the user
-        // "User", Serializable : serialized form of User Object
+        // "userId", String : userId of User document
 
         // Note:        Make sure to save the Input data using the onSaveInstanceState(android.os.Bundle),
         //                  so that we don't need to retrieve the data again!
@@ -62,40 +61,6 @@ public class HomeActivity extends AppCompatActivity {
             ft.replace(R.id.fragmentMenu, new NavFragment());
             ft.commit();
 
-            // Onclicklistener for Cycle feature
-            /*findViewById(R.id.cycleButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent CycleIntent = new Intent(HomeActivity.this, CycleActivity.class);
-
-                    CycleIntent.putExtra("Email", EmailAddress);
-                    CycleIntent.putExtra("User", user);
-                    startActivity(CycleIntent);
-                }
-            });
-
-            // Onclicklistener for info feature
-            findViewById(R.id.infoButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent InformationIntent = new Intent(HomeActivity.this, InformationActivity.class);
-                    startActivity(InformationIntent);
-                }
-            });
-
-            // Onclicklistener for video feature
-            findViewById(R.id.videoButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent VideoIntent = new Intent(HomeActivity.this, VideoActivity.class);
-                    startActivity(VideoIntent);
-                }
-            });
-
-            */
-
-
-            // Onclicklistener for profile feature
             findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

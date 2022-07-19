@@ -1,12 +1,14 @@
 package sg.np.edu.mad.ipptready.FirebaseDAL;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +16,15 @@ public class IPPTRoutine {
     private static final String colFrom = "IPPTRoutine";
     private static final String DATE_CREATED = "DateCreated";
     private static final String IPPTSCORE = "IPPTScore";
+
+    public Date DateCreated;
+    public int IPPTScore;
+
+    public IPPTRoutine(Map<String, Object> routineMap) {
+        DateCreated = ((Timestamp)routineMap.get(DATE_CREATED)).toDate();
+        IPPTScore = (null != routineMap.get(IPPTSCORE)) ? (int)routineMap.get(IPPTSCORE)
+                : -1;
+    }
 
     public static DocumentReference getCycleDocFromId(DocumentReference cycleDocRef,
                                                       String routineDocId) {
@@ -29,6 +40,7 @@ public class IPPTRoutine {
     public static FirebaseDocChange createNewRoutine(DocumentReference cycleDocRef,
                                                      DateTime DateCreated) {
         FirebaseDocChange newRoutine = new FirebaseDocChange();
+
         newRoutine.documentReference = cycleDocRef.collection(colFrom)
                 .document();
 
