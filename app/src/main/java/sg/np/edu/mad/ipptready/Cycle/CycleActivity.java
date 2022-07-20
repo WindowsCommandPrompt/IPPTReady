@@ -44,6 +44,7 @@ import sg.np.edu.mad.ipptready.User;
 
 public class CycleActivity extends AppCompatActivity {
     private String userId;
+    private Date DOB;
     private DocumentReference userDocRef;
 
     private DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -53,7 +54,7 @@ public class CycleActivity extends AppCompatActivity {
     private IPPTCycleAdapter ipptCycleAdapter;
     private ActivityResultLauncher<Date> createCycleActivityLauncher;
 
-    private List<FirebaseViewItem<IPPTCycle>> finishedCycles;
+    private ArrayList<FirebaseViewItem<IPPTCycle>> finishedCycles;
     private FirebaseViewItem<IPPTCycle> notFinishedCycle;
 
     @Override
@@ -65,14 +66,16 @@ public class CycleActivity extends AppCompatActivity {
 
         // Input from Home Activity:
         // "userId" : String, userId of User document
+        // "DOB", Date of birth of user
 
         // Output to CreateCycleActivity:
         // "userId" : String, userId of User document
         // "DateCreated" : Date, current Date created
 
         // Output to RoutineActivity:
-        // "Email", String : Email Address of the user.
-        // "IPPTCycleId", String : Id of the IPPTCycle
+        // "userId" : String, userId of User document
+        // "cycleId" : String, cycleId of Cycle document
+        // "DOB" : Date, Date of birth of user
 
         // Note:        Make sure to save the Input data using the onSaveInstanceState(android.os.Bundle),
         //                  so that we don't need to retrieve the data again!
@@ -88,10 +91,12 @@ public class CycleActivity extends AppCompatActivity {
             // still not a typesafe language!
 
             userId = intent.getStringExtra("userId");
+            DOB = (Date)intent.getSerializableExtra("DOB");
             userDocRef = IPPTUser.getUserDocFromId(userId);
         }
         else if (null != savedInstanceState) {
             userId = savedInstanceState.getString("Email");
+            DOB = (Date)savedInstanceState.getSerializable("DOB");
             userDocRef = IPPTUser.getUserDocFromId(userId);
         }
         else {
@@ -100,7 +105,7 @@ public class CycleActivity extends AppCompatActivity {
             finish();
         }
 
-        // if got user and EmailAddress, go!
+        // if got userId, go!
         if (null != userId) {
             IPPTCycle.getCyclesFromUser(userDocRef)
                     .addOnCompleteListener(
@@ -146,7 +151,6 @@ public class CycleActivity extends AppCompatActivity {
                                 }
                             });
 
-            // deleted parts here ...
             createCycleActivityLauncher = registerForActivityResult(new CycleActivityResultContract(),
                     new CycleActivityResultCallback(this));
         }
@@ -164,9 +168,9 @@ public class CycleActivity extends AppCompatActivity {
 
     private void setRecycleViewContent(List<FirebaseViewItem<IPPTCycle>> ipptCycleList) {
         ipptCycleAdapter = new IPPTCycleAdapter(ipptCycleList, CycleActivity.this,
-                userId);
+                userId, DOB);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(ipptCycleAdapter);
@@ -221,12 +225,15 @@ public class CycleActivity extends AppCompatActivity {
         public FirebaseViewItem<IPPTCycle> ipptCycleViewItem;
         public Context context;
         public String userId;
+        public Date DOB;
 
         public RoutineOnClickListener(Context context, FirebaseViewItem<IPPTCycle> ipptCycleViewItem,
-                                      String userId) {
+                                      String userId,
+                                      Date DOB) {
             this.context =context;
             this.ipptCycleViewItem = ipptCycleViewItem;
             this.userId = userId;
+            this.DOB = DOB;
         }
 
         @Override
@@ -238,6 +245,7 @@ public class CycleActivity extends AppCompatActivity {
             intent.putExtra("userId", userId);
             intent.putExtra("cycleId", ipptCycleViewItem.documentReference.getId());
             intent.putExtra("isFinished", ipptCycleViewItem.viewItem.isFinished);
+            intent.putExtra("DOB", DOB);
 
             context.startActivity(intent);
         }
@@ -253,7 +261,7 @@ public class CycleActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
         findViewById(R.id.completecreatecycleButton).setOnClickListener(new CompleteCycleOnClickListener(this));
         if (null != notFinishedCycle)
-            findViewById(R.id.constraintLayout2).setOnClickListener(new RoutineOnClickListener(this, notFinishedCycle, userId));
+            findViewById(R.id.constraintLayout2).setOnClickListener(new RoutineOnClickListener(this, notFinishedCycle, userId, DOB));
     }
 
     private class CycleActivityResultContract extends ActivityResultContract<Date, FirebaseDoc<IPPTCycle>> {
@@ -302,8 +310,9 @@ public class CycleActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         // make sure to call super after writing code ...
-
         outState.putString("userId", userId);
+        outState.putSerializable("DOB", DOB);
+
         super.onSaveInstanceState(outState);
     }
 
