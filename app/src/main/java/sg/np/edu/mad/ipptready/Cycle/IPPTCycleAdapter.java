@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import sg.np.edu.mad.ipptready.R;
@@ -20,14 +21,17 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
     private List<FirebaseViewItem<IPPTCycle>> ipptCycleList;
     private Context ipptCycleContext;
     private String userId;
+    private Date DOB;
     private static DateFormat  dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTCycleAdapter(List<FirebaseViewItem<IPPTCycle>> ipptCycleList,
                             Context currentContext,
-                            String userId) {
+                            String userId,
+                            Date DOB) {
         this.ipptCycleList = ipptCycleList;
         this.ipptCycleContext = currentContext;
         this.userId = userId;
+        this.DOB = DOB;
     }
 
     @NonNull
@@ -44,7 +48,7 @@ public class IPPTCycleAdapter extends RecyclerView.Adapter<IPPTCycleViewHolder> 
     public void onBindViewHolder(@NonNull IPPTCycleViewHolder holder, int position) {
         FirebaseViewItem<IPPTCycle> ipptCycle = ipptCycleList.get(position);
         // set view item's onclicklistener to go to corresponding cycle
-        holder.itemView.setOnClickListener(new CycleActivity.RoutineOnClickListener(ipptCycleContext, ipptCycle, userId));
+        holder.itemView.setOnClickListener(new CycleActivity.RoutineOnClickListener(ipptCycleContext, ipptCycle, userId, DOB));
 
         holder.nameTextView.setText(ipptCycle.viewItem.Name);
         holder.DateCreatedTextView.setText(dateFormat.format(ipptCycle.viewItem.DateCreated));

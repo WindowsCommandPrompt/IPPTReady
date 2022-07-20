@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseViewItem;
@@ -37,16 +38,19 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     private Context context;
     private String userId;
     private String cycleId;
+    private Date DOB;
     private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     public IPPTRoutineAdapter(List<FirebaseViewItem<IPPTRoutine>> ipptRoutineList,
                               Context context,
                               String userId,
-                              String cycleId) {
+                              String cycleId,
+                              Date DOB) {
         this.ipptRoutineList = ipptRoutineList;
         this.context = context;
         this.userId = userId;
         this.cycleId = cycleId;
+        this.DOB = DOB;
     }
 
     @NonNull
@@ -63,6 +67,8 @@ public class IPPTRoutineAdapter extends RecyclerView.Adapter<IPPTRoutineViewHold
     public void onBindViewHolder(@NonNull IPPTRoutineViewHolder holder, int position) {
         FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem = ipptRoutineList.get(position);
 
+        holder.itemView.setOnClickListener(new RoutineActivity.RecordOnClickListener(ipptRoutineViewItem,
+                context, userId, cycleId, DOB));
 
         holder.ipptScoreTextView.setText(String.valueOf(ipptRoutineViewItem.viewItem.IPPTScore));
         holder.DateCreatedTextView.setText(dateFormat.format(ipptRoutineViewItem.viewItem.DateCreated));

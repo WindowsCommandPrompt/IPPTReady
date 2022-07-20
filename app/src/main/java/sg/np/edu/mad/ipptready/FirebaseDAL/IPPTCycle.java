@@ -34,6 +34,7 @@ public class IPPTCycle implements Serializable {
     public IPPTCycle(String Name, Date DateCreated) {
         this.Name = Name;
         this.DateCreated = DateCreated;
+        this.isFinished = false;
     }
 
     public static DocumentReference getCycleDocFromId(DocumentReference userDocRef,

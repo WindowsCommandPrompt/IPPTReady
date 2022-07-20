@@ -31,22 +31,26 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
 import sg.np.edu.mad.ipptready.Cycle.CycleActivity;
 import sg.np.edu.mad.ipptready.Cycle.IPPTCycleAdapter;
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseViewItem;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTCycle;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTRoutine;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 import sg.np.edu.mad.ipptready.R;
+import sg.np.edu.mad.ipptready.RecordActivity;
 import sg.np.edu.mad.ipptready.RoutineAlertReceiver;
 
 public class RoutineActivity extends AppCompatActivity {
     private String userId;
     private String cycleId;
     private boolean isFinished;
+    private Date DOB;
     private DocumentReference cycleDocRef;
 
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -66,13 +70,16 @@ public class RoutineActivity extends AppCompatActivity {
         // set View temporary to a loading screen
 
         // Input to RoutineActivity:
-        // "userId" : String, userId of User FrirebaseDocument
-        // "cycleId" : String, cycleId of Cycle FirebaseDocument
+        // "userId" : String, userId of User document
+        // "cycleId" : String, cycleId of Cycle document
+        // "DOB" : Date, Date of birth of user
+
         //
         // Output to RecordActivity:
         // "userId", String : Email Address of the user.
         // "cycleId", String : Id of the IPPTCycle
         // "routineId", String : Id of the IPPTCycle
+        // "DOB" : Date, Date of birth of user
         // Note:        Make sure to save the Input data using the onSaveInstanceState(android.os.Bundle),
         //                  so that we don't need to retrieve the data again!
         //
@@ -87,12 +94,14 @@ public class RoutineActivity extends AppCompatActivity {
             userId = intent.getStringExtra("userId");
             cycleId = intent.getStringExtra("cycleId");
             isFinished = intent.getBooleanExtra("isFinished", false);
+            DOB = (Date) intent.getSerializableExtra("DOB");
             cycleDocRef = IPPTCycle.getCycleDocFromId(IPPTUser.getUserDocFromId(userId), cycleId);
         }
         else if (null != savedInstanceState) {
             userId = savedInstanceState.getString("userId");
             cycleId = savedInstanceState.getString("cycleId");
             isFinished = savedInstanceState.getBoolean("isFinished");
+            DOB = (Date) savedInstanceState.getSerializable("DOB");
             cycleDocRef = IPPTCycle.getCycleDocFromId(IPPTUser.getUserDocFromId(userId), cycleId);
         }
         else {
@@ -123,6 +132,7 @@ public class RoutineActivity extends AppCompatActivity {
 
                                 if (null != notFinishedRoutine) {
                                     setRoutineTextViewFields(notFinishedRoutine);
+                                    setCompleteRoutineButton();
                                 }
                                 else
                                     setCreateRoutineButton();
@@ -154,7 +164,8 @@ public class RoutineActivity extends AppCompatActivity {
     private void setRecycleViewContent(List<FirebaseViewItem<IPPTRoutine>> ipptRoutineList) {
         ipptRoutineAdapter = new IPPTRoutineAdapter(ipptRoutineList, RoutineActivity.this,
                 userId,
-                cycleId);
+                cycleId,
+                 DOB);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -163,30 +174,64 @@ public class RoutineActivity extends AppCompatActivity {
     }
 
     private void setRoutineTextViewFields(FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem) {
-        ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(ipptRoutineViewItem.viewItem.DateCreated));
-    }
-
-    private void addAlarm()
-    {
-        Intent routineAlertIntent = new Intent(getApplicationContext(), RoutineAlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, routineAlertIntent, 0);
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(System.currentTimeMillis() + 60000);
-
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
+        ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat
+                .format(ipptRoutineViewItem.viewItem.DateCreated));
     }
 
     private class CreateRoutineOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            Date dateCreated = new Date();
+            FirebaseDocChange firebaseDocChange = IPPTRoutine.createNewRoutine(cycleDocRef, dateCreated);
+            firebaseDocChange.changeTask
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                notFinishedRoutine = new FirebaseViewItem<>(new IPPTRoutine(dateCreated), firebaseDocChange.documentReference);
+                                setCompleteRoutineButton();
+                                Toast.makeText(RoutineActivity.this, "Routine Creation Successful!", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                            else {
+                                Toast.makeText(RoutineActivity.this, "Failed to create Routine!", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+                    });
         }
     }
 
-    private class GoRecordOnClickListener implements View.OnClickListener {
+    public static class RecordOnClickListener implements View.OnClickListener {
+        public FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem;
+        public Context context;
+        public String userId;
+        public String cycleId;
+        public Date DOB;
+
+        public RecordOnClickListener(FirebaseViewItem<IPPTRoutine> ipptRoutineViewItem,
+                                     Context context,
+                                     String userId,
+                                     String cycleId,
+                                     Date DOB) {
+            this.ipptRoutineViewItem = ipptRoutineViewItem;
+            this.context = context;
+            this.userId = userId;
+            this.cycleId = cycleId;
+            this.DOB = DOB;
+        }
+
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(context, RecordActivity.class);
+
+            intent.putExtra("userId", userId);
+            intent.putExtra("cycleId", cycleId);
+            intent.putExtra("routineId", ipptRoutineViewItem.documentReference.getId());
+            intent.putExtra("isFinished", -1 != ipptRoutineViewItem.viewItem.IPPTScore);
+            intent.putExtra("DOB", DOB);
+
+            context.startActivity(intent);
         }
     }
 
@@ -196,11 +241,11 @@ public class RoutineActivity extends AppCompatActivity {
         findViewById(R.id.constraintLayout2).setOnClickListener(null);
     }
 
-    private class GoRoutineActivityResultCallback implements ActivityResultCallback<ActivityResult> {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            recreate();
-        }
+    private void setCompleteRoutineButton() {
+        ((TextView)findViewById(R.id.routinedateCreatedText)).setText(dateFormat.format(notFinishedRoutine.viewItem.DateCreated));
+        findViewById(R.id.completecreateroutineButton).setVisibility(View.GONE);
+        findViewById(R.id.constraintLayout2).setOnClickListener(new RecordOnClickListener(notFinishedRoutine, RoutineActivity.this,
+                userId, cycleId, DOB));
     }
 
     @Override
@@ -209,6 +254,7 @@ public class RoutineActivity extends AppCompatActivity {
         outState.putString("userId", userId);
         outState.putString("cycleId", cycleId);
         outState.putBoolean("isFinished", isFinished);
+        outState.putSerializable("DOB", DOB);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
     }

@@ -26,7 +26,12 @@ public class IPPTRoutine {
                 : -1;
     }
 
-    public static DocumentReference getCycleDocFromId(DocumentReference cycleDocRef,
+    public IPPTRoutine(Date DateCreated) {
+        this.DateCreated = DateCreated;
+        this.IPPTScore = -1;
+    }
+
+    public static DocumentReference getRoutineDocFromId(DocumentReference cycleDocRef,
                                                       String routineDocId) {
         return cycleDocRef.collection(colFrom).document(routineDocId);
     }
@@ -37,7 +42,7 @@ public class IPPTRoutine {
     }
 
     public static FirebaseDocChange createNewRoutine(DocumentReference cycleDocRef,
-                                                     DateTime DateCreated) {
+                                                     Date DateCreated) {
         FirebaseDocChange newRoutine = new FirebaseDocChange();
 
         newRoutine.documentReference = cycleDocRef.collection(colFrom)
@@ -52,7 +57,7 @@ public class IPPTRoutine {
     }
 
     public static Task<Void> RoutineAddScore(DocumentReference routineDocRef,
-                                           int ipptScore) {
+                                           long ipptScore) {
         Map<String, Object> updateRoutineMap = new HashMap<>();
         updateRoutineMap.put(IPPTSCORE, ipptScore);
 
