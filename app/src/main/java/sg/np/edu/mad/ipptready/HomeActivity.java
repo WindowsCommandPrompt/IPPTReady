@@ -10,9 +10,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
+
 public class HomeActivity extends AppCompatActivity {
     public String EmailAddress;
-    public User user;
+    public IPPTUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +43,11 @@ public class HomeActivity extends AppCompatActivity {
             // Java is not a very typesafe language!
 
             EmailAddress = intent.getStringExtra("Email");
-            user = (User)intent.getSerializableExtra("User");
+            user = (IPPTUser)intent.getSerializableExtra("User");
         }
         else if (null != savedInstanceState) {
             EmailAddress = savedInstanceState.getString("Email");
-            user = (User)savedInstanceState.getSerializable("User");
+            user = (IPPTUser)savedInstanceState.getSerializable("User");
         }
         else {
             // If all else fails..

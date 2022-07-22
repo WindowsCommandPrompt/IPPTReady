@@ -35,6 +35,9 @@ import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTRecord;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTRoutine;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTCycle;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
+import sg.np.edu.mad.ipptready.FirebaseDAL.PushupRecord;
+import sg.np.edu.mad.ipptready.FirebaseDAL.RunRecord;
+import sg.np.edu.mad.ipptready.FirebaseDAL.SitupRecord;
 
 public class RecordActivity extends AppCompatActivity {
     private String userId;

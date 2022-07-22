@@ -1,6 +1,7 @@
 package sg.np.edu.mad.ipptready.FirebaseDAL;
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -8,15 +9,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class IPPTUser {
+public class IPPTUser implements Serializable {
     public static final String colFrom = "IPPTUser";
     private static final String NAME = "Name";
     private static final String DOB = "DOB";
     private static final String EMAIL_ADDRESS = "EmailAddress";
+
+    public Date DoB;
+    public String Name;
+
+    public IPPTUser(Map<String, Object> userMap) {
+        Name = (String) userMap.get(NAME);
+        DoB = ((Timestamp) userMap.get(DOB)).toDate();
+    }
+
 
     public static DocumentReference getUserDocFromId(String userDocId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

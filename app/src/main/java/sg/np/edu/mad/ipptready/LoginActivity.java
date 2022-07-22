@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void goToHomePage(DocumentSnapshot userDocumentSnapshot) {
-        User user = userDocumentSnapshot.toObject(User.class);
+        IPPTUser user = new IPPTUser(userDocumentSnapshot.getData());
 
         Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
         loginIntent.putExtra("Email", userDocumentSnapshot.getReference().getId());

@@ -9,14 +9,13 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
+
+import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
 public class ProfileActivity extends AppCompatActivity {
     private String EmailAddress;
-    private User user;
+    private IPPTUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +32,11 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = getIntent();
             EmailAddress = intent.getStringExtra("Email");
             // Java is not a typesafe language!
-            user = (User)intent.getSerializableExtra("User");
+            user = (IPPTUser) intent.getSerializableExtra("User");
         }
         else if (null != savedInstanceState) {
             EmailAddress = savedInstanceState.getString("Email");
-            user = (User)savedInstanceState.getSerializable("User");
+            user = (IPPTUser) savedInstanceState.getSerializable("User");
         }
         else {
             // if all else fails...
@@ -54,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
             TextView dob = findViewById(R.id.dateOfBirth);
 
             SimpleDateFormat dateFormat= new SimpleDateFormat("dd/MMM/yyyy");
-            String dateOfBirth = dateFormat.format(user.DOB);
+            String dateOfBirth = dateFormat.format(user.DoB);
 
             // set name, email and dob on profile activity screen
             name.setText(user.Name);

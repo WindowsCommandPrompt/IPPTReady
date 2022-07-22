@@ -40,7 +40,6 @@ import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTCycle;
 import sg.np.edu.mad.ipptready.R;
 import sg.np.edu.mad.ipptready.Routine.RoutineActivity;
-import sg.np.edu.mad.ipptready.User;
 
 public class CycleActivity extends AppCompatActivity {
     private String userId;

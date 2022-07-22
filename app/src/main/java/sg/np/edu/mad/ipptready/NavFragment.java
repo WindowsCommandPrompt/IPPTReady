@@ -26,7 +26,7 @@ public class NavFragment extends Fragment {
                 Intent CycleIntent = new Intent(getActivity(), CycleActivity.class);
 
                 CycleIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
-                CycleIntent.putExtra("DOB", ((HomeActivity)getActivity()).user.DOB);
+                CycleIntent.putExtra("DOB", ((HomeActivity)getActivity()).user.DoB);
                 startActivity(CycleIntent);
             }
         });
