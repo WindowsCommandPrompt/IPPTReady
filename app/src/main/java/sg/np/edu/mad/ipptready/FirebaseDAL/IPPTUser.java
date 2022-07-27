@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Attributes;
 
 public class IPPTUser implements Serializable {
     public static final String colFrom = "IPPTUser";
@@ -60,10 +62,10 @@ public class IPPTUser implements Serializable {
     }
 
     public static Task<Void> updateUser(DocumentReference userDocRef,
-                                                  String Name) {
+                                                  String EmailAddress) {
         Map<String, Object> updatedUserMap = new HashMap<>();
-        if (null != Name) {
-            updatedUserMap.put(NAME, Name);
+        if (null != NAME) {
+            updatedUserMap.put(NAME, NAME);
         }
         return userDocRef.set(updatedUserMap, SetOptions.merge());
     }
@@ -72,3 +74,23 @@ public class IPPTUser implements Serializable {
         return userDocRef.delete();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,90 +12,101 @@
         tools:context=".ProfileActivity">
 
         <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:fontFamily="@font/carter_one"
+            android:text="IPPTReady"
+            android:textColor="@color/black"
+            android:textSize="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/nameLabel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="Name:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+        <ImageView
+            android:id="@+id/profilePicture"
+            android:layout_width="139dp"
+            android:layout_height="133dp"
+            android:layout_marginStart="132dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <TextView
+            android:id="@+id/dobLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Date Of Birth:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
+
+        <TextView
             android:id="@+id/nameLabel3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="sans-serif-medium"
             android:text="Name:"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:typeface="normal"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
         <TextView
             android:id="@+id/dateOfBirth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="18dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/email"
+            app:layout_constraintStart_toEndOf="@+id/dobLabel"
             app:layout_constraintTop_toBottomOf="@+id/email" />
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="17dp"
             android:text="TextView"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintStart_toEndOf="@+id/emailLabel"
             app:layout_constraintTop_toBottomOf="@+id/name" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="31dp"
             android:text="TextView"
             android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@+id/nameLabel3"
-            app:layout_constraintTop_toTopOf="@+id/nameLabel3" />
-
-        <TextView
-            android:id="@+id/dobLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="Date Of Birth:"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/emailLabel"
-            app:layout_constraintTop_toTopOf="@+id/dateOfBirth" />
-
-        <TextView
-            android:id="@+id/emailLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-medium"
-            android:text="Email:"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/nameLabel3"
-            app:layout_constraintTop_toTopOf="@+id/email" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/carter_one"
-            android:text="IPPTReady"
-            android:textColor="@color/black"
-            android:textSize="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/profilePicture" />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="130dp"
             android:layout_height="43dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="31dp"
             android:fontFamily="sans-serif-black"
             android:text="Profile"
             android:textAlignment="center"
@@ -107,12 +118,40 @@
             app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
-            android:id="@+id/nameLabel"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="Name:"
+            android:id="@+id/emailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="87dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Email:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/nameLabel3" />
+
+        <ImageView
+            android:id="@+id/editImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="1dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/edit" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="122dp"
+            android:layout_marginEnd="122dp"
+            android:layout_marginBottom="48dp"
+            android:text="Delete Account"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
