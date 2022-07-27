@@ -79,6 +79,9 @@ public class WeatherFragment extends Fragment {
         try {
             JSONObject obj = new JSONObject(jsonString);
             JSONObject current = obj.getJSONObject("current");
+            double temperature = current.getDouble("temp_c");
+            TextView tempTextView = view.findViewById(R.id.homeTemp);
+            tempTextView.setText(String.valueOf(temperature)+"°C");
             JSONObject condition = current.getJSONObject("condition");
             String weather = condition.getString("text");
             String icon = condition.getString("icon");
@@ -91,12 +94,14 @@ public class WeatherFragment extends Fragment {
                 weatherCard.setCardBackgroundColor(Color.parseColor("#E6568CD8"));
                 weatherisnow.setTextColor(Color.parseColor("#000000"));
                 weatherTextView.setTextColor(Color.parseColor("#000000"));
+                tempTextView.setTextColor(Color.parseColor("#000000"));
             }
             if (icon.contains("night")){
                 weatherCard.setCardBackgroundColor(Color.parseColor("#E63B5284"));
                 weatherisnow.setTextColor(Color.parseColor("#FFFFFF"));
                 weatherTextView.setTextColor(Color.parseColor("#FFFFFF"));
                 weatherbrought.setTextColor(Color.parseColor("#FFFFFF"));
+                tempTextView.setTextColor(Color.parseColor("#FFFFFF"));
             }
             ImageView iconImageView = view.findViewById(R.id.homeWeatherIcon);
             Picasso.with(getActivity()).load("https:" + icon).into(iconImageView);

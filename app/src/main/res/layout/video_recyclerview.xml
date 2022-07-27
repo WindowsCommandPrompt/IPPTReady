@@ -9,13 +9,13 @@
         android:id="@+id/recyclerVideoType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="videoType"
-        android:fontFamily="@font/carter_one"
-        android:textColor="@color/design_default_color_primary"
-        android:textSize="28dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="-10dp"
-        android:layout_marginLeft="15dp"
+        android:fontFamily="@font/carter_one"
+        android:text="videoType"
+        android:textColor="@color/greendark2"
+        android:textSize="28dp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/recyclerThumbnail"
@@ -60,9 +61,10 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/videoPlayButton"
-                android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/play_button"
                 android:gravity="center"
                 android:text="Play"
