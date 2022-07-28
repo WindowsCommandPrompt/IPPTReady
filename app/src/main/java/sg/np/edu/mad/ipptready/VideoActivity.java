@@ -127,7 +127,7 @@ public class VideoActivity extends AppCompatActivity {
 
                         // RecyclerView
                         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-                        RecyclerView recyclerView = findViewById(R.id.videoRecyclerView);
+                        RecyclerView recyclerView = findViewById(R.id.exerciseTogetherRecyclerView);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(adapter);

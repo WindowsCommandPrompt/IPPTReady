@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VideoActivity"
     android:orientation="vertical">
 
     <TextView
@@ -15,24 +12,24 @@
         android:layout_marginTop="25dp"
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/carter_one"
-        android:text="Videos"
+        android:text="Exercise Together"
         android:textColor="@color/black"
         android:textSize="40dp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView33"
+        android:id="@+id/exercisetgtinfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="4dp"
-        android:textSize="12dp"
-        android:text="Please note that these videos do not belong to us and we follow strictly to the terms and conditions for using YouTube API services." />
+        android:text="Please wait for nearby devices to connect and join the session."
+        android:textSize="12dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exerciseTogetherRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="639dp" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
