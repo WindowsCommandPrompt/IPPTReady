@@ -1,31 +1,58 @@
 package sg.np.edu.mad.ipptready;
 
-import androidx.annotation.*;
-import androidx.appcompat.app.*;
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
+import android.Manifest;
 import android.app.Activity;
-import android.content.*;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.os.*;
+import android.location.Location;
+import android.location.LocationListener;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Looper;
 import android.util.Log;
-import android.widget.*;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.*;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RunActivity extends AppCompatActivity {
+public class RunActivity extends AppCompatActivity implements LocationListener {
 
     CountDownTimer mainStopwatch;
 
     AtomicReference<CountDownTimer> arcdt = new AtomicReference<>(null);
 
     private FirebaseFirestore RESTdb = FirebaseFirestore.getInstance();
+
+    private final int LOCATION_REQUEST_CODE = 10001;
+
+    private ArrayList<Location> coordinateArray = new ArrayList<>();
+    private ArrayList<String> currentTimeArray = new ArrayList<>();
 
     // When user decides to go back to previous screen
     @Override
@@ -54,6 +81,10 @@ public class RunActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
+
+        //Try to modify the background color of the
+        //((CardView) findViewById(R.id.runningDistanceCard)).setCardBackgroundColor(null);
+
 
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
@@ -288,4 +319,106 @@ public class RunActivity extends AppCompatActivity {
             Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "portrait", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //Add the location services thing over here....
+    //This method will be responsible for ensuring that the current location of the device has been called and that the data has been successfully appended into the correct textfield within the application
+    private void getCurrentLocation() throws SecurityException {
+        Log.d("FunctionEntry", "Beginning to retrieve the required location results.....");
+        //Some phone models may not have
+        //check for operating system and device specs
+        int currentOSAPILevel = 15;
+        //Build.VERSION_CODES.KITKAT = 19 Build.VERSION_CODES.N = 24
+        if (currentOSAPILevel >= Build.VERSION_CODES.KITKAT && currentOSAPILevel <= Build.VERSION_CODES.N){
+            LocationRequest mLocationRequestOld = LocationRequest.create();
+            mLocationRequestOld.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequestOld.setInterval(1200);
+            mLocationRequestOld.setFastestInterval(1000);
+        }
+        else {
+            LocationRequest mLocationRequest = LocationRequest.create();
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationRequest.setInterval(150);
+            mLocationRequest.setFastestInterval(300);
+            Log.d("TRUE/FALSE", "" + mLocationRequest.isFastestIntervalExplicitlySet());
+
+            getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    Log.d("ListenerRunning?", "Yes");
+                    onLocationChanged(locationResult.getLastLocation());
+                }
+            }, Looper.myLooper());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        //((TextView) findViewById(R.id.location1)).setText(msg);
+        Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "This method has been called and now the location is being updated at a speed between 150ms to 950ms", Toast.LENGTH_SHORT).show();
+        coordinateArray.add(location); //stores an array of Location objects...
+        Log.d("TAG", "" + coordinateArray.size());
+        //Unfortunately you will have to calculate the distance inside this location listener lol
+        for (Location l : coordinateArray){ //Location l refers to the actual Location object....Not the index!
+            if (l != null){
+                if (coordinateArray.size() - 2 >= 0) {
+                    float[] resultContainer = new float[4];
+                    //startLatitude, startLongitude, endLatitude, endLongitude, float[] results (parameters for distanceBetween() method under the Location class)
+                    Location.distanceBetween(
+                            coordinateArray.get(coordinateArray.size() - 2).getLatitude(),
+                            coordinateArray.get(coordinateArray.size() - 2).getLongitude(),
+                            coordinateArray.get(coordinateArray.size() - 1).getLatitude(),
+                            coordinateArray.get(coordinateArray.size() - 1).getLongitude(),
+                            resultContainer
+                    );
+                    for (float f : resultContainer) {
+                        Log.d("WhatIsIt?", "" + new ArrayList<Float>(Arrays.asList(resultContainer[0], resultContainer[1], resultContainer[2], resultContainer[3])));
+                    }
+                    //float currentDistance = Float.parseFloat(((TextView) findViewById(R.id.DistanceCounter)).getText().toString()) + resultContainer[0];
+                    //((TextView) findViewById(R.id.DistanceCounter)).setText(Float.toString(currentDistance));
+                }
+            }
+            else {
+
+            }
+        }
+    }
+
+    private void checkPermissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            //Prompt the user to
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
+                Log.d("SDLJF", "An alert dialog should show up prompting the user to allow this application to access location services");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            }
+            else {
+                Log.d("IsThisSleeping?", "No");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+            }
+        }
+        else {
+            Log.d("ElseStatement", "CodeReachedHere");
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d("Sleeping1?", "No");
+        if (requestCode == LOCATION_REQUEST_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //Permssion has been granted
+                getCurrentLocation();
+                Log.d("PermissionGranted", "Permission has been granted");
+            }
+            else{
+                //Permission is not granted
+                checkPermissions();
+            }
+        }
+    }
+
+    //This is the thing is able to
 }
