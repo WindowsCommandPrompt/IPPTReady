@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
             ft.replace(R.id.fragmentMenu, new NavFragment());
             ft.commit();
 
-            findViewById(R.id.profileButton).setOnClickListener(new View.OnClickListener() {
+            View.OnClickListener profileActivityOCL = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent ProfileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
@@ -71,8 +71,9 @@ public class HomeActivity extends AppCompatActivity {
                     ProfileIntent.putExtra("Email", EmailAddress);
                     ProfileIntent.putExtra("User", user);
                     startActivity(ProfileIntent);
-                }
-            });
+                }};
+            findViewById(R.id.cardHomeWelcome).setOnClickListener(profileActivityOCL);
+            findViewById(R.id.profileButton).setOnClickListener(profileActivityOCL);
 
             // set name of user in home activity
             TextView name = findViewById(R.id.nameTextHome);

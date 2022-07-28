@@ -91,10 +91,10 @@ public class WeatherFragment extends Fragment {
             TextView weatherbrought = view.findViewById(R.id.weatherbroughttoyou);
             MaterialCardView weatherCard = view.findViewById(R.id.cardWeather);
             if (icon.contains("day")){
-                weatherCard.setCardBackgroundColor(Color.parseColor("#E6568CD8"));
-                weatherisnow.setTextColor(Color.parseColor("#000000"));
-                weatherTextView.setTextColor(Color.parseColor("#000000"));
-                tempTextView.setTextColor(Color.parseColor("#000000"));
+                weatherCard.setCardBackgroundColor(Color.parseColor("#E600b6ed"));
+                weatherisnow.setTextColor(Color.parseColor("#FFFFFF"));
+                weatherTextView.setTextColor(Color.parseColor("#FFFFFF"));
+                tempTextView.setTextColor(Color.parseColor("#FFFFFF"));
             }
             if (icon.contains("night")){
                 weatherCard.setCardBackgroundColor(Color.parseColor("#E63B5284"));

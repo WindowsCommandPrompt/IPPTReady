@@ -20,77 +20,74 @@
             android:paddingTop="20dp"
             android:paddingBottom="12dp">
 
-            <TextView
-                android:id="@+id/textView11"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/carter_one"
-                android:text="IPPTReady"
-                android:textColor="@color/black"
-                android:textSize="50dp"
-                android:layout_marginLeft="15dp"/>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/carter_one"
+                    android:text="IPPTReady"
+                    android:textColor="@color/black"
+                    android:textSize="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.102"
+                    app:layout_constraintStart_toEndOf="@+id/textView11"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/man" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardHomeWelcome"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="117dp"
                 android:layout_margin="10dp"
                 android:background="@color/white">
 
-                <LinearLayout
-                    android:layout_width="364dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:orientation="horizontal">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
-                        android:layout_width="201dp"
+                    <ImageButton
+                        android:id="@+id/profileButton"
+                        android:layout_width="85dp"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="24dp"
+                        android:background="@color/white"
+                        android:scaleType="fitCenter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/user" />
+
+                    <TextView
+                        android:id="@+id/nameTextHome"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textView3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="25dp"
-                            android:fontFamily="@font/carter_one"
-                            android:text="Hello,"
-                            android:textColor="@color/black"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:id="@+id/nameTextHome"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginBottom="25dp"
-                            android:fontFamily="@font/carter_one"
-                            android:text="name"
-                            android:textColor="@color/greendark"
-                            android:textSize="30dp" />
-                    </LinearLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageButton
-                            android:id="@+id/profileButton"
-                            android:layout_width="85dp"
-                            android:layout_height="85dp"
-                            android:layout_gravity="center"
-                            android:background="@color/white"
-                            android:scaleType="fitCenter"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/user" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
+                        android:fontFamily="@font/carter_one"
+                        android:text="name"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/profileButton"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </com.google.android.material.card.MaterialCardView>
