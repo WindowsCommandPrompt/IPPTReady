@@ -62,10 +62,10 @@ public class IPPTUser implements Serializable {
     }
 
     public static Task<Void> updateUser(DocumentReference userDocRef,
-                                                  String EmailAddress) {
+                                                  String Name) {
         Map<String, Object> updatedUserMap = new HashMap<>();
-        if (null != NAME) {
-            updatedUserMap.put(NAME, NAME);
+        if (null != Name) {
+            updatedUserMap.put(NAME, Name);
         }
         return userDocRef.set(updatedUserMap, SetOptions.merge());
     }
