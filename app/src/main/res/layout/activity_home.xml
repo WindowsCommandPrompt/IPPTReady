@@ -173,6 +173,18 @@
                 </FrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/logout"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-6dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/redborder"
+                android:text="Log out"
+
+                android:textColor="@color/white" />
+
         </LinearLayout>
 
 
