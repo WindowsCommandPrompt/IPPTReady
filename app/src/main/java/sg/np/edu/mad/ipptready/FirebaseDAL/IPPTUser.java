@@ -11,6 +11,7 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.type.DateTime;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,12 +63,17 @@ public class IPPTUser implements Serializable {
     }
 
     public static Task<Void> updateUser(DocumentReference userDocRef,
-                                                  String Name) {
+                                        String Name,
+                                        Date Dob) {
+
+        FirebaseDocChange updateUser = new FirebaseDocChange();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         Map<String, Object> updatedUserMap = new HashMap<>();
-        if (null != Name) {
-            updatedUserMap.put(NAME, Name);
-        }
-        return userDocRef.set(updatedUserMap, SetOptions.merge());
+        updatedUserMap.put(NAME, Name);
+        updatedUserMap.put(DOB, Dob);
+
+        return updateUser.changeTask = userDocRef.set(updatedUserMap);
     }
 
     public static Task<Void> deleteUser(DocumentReference userDocRef) {
