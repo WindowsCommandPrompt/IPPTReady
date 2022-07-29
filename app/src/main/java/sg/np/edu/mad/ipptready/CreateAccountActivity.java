@@ -97,6 +97,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                 {
                     dob.setHint("Please select date");
                     dob.setError("Please enter Date of Birth!");
+                    Toast.makeText(CreateAccountActivity.this, "Date of Birth was not selected", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -104,8 +105,18 @@ public class CreateAccountActivity extends AppCompatActivity {
                 {
                     name.setHint("Please enter Name");
                     name.setError("Please enter a name!");
+                    Toast.makeText(CreateAccountActivity.this, "Enter your name", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                if((name.getText().toString()).contains("&"))
+                {
+                    name.setHint("Enter another Name");
+                    name.setError("Character \"&\" is not allowed!");
+                    Toast.makeText(CreateAccountActivity.this, "Character \"&\" is not allowed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Name = name.getText().toString();
                 Date DOB = null;
 

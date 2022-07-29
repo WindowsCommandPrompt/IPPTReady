@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         Intent receivedIntent = getIntent();
         TextView sessionNameTextView = findViewById(R.id.SessionNameWaitingRoom);
         sessionNameTextView.setText("\"" + receivedIntent.getStringExtra("sessionName") + "\"");
+        ImageView QRCode = findViewById(R.id.QRcode);
+        QRCode.setImageBitmap(receivedIntent.getExtras().getParcelable("QRImage"));
 
         secondsLeft = 11;
         internet = new Internet();
@@ -53,6 +56,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                     noConnectBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
                     noConnectBundle.putString("exercise", getIntent().getStringExtra("exercise"));
                     noConnectBundle.putString("userId", getIntent().getStringExtra("userId"));
+                    noConnectBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
                     noConnectionIntent.putExtras(noConnectBundle);
                     startActivity(noConnectionIntent);
                     finish();

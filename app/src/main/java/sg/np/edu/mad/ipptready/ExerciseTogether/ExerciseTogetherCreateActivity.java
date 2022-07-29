@@ -4,7 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +19,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import sg.np.edu.mad.ipptready.CreateAccountActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
@@ -22,7 +32,9 @@ import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 import sg.np.edu.mad.ipptready.R;
 
+
 public class ExerciseTogetherCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    String EmailAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +61,60 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                 String sessionNameText = sessionName.getText().toString();
                 String selectedExercise = String.valueOf(exercisesSpinner.getSelectedItem());
 
+                // Get Email Address/UserID
                 Intent intent = getIntent();
-                String EmailAddress = intent.getStringExtra("userId");
+                EmailAddress = intent.getStringExtra("userId");
+                Log.d("DEBUG", EmailAddress);
+
+                // Get user's Name to be used in encoding for QR code
+                final String[] name = {""};
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("IPPTUser").document(EmailAddress).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) name[0] = task.getResult().get("Name").toString();
+                    }
+                });
+
+                // Create Exercise Together Session object and add session to firestore.
                 ExerciseTogetherSession session = new ExerciseTogetherSession("", sessionNameText, selectedExercise, EmailAddress);
                 FirebaseDocChange firebaseDocChange = ExerciseTogetherSession.createNewSession(EmailAddress, session);
-                firebaseDocChange.changeTask
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putString("date", session.dateCreated);
-                                    bundle.putString("sessionName", session.sessionName);
-                                    bundle.putString("exercise", session.exercise);
-                                    bundle.putString("userId", EmailAddress);
-                                    Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
-                                    beginSession.putExtras(bundle);
-                                    startActivity(beginSession);
-                                    finish();
-                                }
-                                else {
-                                    Toast.makeText(ExerciseTogetherCreateActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
-                                    finish();
-                                }
+                firebaseDocChange.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+
+                            String qrdetails = name[0] + "&" + session.dateCreated;
+                            Log.d("DEBUG", qrdetails);
+                            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+                            Bitmap bitmap = null;
+
+                            try {
+                                BitMatrix bitMatrix = qrCodeWriter.encode(qrdetails, BarcodeFormat.QR_CODE, 400, 400);
+                                bitmap = CreateImage(bitMatrix);
                             }
-                        });
+                            catch (WriterException we)
+                            {
+                                Log.e("Error", "Unable to create QR code.");
+                            }
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("date", session.dateCreated);
+                            bundle.putString("sessionName", session.sessionName);
+                            bundle.putString("exercise", session.exercise);
+                            bundle.putString("userId", EmailAddress);
+                            bundle.putParcelable("QRImage", bitmap);
+                            Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
+                            beginSession.putExtras(bundle);
+                            startActivity(beginSession);
+                            finish();
+                        }
+                        else {
+                            Toast.makeText(ExerciseTogetherCreateActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    }
+                });
             }
         });
 
@@ -92,4 +133,16 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
     }
 
     public void onNothingSelected(AdapterView<?> parent) { }
+
+    public Bitmap CreateImage(BitMatrix bitMatrix) {
+        int height = bitMatrix.getHeight();
+        int width = bitMatrix.getWidth();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        for (int x = 0; x < width; x++){
+            for (int y = 0; y < height; y++){
+                bitmap.setPixel(x, y, bitMatrix.get(x,y) ? Color.BLACK : Color.WHITE);
+            }
+        }
+        return bitmap;
+    }
 }
