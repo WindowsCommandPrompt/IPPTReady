@@ -56,6 +56,10 @@ public class AutoPushupActivity extends AppCompatActivity {
         if (proximitySensor == null) {
             Toast.makeText(this, "No proximity sensor found in device.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AutoPushupActivity.this, PushupActivity.class);
+            intent.putExtra("NumPushups", targetPushUps);
+            intent.putExtra("Email", getIntent().getStringExtra("Email"));
+            intent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
+            intent.putExtra("IPPTRoutineId", getIntent().getStringExtra("IPPTRoutineId"));
             startActivity(intent);
             finish();
         } else {

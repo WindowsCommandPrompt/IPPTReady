@@ -22,12 +22,24 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/cycle_recycleview.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/routine_recycleview.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/video_recyclerview.xml" value="0.4" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/blueborder.xml" value="0.4185" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/blueborderwhitebg.xml" value="0.4185" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/complete_routine_button.xml" value="0.207" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/createcycle_button.xml" value="0.4185" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/cycleroutine_button.xml" value="0.4185" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/darkgreenborder.xml" value="0.207" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/record_button.xml" value="0.4185" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/drawable/redborder.xml" value="0.4185" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_auto_pushup.xml" value="0.5" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_detailed_information.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_exercise_together.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_information.xml" value="0.25" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_pushup.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_pushuptarget.xml" value="0.5" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.421875" />
+        <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/activity_routine.xml" value="0.421875" />
         <entry key="..\:/Users/Raiden/AndroidStudioProjects/IPPTReady/app/src/main/res/layout/information_row.xml" value="0.67" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout-land/activity_cycle.xml" value="0.264" />
         <entry key="..\:/Users/joshua/Documents/GitHub/IPPTReady/app/src/main/res/layout-land/activity_routine.xml" value="0.264" />
