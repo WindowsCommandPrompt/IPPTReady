@@ -47,197 +47,376 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-                            <!--Add a <Space> tag to ensure that the <RelativeLayout> element is able to go to the center-->
-                            <LinearLayout
-                                android:layout_width = "match_parent"
-                                android:layout_height = "wrap_content"
-                                android:orientation = "horizontal">
-                                <Space
-                                    android:layout_height = "match_parent"
-                                    android:layout_width = "0px"
-                                    android:layout_weight = "1"/>
-                                <!--This RelativeLayout over here is responsible
-                                for defining the timer box used within the application -->
-                                <!--TODO: MAKE THE TIMER BOX GO TO THE CENTER-->
-                                <RelativeLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-                                    <!--android:elevation is set to 1 here by default-->
-                                    <ImageView
-                                        android:id="@+id/timing_indicator_base"
-                                        android:layout_width="750px"
-                                        android:layout_height="750px"
-                                        android:src="@drawable/timing_indicator" />
-                                    <!--android:elevation is set to 2 here by default-->
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="350dp">
+                                <!--Add another base over here-->
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    card_view:cardBackgroundColor="@color/orange">
+                                </androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    card_view:cardBackgroundColor="@color/yellow"
+                                    card_view:cardCornerRadius="32px"
+                                    android:layout_margin="20px">
+                                <!--Add a <Space> tag to ensure that the <RelativeLayout> element is able to go to the center-->
                                     <LinearLayout
-                                        android:layout_width="700px"
-                                        android:layout_height="700px">
-
+                                    android:layout_width = "match_parent"
+                                    android:layout_height = "match_parent"
+                                    android:orientation = "horizontal">
+                                    <Space
+                                        android:layout_height = "match_parent"
+                                        android:layout_width = "0px"
+                                        android:layout_weight = "1"/>
+                                    <!--This RelativeLayout over here is responsible
+                                    for defining the timer box used within the application -->
+                                    <!--TODO: MAKE THE TIMER BOX GO TO THE CENTER-->
+                                    <LinearLayout
+                                        android:layout_width = "wrap_content"
+                                        android:layout_height = "wrap_content"
+                                        android:orientation = "vertical">
+                                        <Space
+                                            android:layout_width = "match_parent"
+                                            android:layout_height = "30dp" />
                                         <RelativeLayout
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center">
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <!--android:elevation is set to 1 here by default-->
+                                        <ImageView
+                                            android:id="@+id/timing_indicator_base"
+                                            android:layout_width="750px"
+                                            android:layout_height="750px"
+                                            android:src="@drawable/timing_indicator" />
+                                        <!--android:elevation is set to 2 here by default-->
+                                        <LinearLayout
+                                            android:layout_width="700px"
+                                            android:layout_height="700px">
 
-                                            <ImageView
-                                                android:layout_width="800px"
-                                                android:layout_height="800px"
-                                                android:src="@drawable/timing_indicator_overlay" />
+                                            <RelativeLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center">
 
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="match_parent"
-                                                android:gravity="center"
-                                                android:orientation="vertical">
+                                                <ImageView
+                                                    android:layout_width="800px"
+                                                    android:layout_height="800px"
+                                                    android:src="@drawable/timing_indicator_overlay" />
 
                                                 <LinearLayout
-                                                    android:layout_width="350px"
-                                                    android:layout_height="wrap_content"
-                                                    android:orientation="horizontal">
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:gravity="center"
+                                                    android:orientation="vertical">
 
-                                                    <ImageView
-                                                        android:layout_width="100px"
-                                                        android:layout_height="100px"
-                                                        android:src="@drawable/ic_baseline_timer_24" />
+                                                    <LinearLayout
+                                                        android:layout_width="350px"
+                                                        android:layout_height="wrap_content"
+                                                        android:orientation="horizontal">
+
+                                                        <ImageView
+                                                            android:layout_width="100px"
+                                                            android:layout_height="100px"
+                                                            android:src="@drawable/ic_baseline_timer_24" />
+
+                                                        <TextView
+                                                            android:layout_width="fill_parent"
+                                                            android:layout_height="100px"
+                                                            android:gravity="center"
+                                                            android:text="Timer" />
+                                                    </LinearLayout>
 
                                                     <TextView
-                                                        android:layout_width="fill_parent"
-                                                        android:layout_height="100px"
+                                                        android:id="@+id/timing_indicator_text"
+                                                        android:layout_width="550px"
+                                                        android:layout_height="wrap_content"
                                                         android:gravity="center"
-                                                        android:text="Timer" />
+                                                        android:text="00:00"
+                                                        android:textSize="155px"
+                                                        android:textStyle="bold" />
+
+                                                    <TextView
+                                                        android:id="@+id/timerStatus"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:text="Time Taken"
+                                                        android:textSize="55px" />
                                                 </LinearLayout>
-
-                                                <TextView
-                                                    android:id="@+id/timing_indicator_text"
-                                                    android:layout_width="550px"
-                                                    android:layout_height="wrap_content"
-                                                    android:gravity="center"
-                                                    android:text="00:00"
-                                                    android:textSize="155px"
-                                                    android:textStyle="bold" />
-
-                                                <TextView
-                                                    android:id="@+id/timerStatus"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="Time Taken"
-                                                    android:textSize="55px" />
-                                            </LinearLayout>
-                                        </RelativeLayout>
+                                            </RelativeLayout>
+                                        </LinearLayout>
+                                    </RelativeLayout>
+                                        <Space
+                                            android:layout_width = "match_parent"
+                                            android:layout_height = "30dp" />
                                     </LinearLayout>
-                                </RelativeLayout>
-                                <Space
-                                    android:layout_height = "match_parent"
-                                    android:layout_width = "0px"
-                                    android:layout_weight = "1"/>
-                            </LinearLayout>
+                                    <Space
+                                        android:layout_height = "match_parent"
+                                        android:layout_width = "0px"
+                                        android:layout_weight = "1"/>
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
                             <!--Define another layout which will hold the distance data-->
                             <Space
                                 android:layout_width = "match_parent"
-                                android:layout_height = "150px"/>
-                            <LinearLayout
+                                android:layout_height = "55dp"/>
+                            <!--Start of the running statistics-->
+                            <!--Base card view-->
+                            <RelativeLayout
                                 android:layout_width = "match_parent"
-                                android:layout_height = "350px"
-                                android:orientation = "horizontal">
+                                android:layout_height = "150dp">
                                 <androidx.cardview.widget.CardView
-                                    android:layout_width="0px"
-                                    android:layout_weight = "1"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    card_view:cardCornerRadius = "32px"
-                                    card_view:cardBackgroundColor = "@color/waveColor"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto">
-                                    <TextView
-                                        android:layout_width = "wrap_content"
-                                        android:layout_height = "wrap_content"
-                                        android:text = "Distance run"
-                                        android:textColor = "@color/white"
-                                        android:textStyle = "bold"
-                                        android:textSize = "50px"/>
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    card_view:cardBackgroundColor="@color/orange">
                                 </androidx.cardview.widget.CardView>
-                                <Space
-                                    android:layout_height = "match_parent"
-                                    android:layout_width = "150px"/>
+                                <!--Top sub cardview-->
                                 <androidx.cardview.widget.CardView
-                                    android:layout_width="0px"
-                                    android:layout_weight = "1"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    card_view:cardCornerRadius = "32px"
-                                    card_view:cardBackgroundColor = "@color/green"
+                                    android:layout_margin="15px"
+                                    card_view:cardCornerRadius="32px"
+                                    card_view:cardBackgroundColor="@color/yellow"
                                     xmlns:card_view="http://schemas.android.com/apk/res-auto">
                                     <LinearLayout
-                                        android:layout_width="match_parent"
+                                        android:layout_width = "match_parent"
+                                        android:layout_height = "match_parent"
+                                        android:orientation = "horizontal"
+                                        android:layout_margin = "30px">
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="0px"
+                                            android:layout_weight = "1"
+                                            android:layout_height="match_parent"
+                                            card_view:cardCornerRadius = "32px"
+                                            card_view:cardBackgroundColor = "@color/purple_200"
+                                            xmlns:card_view="http://schemas.android.com/apk/res-auto">
+                                            <LinearLayout
+                                                android:layout_width = "match_parent"
+                                                android:layout_height = "match_parent"
+                                                android:orientation = "vertical">
+                                                <TextView
+                                                    android:layout_width = "wrap_content"
+                                                    android:layout_height = "wrap_content"
+                                                    android:text = "Distance run"
+                                                    android:textColor = "@color/white"
+                                                    android:textStyle = "bold"
+                                                    android:textSize = "50px"/>
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent">
+                                                    <androidx.cardview.widget.CardView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        card_view:cardCornerRadius = "32px"
+                                                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                                        card_view:cardBackgroundColor="@color/purple_700">
+                                                    <androidx.cardview.widget.CardView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_margin="10px"
+                                                        card_view:cardCornerRadius = "22px"
+                                                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                                        card_view:cardBackgroundColor="@color/purple_500">
+                                                        <LinearLayout
+                                                            android:layout_width = "match_parent"
+                                                            android:layout_height = "match_parent"
+                                                            android:orientation = "horizontal">
+                                                            <TextView
+                                                                android:id = "@+id/kilometerIndicator"
+                                                                android:layout_height = "match_parent"
+                                                                android:layout_width = "0px"
+                                                                android:layout_weight = "0.1"
+                                                                android:textColor = "@color/white"
+                                                                android:textStyle = "bold"
+                                                                android:textAppearance = "@style/TextAppearance.AppCompat.Title"
+                                                                android:gravity = "center"
+                                                                android:textSize = "65dp"
+                                                                android:text = "0"/>
+                                                            <LinearLayout
+                                                                android:layout_height = "match_parent"
+                                                                android:layout_width = "0px"
+                                                                android:layout_weight = "0.03"
+                                                                android:orientation = "vertical">
+                                                                <Space
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "0.4"/>
+                                                                <TextView
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "1.8"
+                                                                    android:textStyle = "bold"
+                                                                    android:textColor = "@color/white"
+                                                                    android:text = "."
+                                                                    android:gravity = "center"
+                                                                    android:textSize = "48dp"
+                                                                    android:textAppearance = "@style/MaterialAlertDialog.MaterialComponents.Title.Icon"/>
+                                                            </LinearLayout>
+                                                            <LinearLayout
+                                                                android:layout_height = "match_parent"
+                                                                android:layout_width = "0px"
+                                                                android:layout_weight = "0.1"
+                                                                android:orientation = "vertical">
+                                                                <Space
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "0.2"/>
+                                                                <TextView
+                                                                    android:id = "@+id/meterIndicator"
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "0.7"
+                                                                    android:gravity = "center"
+                                                                    android:textAppearance = "@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                                                                    android:textStyle = "bold"
+                                                                    android:textSize = "40dp"
+                                                                    android:textColor = "@color/white"
+                                                                    android:text = "00"/>
+                                                            </LinearLayout>
+                                                            <LinearLayout
+                                                                android:layout_height = "match_parent"
+                                                                android:layout_width = "0px"
+                                                                android:layout_weight = "0.1"
+                                                                android:orientation = "vertical">
+                                                                <Space
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "0.31"/>
+                                                                <TextView
+                                                                    android:layout_width = "match_parent"
+                                                                    android:layout_height = "0px"
+                                                                    android:layout_weight = "0.7"
+                                                                    android:gravity = "center"
+                                                                    android:textAppearance = "@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+                                                                    android:textStyle = "bold"
+                                                                    android:textSize = "31dp"
+                                                                    android:textColor = "@color/white"
+                                                                    android:text = "km"/>
+                                                            </LinearLayout>
+                                                        </LinearLayout>
+                                                    </androidx.cardview.widget.CardView>
+                                                </androidx.cardview.widget.CardView>
+                                            </RelativeLayout>
+                                        </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
+                                        <Space
+                                            android:layout_height = "match_parent"
+                                            android:layout_width = "150px"/>
+                                        <androidx.cardview.widget.CardView
+                                        android:layout_width="0px"
+                                        android:layout_weight = "1"
                                         android:layout_height="match_parent"
-                                        android:orientation = "vertical">
-                                        <TextView
-                                            android:layout_width = "wrap_content"
-                                            android:layout_height = "wrap_content"
-                                            android:text = "Current Position"
-                                            android:textColor = "@color/white"
-                                            android:textStyle = "bold"
-                                            android:textSize = "50px"/>
+                                        card_view:cardCornerRadius = "32px"
+                                        card_view:cardBackgroundColor = "@color/green"
+                                        xmlns:card_view="http://schemas.android.com/apk/res-auto">
                                         <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="match_parent"
                                             android:orientation = "vertical">
-                                            <!--Add another relative layout to stack the existing layout together to mimic the effects of applying a border around
-                                            an element-->
-                                            <RelativeLayout
+                                            <TextView
+                                                android:layout_width = "wrap_content"
+                                                android:layout_height = "wrap_content"
+                                                android:text = "Current Position"
+                                                android:textColor = "@color/white"
+                                                android:textStyle = "bold"
+                                                android:textSize = "50px"/>
+                                            <LinearLayout
                                                 android:layout_width="match_parent"
-                                                android:layout_height="0px"
-                                                android:layout_weight = "1">
-                                                <androidx.cardview.widget.CardView
+                                                android:layout_height="match_parent"
+                                                android:orientation = "vertical">
+                                                <!--Add another relative layout to stack the existing layout together to mimic the effects of applying a border around
+                                                an element-->
+                                                <RelativeLayout
                                                     android:layout_width="match_parent"
-                                                    android:layout_height="match_parent"
-                                                    card_view:cardCornerRadius = "32px"
-                                                    card_view:cardBackgroundColor="@color/greendark2">
-                                                </androidx.cardview.widget.CardView>
-                                                <androidx.cardview.widget.CardView
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="match_parent"
-                                                    android:layout_margin = "10px"
-                                                    card_view:cardCornerRadius = "22px"
-                                                    card_view:cardBackgroundColor = "@color/greenmid2"
-                                                    xmlns:card_view="http://schemas.android.com/apk/res-auto">
-                                                    <!--Place the current latitude over here-->
-                                                    <LinearLayout
-                                                        android:layout_width = "match_parent"
-                                                        android:layout_height = "wrap_content">
-                                                        <TextView
-                                                            android:gravity="center_horizontal"
-                                                            android:layout_width="match_parent"
-                                                            android:layout_height = "wrap_content"
-                                                            android:text = "Latitude"/>
-
-                                                    </LinearLayout>
-                                                </androidx.cardview.widget.CardView>
-                                            </RelativeLayout>
-                                            <androidx.cardview.widget.CardView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="0px"
-                                                android:layout_weight = "1"
-                                                card_view:cardCornerRadius = "32px"
-                                                card_view:cardBackgroundColor = "@color/greenmid3"
-                                                xmlns:card_view="http://schemas.android.com/apk/res-auto">
-                                                <!--Place the current longitude over here-->
-                                                <LinearLayout
-                                                    android:layout_width = "match_parent"
-                                                    android:layout_height = "wrap_content">
-                                                    <TextView
-                                                        android:gravity="center_horizontal"
+                                                    android:layout_height="0px"
+                                                    android:layout_weight = "1">
+                                                    <androidx.cardview.widget.CardView
                                                         android:layout_width="match_parent"
-                                                        android:layout_height = "wrap_content"
-                                                        android:text = "Longitude"/>
-
-                                                </LinearLayout>
-                                            </androidx.cardview.widget.CardView>
+                                                        android:layout_height="match_parent"
+                                                        card_view:cardCornerRadius = "32px"
+                                                        card_view:cardBackgroundColor="@color/greendark2">
+                                                    </androidx.cardview.widget.CardView>
+                                                    <androidx.cardview.widget.CardView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_margin = "10px"
+                                                        card_view:cardCornerRadius = "22px"
+                                                        card_view:cardBackgroundColor = "@color/greenmid2"
+                                                        xmlns:card_view="http://schemas.android.com/apk/res-auto">
+                                                        <!--Place the current latitude over here-->
+                                                        <LinearLayout
+                                                            android:layout_width = "match_parent"
+                                                            android:layout_height = "wrap_content"
+                                                            android:orientation = "vertical">
+                                                            <TextView
+                                                                android:gravity="center_horizontal"
+                                                                android:layout_width="match_parent"
+                                                                android:layout_height = "wrap_content"
+                                                                android:text = "Latitude"/>
+                                                            <!--Create another text View here that is responsible for
+                                                            housing the latitude
+                                                            -->
+                                                            <TextView
+                                                                android:id = "@+id/latitudeBox"
+                                                                android:layout_width = "match_parent"
+                                                                android:layout_height = "wrap_content"
+                                                                android:text = ""/>
+                                                        </LinearLayout>
+                                                    </androidx.cardview.widget.CardView>
+                                                </RelativeLayout>
+                                                <RelativeLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="0px"
+                                                    android:layout_weight = "1">
+                                                    <androidx.cardview.widget.CardView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        card_view:cardCornerRadius = "32px"
+                                                        card_view:cardBackgroundColor="@color/greendark2">
+                                                    </androidx.cardview.widget.CardView>
+                                                    <androidx.cardview.widget.CardView
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent"
+                                                        android:layout_margin = "10px"
+                                                        card_view:cardCornerRadius = "22px"
+                                                        card_view:cardBackgroundColor = "@color/greenmid3"
+                                                        xmlns:card_view="http://schemas.android.com/apk/res-auto">
+                                                        <!--Place the current longitude over here-->
+                                                        <LinearLayout
+                                                            android:layout_width = "match_parent"
+                                                            android:layout_height = "wrap_content"
+                                                            android:orientation = "vertical">
+                                                            <TextView
+                                                                android:gravity="center_horizontal"
+                                                                android:layout_width="match_parent"
+                                                                android:layout_height = "wrap_content"
+                                                                android:text = "Longitude"/>
+                                                            <!--Create another text View here that is responsible for
+                                                            housing the latitude
+                                                            -->
+                                                            <TextView
+                                                                android:id = "@+id/longitudeBox"
+                                                                android:layout_width = "match_parent"
+                                                                android:layout_height = "wrap_content"
+                                                                android:text = ""/>
+                                                        </LinearLayout>
+                                                    </androidx.cardview.widget.CardView>
+                                                </RelativeLayout>
+                                            </LinearLayout>
                                         </LinearLayout>
-                                    </LinearLayout>
-                                </androidx.cardview.widget.CardView>
-                            </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
+                                </LinearLayout>
+                                    </androidx.cardview.widget.CardView>
+                            </RelativeLayout>
                         </LinearLayout>
                         <Space
                             android:layout_height="150px"
@@ -256,7 +435,6 @@
                                 android:background="@color/red"
                                 android:clickable="true"
                                 android:gravity="center">
-
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
