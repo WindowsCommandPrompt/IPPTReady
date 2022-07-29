@@ -190,16 +190,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                             Date dateOfBirth = null;
                             try {
-                                if (editDob.getText().toString() != null)
-                                {
-                                    dateOfBirth = new SimpleDateFormat("dd/MM/yyyy").parse(editDob.getText().toString());
-                                }
-                                else
-                                {
-                                    dateOfBirth = user.DoB;
-                                    Log.v("Profile Activity", editDob.getText().toString() + ", " + dateOfBirth);
-                                }
-
+                                dateOfBirth = new SimpleDateFormat("dd/MMM/yyyy").parse(editDob.getText().toString());
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -218,6 +209,9 @@ public class ProfileActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+
+                            name.setText(editName.getText().toString());
+                            dob.setText(dateFormat.format(dateOfBirth));
 
 
                         }
@@ -297,7 +291,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateLabel(EditText dob){
-        String myFormat="dd/MM/yyyy";
+        String myFormat="dd/MMM/yyyy";
         SimpleDateFormat dateFormat=new SimpleDateFormat(myFormat, Locale.US);
         dob.setText(dateFormat.format(myCalendar.getTime()));
     }
