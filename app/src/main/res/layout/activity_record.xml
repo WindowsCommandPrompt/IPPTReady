@@ -45,13 +45,13 @@
                 android:id="@+id/textView31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="28dp"
                 android:text="@string/push_up"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -89,6 +89,16 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="72dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/push_up_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -147,13 +157,13 @@
                 android:id="@+id/textView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="28dp"
                 android:text="@string/sit_up"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -168,6 +178,16 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="72dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/sit_up_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -217,14 +237,24 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="28dp"
                 android:text="@string/_2_4km_run"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView6"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="72dp"
+                android:layout_height="58dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/run_icon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -166,7 +166,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private void addScore() {
         if (3 != completed) {
-            Toast.makeText(RecordActivity.this, String.valueOf(completed) + " left to do!", Toast.LENGTH_SHORT)
+            Toast.makeText(RecordActivity.this, String.valueOf(3-completed) + " left to do!", Toast.LENGTH_SHORT)
                     .show();
             return;
         }
