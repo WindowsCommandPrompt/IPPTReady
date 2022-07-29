@@ -49,9 +49,9 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                 String sessionNameText = sessionName.getText().toString();
                 String selectedExercise = String.valueOf(exercisesSpinner.getSelectedItem());
 
-                ExerciseTogetherSession session = new ExerciseTogetherSession(sessionNameText, selectedExercise);
                 Intent intent = getIntent();
                 String EmailAddress = intent.getStringExtra("userId");
+                ExerciseTogetherSession session = new ExerciseTogetherSession("", sessionNameText, selectedExercise, EmailAddress);
                 FirebaseDocChange firebaseDocChange = ExerciseTogetherSession.createNewSession(EmailAddress, session);
                 firebaseDocChange.changeTask
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -62,6 +62,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                                     bundle.putString("date", session.dateCreated);
                                     bundle.putString("sessionName", session.sessionName);
                                     bundle.putString("exercise", session.exercise);
+                                    bundle.putString("userId", EmailAddress);
                                     Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                     beginSession.putExtras(bundle);
                                     startActivity(beginSession);
@@ -85,13 +86,10 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
         });
     }
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         String item = parent.getItemAtPosition(pos).toString();
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
+    public void onNothingSelected(AdapterView<?> parent) { }
 }

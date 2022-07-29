@@ -17,7 +17,7 @@
         app:layout_constraintTop_toBottomOf="@+id/exerciseTogetherTextView3"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/nomobileinternet"/>
+        app:lottie_rawRes="@raw/nomobileinternet" />
 
     <TextView
         android:id="@+id/exerciseTogetherTextView3"
@@ -63,11 +63,24 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/returntologinExTgt"
-        android:layout_width="130dp"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="55dp"
         android:background="@drawable/redborder"
-        android:text="Return"
+        android:text="Return to Login"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rejoin" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/rejoin"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/darkgreenborder"
+        android:text="Rejoin"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

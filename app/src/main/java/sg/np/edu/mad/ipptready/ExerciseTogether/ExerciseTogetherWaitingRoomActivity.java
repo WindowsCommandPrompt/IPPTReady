@@ -23,6 +23,10 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercisetogetherwaitingroom);
 
+        Intent receivedIntent = getIntent();
+        TextView sessionNameTextView = findViewById(R.id.SessionNameWaitingRoom);
+        sessionNameTextView.setText("\"" + receivedIntent.getStringExtra("sessionName") + "\"");
+
         secondsLeft = 11;
         internet = new Internet();
         secondsLeftTextView = findViewById(R.id.refreshWaitingRoomTextView);
@@ -44,6 +48,12 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                 else
                 {
                     Intent noConnectionIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, ExerciseTogetherNoInternetActivity.class);
+                    Bundle noConnectBundle = new Bundle();
+                    noConnectBundle.putString("date", getIntent().getStringExtra("date"));
+                    noConnectBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+                    noConnectBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+                    noConnectBundle.putString("userId", getIntent().getStringExtra("userId"));
+                    noConnectionIntent.putExtras(noConnectBundle);
                     startActivity(noConnectionIntent);
                     finish();
                 }

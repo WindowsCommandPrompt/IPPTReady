@@ -26,7 +26,7 @@ public class Internet {
         AlertDialog.Builder alertFail = new AlertDialog.Builder(context);
         alertFail
                 .setTitle("No Internet Connection")
-                .setMessage("Please ensure that you have access to the Internet to begin using IPPTReady.")
+                .setMessage("Please ensure that you have access to the Internet to use IPPTReady.")
                 .setCancelable(false)
                 .setPositiveButton(
                         "Ok",
