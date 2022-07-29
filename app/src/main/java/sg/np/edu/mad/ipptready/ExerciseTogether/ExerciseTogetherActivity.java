@@ -27,5 +27,13 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                 startActivity(createIntent);
             }
         });
+
+        Button returnBtn = findViewById(R.id.backtoHomefromExTgt);
+        returnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }

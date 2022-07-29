@@ -25,6 +25,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.uk.tastytoasty.TastyToasty;
 
 import sg.np.edu.mad.ipptready.CreateAccountActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
@@ -96,6 +97,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                             catch (WriterException we)
                             {
                                 Log.e("Error", "Unable to create QR code.");
+                                TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unable to generate QR code.").show();
                             }
 
                             Bundle bundle = new Bundle();
@@ -105,12 +107,13 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                             bundle.putString("userId", EmailAddress);
                             bundle.putParcelable("QRImage", bitmap);
                             Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
+                            TastyToasty.makeText(ExerciseTogetherCreateActivity.this, "Session created!", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
                             beginSession.putExtras(bundle);
                             startActivity(beginSession);
                             finish();
                         }
                         else {
-                            Toast.makeText(ExerciseTogetherCreateActivity.this, "Unexpected error occurred", Toast.LENGTH_SHORT).show();
+                            TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unexpected error occurred").show();
                             finish();
                         }
                     }

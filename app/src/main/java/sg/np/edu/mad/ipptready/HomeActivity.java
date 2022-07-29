@@ -19,7 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.uk.tastytoasty.TastyToasty;
 
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherCreateActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
 public class HomeActivity extends AppCompatActivity {
@@ -130,8 +132,8 @@ public class HomeActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        TastyToasty.makeText(HomeActivity.this, "You have been logged out", TastyToasty.SHORT, null, R.color.greendark, R.color.white, false).show();
                         finish();
-                        Toast.makeText(HomeActivity.this, "You have been logged out", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
