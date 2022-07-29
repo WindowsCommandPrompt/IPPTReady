@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sg.np.edu.mad.ipptready.Cycle.CycleActivity;
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherActivity;
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherWaitingRoomActivity;
 
 public class NavFragment extends Fragment {
 
@@ -46,6 +48,16 @@ public class NavFragment extends Fragment {
             public void onClick(View view) {
                 Intent InformationIntent = new Intent(getActivity(), InformationActivity.class);
                 startActivity(InformationIntent);
+            }
+        });
+
+        // Onclicklistener for Exercise Together feature
+        view.findViewById(R.id.ExTgtButtonNav).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent ExTgtIntent = new Intent(getActivity(), ExerciseTogetherActivity.class);
+                ExTgtIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
+                startActivity(ExTgtIntent);
             }
         });
 

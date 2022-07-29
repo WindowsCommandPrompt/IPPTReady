@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exercises_array">
+        <item>2.4km Run</item>
+        <item>Push-ups</item>
+        <item>Sit-ups</item>
+    </string-array>
+</resources>
