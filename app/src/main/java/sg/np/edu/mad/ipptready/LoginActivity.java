@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uk.tastytoasty.TastyToasty;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -160,8 +161,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
         loginIntent.putExtra("Email", userDocumentSnapshot.getReference().getId());
         loginIntent.putExtra("User", user);
-
-        Toast.makeText(LoginActivity.this, "Hello, " + user.Name + "!", Toast.LENGTH_SHORT).show();
+        TastyToasty.makeText(LoginActivity.this, "Hello, " + user.Name + "!", TastyToasty.SHORT,null, R.color.greendark, R.color.white, false).show();
         startActivity(loginIntent);
     }
 

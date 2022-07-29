@@ -14,6 +14,7 @@
     <color name="sd">#FFD3F9F3</color>
     <color name="red">#FFFF0000</color>
     <color name="green">#FF00FF00</color>
+    <color name="success">#28A745</color>
     <color name="orange">#FFFFA500</color>
     <color name="greenmid">#55c97c</color>
     <color name="greenmid2">#77d496</color>

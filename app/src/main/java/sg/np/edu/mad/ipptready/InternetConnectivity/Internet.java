@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.uk.tastytoasty.TastyToasty;
+
 import sg.np.edu.mad.ipptready.LoginActivity;
 
 public class Internet {
@@ -33,7 +35,7 @@ public class Internet {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(context, "Please connect to the Internet!", Toast.LENGTH_SHORT).show();
+                                TastyToasty.error(context, "Please connect to the Internet!").show();
                             }
                         });
         alertFail.create().show();
