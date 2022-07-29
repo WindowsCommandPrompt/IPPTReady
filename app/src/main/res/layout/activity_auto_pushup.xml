@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--Toolbar for the user-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:id = "@+id/pushUpRecordTimingInterface"
+                android:visibility = "visible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="TIMER"
+                    android:textSize="120px" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background='@color/sd'
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.185">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:gravity = "center">
+
+                                <LinearLayout
+                                    android:layout_height = "wrap_content"
+                                    android:layout_width = "match_parent"
+                                    android:orientation = "horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textViewIdentifier"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="15dp"
+                                        android:gravity="center"
+                                        android:text="Target number of push ups: "
+                                        android:textSize="20dp" />
+                                    <TextView
+                                        android:id = "@+id/targetNumberOfPushUps"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="200px"
+                                        android:gravity = "center"
+                                        android:textSize = "102px"
+                                        android:textStyle = "bold"
+                                        android:text = "12"/>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_height = "wrap_content"
+                                    android:layout_width = "match_parent"
+                                    android:orientation = "horizontal">
+
+                                    <TextView
+                                        android:id="@+id/numberOfPushUpsCountIdentifier"
+                                        android:layout_width="251dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="15dp"
+                                        android:gravity="center"
+                                        android:text="Number of push ups done: "
+                                        android:textSize="20dp" />
+
+                                    <TextView
+                                        android:id = "@+id/numberOfPushUpsCount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="200px"
+                                        android:gravity = "center"
+                                        android:textSize = "102px"
+                                        android:textStyle = "bold"
+                                        android:text = "0"/>
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1200px"
+                                    android:gravity="center">
+                                    <!--android:elevation is set to 1 here by default-->
+                                    <ImageView
+                                        android:id="@+id/timing_indicator_base"
+                                        android:layout_width="750px"
+                                        android:layout_height="750px"
+                                        android:src="@drawable/timing_indicator" />
+                                    <!--android:elevation is set to 2 here by default-->
+                                    <LinearLayout
+                                        android:layout_width="700px"
+                                        android:layout_height="700px">
+
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center">
+
+                                            <ImageView
+                                                android:layout_width="800px"
+                                                android:layout_height="800px"
+                                                android:src="@drawable/timing_indicator_overlay" />
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:gravity="center"
+                                                android:orientation="vertical">
+
+                                                <LinearLayout
+                                                    android:layout_width="350px"
+                                                    android:layout_height="wrap_content"
+                                                    android:orientation="horizontal">
+
+                                                    <ImageView
+                                                        android:layout_width="100px"
+                                                        android:layout_height="100px"
+                                                        android:src="@drawable/ic_baseline_timer_24" />
+
+                                                    <TextView
+                                                        android:layout_width="fill_parent"
+                                                        android:layout_height="100px"
+                                                        android:gravity="center"
+                                                        android:text="Timer" />
+                                                </LinearLayout>
+
+                                                <TextView
+                                                    android:id="@+id/timing_indicator_text"
+                                                    android:layout_width="550px"
+                                                    android:layout_height="wrap_content"
+                                                    android:gravity="center"
+                                                    android:text="60"
+                                                    android:textSize="155px"
+                                                    android:textStyle="bold" />
+
+                                                <TextView
+                                                    android:id="@+id/timerStatus"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="seconds"
+                                                    android:textSize="55px" />
+                                            </LinearLayout>
+                                        </RelativeLayout>
+                                    </LinearLayout>
+                                </RelativeLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="150px"
+                                android:clickable="true"
+                                android:orientation="horizontal">
+                                <LinearLayout
+                                    android:id="@+id/manualTracker"
+                                    android:layout_width="0px"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/blue"
+                                    android:clickable="true"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Manual Tracker"
+                                        android:textColor="@color/white"
+                                        android:textSize="45px"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="150px"
+                                android:clickable="true"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:id="@+id/resetTimer"
+                                    android:layout_width="0px"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/red"
+                                    android:clickable="true"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Reset"
+                                        android:textColor="@color/white"
+                                        android:textSize="45px"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/startTimer"
+                                    android:layout_width="0px"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/green"
+                                    android:clickable="true"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:id = "@+id/startCycleInternalText"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Start"
+                                        android:textColor="@color/white"
+                                        android:textSize="45px"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+            <!--Master layout-->
+            <LinearLayout
+                android:id="@+id/pushUpActivityEnterRecords"
+                android:layout_width="match_parent"
+                android:layout_height="1500px"
+                android:background="@color/sd"
+                android:orientation="vertical"
+                android:gravity = "center"
+                android:visibility="gone">
+                <!--Add the relevant fields into the -->
+                <TextView
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "309dp"
+                    android:textStyle = "bold"
+                    android:textSize = "20dp"
+                    android:gravity = "center"
+                    android:text = "Number of repetitions of push-ups completed:"/>
+
+                <TextView
+                    android:id="@+id/numberOfPushUpsThatTheUserDid"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:gravity = "center"
+                    android:textSize = "102px"
+                    android:textStyle = "bold"
+                    android:text = ""/>
+                <LinearLayout
+                    android:layout_width = "306dp"
+                    android:layout_height = "wrap_content"
+                    android:orientation = "horizontal">
+                    <Button
+                        android:layout_marginTop = "75dp"
+                        android:id = "@+id/setPushUpActivity"
+                        android:layout_width="0px"
+                        android:layout_weight = "1"
+                        android:text = "Record Push-Ups"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,7 @@ public class PushupTargetActivity extends AppCompatActivity {
                 .setPositiveButton(
                     "Yes",
                     (DialogInterface di, int i) -> {
-                        Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        Intent intent = new Intent(PushupTargetActivity.this, AutoPushupActivity.class);
                         intent.putExtra("NumPushups", targetPushUps);
                         intent.putExtra("Email", getIntent().getStringExtra("Email"));
                         intent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
@@ -61,7 +61,7 @@ public class PushupTargetActivity extends AppCompatActivity {
                     }
                     else{
                         // Prepare intent to timer
-                        Intent intent = new Intent(PushupTargetActivity.this, PushupActivity.class);
+                        Intent intent = new Intent(PushupTargetActivity.this, AutoPushupActivity.class);
                         intent.putExtra("NumPushups", targetPushUps);
                         intent.putExtra("Email", getIntent().getStringExtra("Email"));
                         intent.putExtra("IPPTCycleId", getIntent().getStringExtra("IPPTCycleId"));
