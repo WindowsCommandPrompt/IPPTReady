@@ -198,5 +198,14 @@
             app:layout_constraintStart_toEndOf="@+id/dobLabel"
             app:layout_constraintTop_toBottomOf="@+id/email" />
 
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bell" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

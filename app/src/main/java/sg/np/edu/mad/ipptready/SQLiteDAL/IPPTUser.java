@@ -11,4 +11,5 @@ public class IPPTUser {
     public String Id;
     public String Name;
     public Date DoB;
+    public int Alarm;
 }

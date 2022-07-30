@@ -57,7 +57,6 @@ public class RoutineActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private IPPTRoutineAdapter ipptRoutineAdapter;
-    public ActivityResultLauncher<Intent> GoRoutine;
 
     private FirebaseViewItem<IPPTRoutine> notFinishedRoutine;
     private List<FirebaseViewItem<IPPTRoutine>> finishedRoutines;
@@ -262,9 +261,6 @@ public class RoutineActivity extends AppCompatActivity {
     // remember to clean up the launchers after the activity finishes
     @Override
     protected void onDestroy() {
-        if (null != GoRoutine) {
-            GoRoutine.unregister();
-        }
         super.onDestroy();
     }
 }

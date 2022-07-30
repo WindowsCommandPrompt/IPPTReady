@@ -22,7 +22,7 @@ public class IPPTUser implements Serializable {
     public static final String colFrom = "IPPTUser";
     private static final String NAME = "Name";
     private static final String DOB = "DOB";
-    private static final String EMAIL_ADDRESS = "EmailAddress";
+    private static final String ROUTINE_TIME = "RoutineTime";
 
     public Date DoB;
     public String Name;
@@ -72,14 +72,19 @@ public class IPPTUser implements Serializable {
                                         String Name,
                                         Date Dob) {
 
-        FirebaseDocChange updateUser = new FirebaseDocChange();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         Map<String, Object> updatedUserMap = new HashMap<>();
         updatedUserMap.put(NAME, Name);
         updatedUserMap.put(DOB, Dob);
 
-        return updateUser.changeTask = userDocRef.set(updatedUserMap);
+        return userDocRef.set(updatedUserMap, SetOptions.merge());
+    }
+
+    public static Task<Void> setTime(DocumentReference userDocRef,
+                                     int Time) {
+        Map<String, Object> updateTimeMap = new HashMap<>();
+        updateTimeMap.put(ROUTINE_TIME, Time);
+
+        return userDocRef.set(updateTimeMap, SetOptions.merge());
     }
 
     public static Task<Void> deleteUser(DocumentReference userDocRef) {

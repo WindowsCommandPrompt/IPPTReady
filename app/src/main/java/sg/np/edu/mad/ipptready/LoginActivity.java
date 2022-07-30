@@ -24,8 +24,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -39,12 +46,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.uk.tastytoasty.TastyToasty;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
@@ -78,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
         // Build google sign in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestId()
                 .build();
 
         // set up google client
@@ -91,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(view -> signIn());
         Internet internet = new Internet();
-        if (internet.isOnline(this)) updateUI(account); else internet.noConnectionAlert(this);
+        if (internet.isOnline(this)) LogIn(account); else internet.noConnectionAlert(this);
     }
 
     // Sign in method (access google sign in intent)
@@ -118,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     loginSuccess = true;
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                    updateUI(task.getResult());
+                    LogIn(task.getResult());
                 }
             }
             if (!result.isSuccess() || loginSuccess == false) internet.noConnectionAlert(this);
@@ -126,28 +139,66 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Access Firestore on successful google login
-    private void updateUI(GoogleSignInAccount account) {
+    private void LogIn(GoogleSignInAccount account) {
         if (account != null) {
             String personEmail = account.getEmail();
             String personName = account.getDisplayName();
 
-            IPPTUser.getUserFromEmail(personEmail)
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            HashMap<String, String> RequestMap = new HashMap<>();
+            RequestMap.put("IPPTUserId", account.getId());
+            FirebaseMessaging.getInstance()
+                    .getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
                         @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful())
-                            {
-                                DocumentSnapshot documentSnapshot = task.getResult();
-                                if (documentSnapshot.exists()) {
-                                    goToHomePage(documentSnapshot);
-                                }
-                                else {
-                                    createAccount(personEmail, personName);
-                                }
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (task.isSuccessful()) {
+                                RequestMap.put("RegisterId", task.getResult());
+
+                                JSONObject jsonObject = new JSONObject(RequestMap);
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                        "http://watelier.xyz/register_device.php",
+                                        jsonObject, new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            if (response.getString("Response").equals("Failure"))
+                                                Log.d("ServerResponse", response.getString("ErrorMessage"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("ServerResponse", error.getMessage());
+                                    }
+                                });
+                                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                                queue.add(jsonObjectRequest);
+
+                                IPPTUser.getUserFromEmail(personEmail)
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful())
+                                                {
+                                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                                    if (documentSnapshot.exists()) {
+                                                        goToHomePage(documentSnapshot, account.getId());
+                                                    }
+                                                    else {
+                                                        createAccount(personEmail, personName);
+                                                    }
+                                                }
+                                                else {
+                                                    Toast.makeText(LoginActivity.this, "An error occured, please try again.",
+                                                            Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                             }
                             else {
-                                Toast.makeText(LoginActivity.this, "An error occured, please try again.",
-                                        Toast.LENGTH_SHORT).show();
+
                             }
                         }
                     });
@@ -155,12 +206,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void goToHomePage(DocumentSnapshot userDocumentSnapshot) {
+    private void goToHomePage(DocumentSnapshot userDocumentSnapshot, String id) {
         IPPTUser user = new IPPTUser(userDocumentSnapshot.getData());
 
         Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
         loginIntent.putExtra("Email", userDocumentSnapshot.getReference().getId());
         loginIntent.putExtra("User", user);
+        loginIntent.putExtra("Id", id);
+
         TastyToasty.makeText(LoginActivity.this, "Hello, " + user.Name + "!", TastyToasty.SHORT,null, R.color.greendark, R.color.white, false).show();
         startActivity(loginIntent);
     }

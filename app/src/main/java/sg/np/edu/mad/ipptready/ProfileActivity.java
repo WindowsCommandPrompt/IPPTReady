@@ -1,5 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
+import static android.app.AlarmManager.INTERVAL_DAY;
 import static sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser.colFrom;
 
 import androidx.annotation.NonNull;
@@ -7,7 +8,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,26 +24,40 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
+import sg.np.edu.mad.ipptready.SQLiteDAL.SQLiteDBHandler;
 
 public class ProfileActivity extends AppCompatActivity {
     private String EmailAddress;
     private IPPTUser user;
+    private String Id;
+
     final Calendar myCalendar= Calendar.getInstance();
 
     @Override
@@ -57,10 +76,12 @@ public class ProfileActivity extends AppCompatActivity {
             EmailAddress = intent.getStringExtra("Email");
             // Java is not a typesafe language!
             user = (IPPTUser) intent.getSerializableExtra("User");
+            Id = intent.getStringExtra("Id");
         }
         else if (null != savedInstanceState) {
             EmailAddress = savedInstanceState.getString("Email");
             user = (IPPTUser) savedInstanceState.getSerializable("User");
+            Id = savedInstanceState.getString("Id");
         }
         else {
             // if all else fails...
@@ -262,17 +283,56 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
 
+            findViewById(R.id.imageView7)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this,
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                        int time = hour * 60 + minute;
+                                        IPPTUser.setTime(IPPTUser.getUserDocFromId(EmailAddress),
+                                                time)
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(ProfileActivity.this, "Time set!", Toast.LENGTH_SHORT)
+                                                                .show();
+                                                            RequestQueue queue = Volley.newRequestQueue(ProfileActivity.this);
+                                                            HashMap<String, Object> routineAlarmRequestMap = new HashMap<>();
+                                                            routineAlarmRequestMap.put("IPPTUserId", Id);
+                                                            routineAlarmRequestMap.put("TimeOfDay", String.valueOf(time));
 
+                                                            JSONObject jsonObject = new JSONObject(routineAlarmRequestMap);
 
-
-            //========================================================================================================//
-            //ADDED THE BELOW PART ON 15th June 2022 3:22AM
-            //SEND EMAILADDRESS DATA OVER TO RunActivity.java
-            Intent Runintent = new Intent();
-            Runintent.setClassName("sg.np.edu.mad.ipptready.ProfileActivity.this", "sg.np.edu.mad.ipptready.RunActivity.class");
-            Runintent.putExtra("EmailAddressVerifier", email.getText().toString());
-            //=======================================================================================================//
-            // From another member: ?????
+                                                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                                                    "http://watelier.xyz/routine_alarm.php",
+                                                                    jsonObject, new Response.Listener<JSONObject>() {
+                                                                @Override
+                                                                public void onResponse(JSONObject response) {
+                                                                    Log.d("ServerMessage", response.toString());
+                                                                }
+                                                            }, new Response.ErrorListener() {
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Log.d("ServerMessage", error.getMessage());
+                                                                }
+                                                            });
+                                                            queue.add(jsonObjectRequest);
+                                                        }
+                                                        else {
+                                                            Toast.makeText(ProfileActivity.this, "Failed to set time! Please try again.", Toast.LENGTH_SHORT)
+                                                                    .show();
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }, 12, 0, true);
+                        timePickerDialog.show();
+                    }
+                });
         }
         else {
             // missing data in intent or saveInstanceState
@@ -286,6 +346,7 @@ public class ProfileActivity extends AppCompatActivity {
         // write code here!
         outState.putString("Email", EmailAddress);
         outState.putSerializable("User", user);
+        outState.putString("Id", Id);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
     }
