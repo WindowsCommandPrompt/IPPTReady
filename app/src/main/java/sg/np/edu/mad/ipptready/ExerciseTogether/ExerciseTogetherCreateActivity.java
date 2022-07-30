@@ -85,7 +85,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            String qrdetails = name[0] + "&" + session.dateCreated;
+                            String qrdetails = session.hostUserID + "&" + session.dateCreated;
                             Log.d("DEBUG", qrdetails);
                             QRCodeWriter qrCodeWriter = new QRCodeWriter();
                             Bitmap bitmap = null;

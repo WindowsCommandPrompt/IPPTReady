@@ -35,6 +35,10 @@
             android:name=".AutoPushupActivity"
             android:exported="false" />
         <activity
+            android:name=".ExerciseTogether.ExerciseTogetherJoiningProcessActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".ExerciseTogether.ExerciseTogetherJoinActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
