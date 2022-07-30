@@ -358,6 +358,13 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
     }
 
     @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        //Temporarily stop the timer when the user is in multitask mode
+    }
+
+    @Override
     public void onLocationChanged(@NonNull Location location) {
         //Put the latitudes and longitudes into their respective TextViews
         ((TextView) findViewById(R.id.latitudeBox)).setText(Double.toString(location.getLatitude()));
@@ -388,6 +395,50 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
                     //convert it back
                     ((TextView) findViewById(R.id.kilometerIndicator)).setText(Double.toString(Math.floor(distanceCurrent / 1000)));
                     ((TextView) findViewById(R.id.meterIndicator)).setText("");
+
+                    // Get bundle
+                    Bundle bundle = getIntent().getExtras();
+                    String Email = bundle.getString("Email");
+                    String IPPTCycleID = bundle.getString("IPPTCycleId");
+                    String IPPTRoutineId = bundle.getString("IPPTRoutineId");
+
+                    //Make the alert dialog box show up when the
+                    AlertDialog.Builder reachedRequiredDistance = new AlertDialog.Builder(this);
+                    reachedRequiredDistance
+                            .setTitle("Reached 2.4 km!")
+                            .setMessage("Congratulations! You have successfully covered a total distance of 2.4 kilometres")
+                            .setPositiveButton(
+                                    "YES",
+                                    (DialogInterface di, int i) -> {
+                                        //Record down the timing and pass it back to the record activity via an intent
+                                        // Get timing
+                                        String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                                        Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
+                                        int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+                                        addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                // finish activity
+                                                Toast.makeText(RunActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+                                        });
+                                    }
+                            )
+                            .setNegativeButton(
+                                    "NO",
+                                    (DialogInterface di, int i) -> {
+                                        di.dismiss();
+                                    }
+                            )
+                            .setCancelable(false);
+
+                    if (((TextView) findViewById(R.id.kilometerIndicator)).getText().equals("2") && ((TextView) findViewById(R.id.meterIndicator)).getText().equals("00")){
+                        arcdt.get().cancel(); //Cancel the timer as in "stop" the timer
+                        reachedRequiredDistance.create().show();
+                        Toast.makeText(this, "The timer has been paused", Toast.LENGTH_SHORT).show();
+                        String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    }
                 }
             }
         }
