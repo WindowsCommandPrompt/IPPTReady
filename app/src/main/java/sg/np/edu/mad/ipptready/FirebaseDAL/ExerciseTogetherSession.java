@@ -46,9 +46,11 @@ public class ExerciseTogetherSession {
 
         Map<String, Object> newSessionMap = new HashMap<>();
         newSessionMap.put("dateCreated", session.dateCreated);
+        newSessionMap.put("dateJoined", session.dateJoined);
         newSessionMap.put("exercise", session.exercise);
         newSessionMap.put("sessionName", session.sessionName);
         newSessionMap.put("status", session.status);
+        newSessionMap.put("hostUserID", session.hostUserID);
 
         newSession.changeTask = newSession.documentReference.set(newSessionMap);
         return newSession;

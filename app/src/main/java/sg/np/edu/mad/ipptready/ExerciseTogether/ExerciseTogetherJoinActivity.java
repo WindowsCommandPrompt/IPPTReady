@@ -50,8 +50,15 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
         qrCodeFoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TastyToasty.makeText(ExerciseTogetherJoinActivity.this, qrCode, TastyToasty.SHORT,null, R.color.greendark, R.color.white, false).show();
+                Intent joinIntent = new Intent(ExerciseTogetherJoinActivity.this, ExerciseTogetherJoiningProcessActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("userId", getIntent().getStringExtra("userId"));
+                bundle.putString("qrCode", qrCode);
+                /*TastyToasty.makeText(ExerciseTogetherJoinActivity.this, qrCode, TastyToasty.SHORT,null, R.color.greendark, R.color.white, false).show();*/
                 Log.d(ExerciseTogetherJoinActivity.class.getSimpleName(), "QR Code Found: " + qrCode);
+                joinIntent.putExtras(bundle);
+                startActivity(joinIntent);
+                finish();
             }
         });
 
@@ -65,11 +72,7 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera();
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(ExerciseTogetherJoinActivity.this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-            }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         }
     }
 
