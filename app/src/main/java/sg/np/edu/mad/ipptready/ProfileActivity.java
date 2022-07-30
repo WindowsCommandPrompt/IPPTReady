@@ -62,7 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_load_data);
 
         Toast GenericErrorToast = Toast.makeText(this,
                 "Unexpected error occurred",
@@ -128,41 +128,39 @@ public class ProfileActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()){
+                                setContentView(R.layout.activity_profile);
+
                                 DocumentSnapshot userDoc = task.getResult();
                                 if (userDoc.exists()){
                                     Map<String, Object> userMap = userDoc.getData();
                                     String imageKey = null;
                                     try{
-                                        imageKey = userMap.get("ImageKey").toString();
-                                        Log.v("IPPTUser", "IMAGE KEY::" + imageKey);
+                                        if (userMap.containsKey("ImageKey"))
+                                        {
+                                            imageKey = userMap.get("ImageKey").toString();
+                                            Log.v("IPPTUser", "IMAGE KEY::" + imageKey);
+
+                                            storage = FirebaseStorage.getInstance();
+                                            storageReference = storage.getReference();
+                                            pathReference = storageReference.child("profilePictures/" + imageKey);
+                                            final long maxBytes = 1024 * 1024;
+                                            pathReference.getBytes(maxBytes).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                @Override
+                                                public void onSuccess(byte[] bytes) {
+                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                    profilePicture.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 150, 150, false));
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            String cameraIcon = "@drawable/cameraicon";
+                                            int imageResource = getResources().getIdentifier(cameraIcon, null, getPackageName());
+                                            profilePicture.setImageDrawable(getResources().getDrawable(imageResource));
+                                        }
                                     }
                                     catch (NullPointerException n){
                                         n.printStackTrace();
                                     }
-                                    storage = FirebaseStorage.getInstance();
-                                    storageReference = storage.getReference();
-
-                                    pathReference = storageReference.child("profilePictures/" + imageKey);
-                                    Log.v("Profile Activity", "PATH REFERENCE: " + (pathReference == null));
-                                    if (pathReference != null)
-                                    {
-                                        final long maxBytes = 1024 * 1024;
-                                        pathReference.getBytes(maxBytes).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                            @Override
-                                            public void onSuccess(byte[] bytes) {
-                                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                                profilePicture.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 150, 150, false));
-                                            }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        String cameraIcon = "@drawable/cameraicon";
-                                        int imageResource = getResources().getIdentifier(cameraIcon, null, getPackageName());
-                                        profilePicture.setImageDrawable(getResources().getDrawable(imageResource));
-                                    }
-
-
                                 }
                                 else {
                                     Log.v("IPPTUser", "Doc does not exist::" + pathReference);
