@@ -351,12 +351,24 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         }
     }
 
+    private class Convert {
+        public void ToSexagesimals(String bearing){
+
+        }
+    }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+        //Temporarily stop the timer when the user is in multitask mode
+    }
+
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        //((TextView) findViewById(R.id.location1)).setText(msg);
+        //Put the latitudes and longitudes into their respective TextViews
+        ((TextView) findViewById(R.id.latitudeBox)).setText(Double.toString(location.getLatitude()));
+        ((TextView) findViewById(R.id.longitudeBox)).setText(Double.toString(location.getLongitude()));
         Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "This method has been called and now the location is being updated at a speed between 150ms to 950ms", Toast.LENGTH_SHORT).show();
         coordinateArray.add(location); //stores an array of Location objects...
         Log.d("TAG", "" + coordinateArray.size());
@@ -376,12 +388,58 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
                     for (float f : resultContainer) {
                         Log.d("WhatIsIt?", "" + new ArrayList<Float>(Arrays.asList(resultContainer[0], resultContainer[1], resultContainer[2], resultContainer[3])));
                     }
-                    //float currentDistance = Float.parseFloat(((TextView) findViewById(R.id.DistanceCounter)).getText().toString()) + resultContainer[0];
-                    //((TextView) findViewById(R.id.DistanceCounter)).setText(Float.toString(currentDistance));
-                }
-            }
-            else {
+                    //Get from the kilometer one
+                    String kilometerbox = ((TextView) findViewById(R.id.kilometerIndicator)).getText().toString();
+                    String meterbox = ((TextView) findViewById(R.id.meterIndicator)).getText().toString();
+                    float distanceCurrent = (Float.parseFloat(kilometerbox) * 1000) + (Float.parseFloat(meterbox) * 1000) + resultContainer[0];
+                    //convert it back
+                    ((TextView) findViewById(R.id.kilometerIndicator)).setText(Double.toString(Math.floor(distanceCurrent / 1000)));
+                    ((TextView) findViewById(R.id.meterIndicator)).setText("");
 
+                    // Get bundle
+                    Bundle bundle = getIntent().getExtras();
+                    String Email = bundle.getString("Email");
+                    String IPPTCycleID = bundle.getString("IPPTCycleId");
+                    String IPPTRoutineId = bundle.getString("IPPTRoutineId");
+
+                    //Make the alert dialog box show up when the
+                    AlertDialog.Builder reachedRequiredDistance = new AlertDialog.Builder(this);
+                    reachedRequiredDistance
+                            .setTitle("Reached 2.4 km!")
+                            .setMessage("Congratulations! You have successfully covered a total distance of 2.4 kilometres")
+                            .setPositiveButton(
+                                    "YES",
+                                    (DialogInterface di, int i) -> {
+                                        //Record down the timing and pass it back to the record activity via an intent
+                                        // Get timing
+                                        String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                                        Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
+                                        int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+                                        addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                // finish activity
+                                                Toast.makeText(RunActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
+                                        });
+                                    }
+                            )
+                            .setNegativeButton(
+                                    "NO",
+                                    (DialogInterface di, int i) -> {
+                                        di.dismiss();
+                                    }
+                            )
+                            .setCancelable(false);
+
+                    if (((TextView) findViewById(R.id.kilometerIndicator)).getText().equals("2") && ((TextView) findViewById(R.id.meterIndicator)).getText().equals("00")){
+                        arcdt.get().cancel(); //Cancel the timer as in "stop" the timer
+                        reachedRequiredDistance.create().show();
+                        Toast.makeText(this, "The timer has been paused", Toast.LENGTH_SHORT).show();
+                        String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                    }
+                }
             }
         }
     }

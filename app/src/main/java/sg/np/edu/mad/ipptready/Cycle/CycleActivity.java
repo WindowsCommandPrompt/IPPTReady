@@ -3,6 +3,7 @@ package sg.np.edu.mad.ipptready.Cycle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -252,12 +253,14 @@ public class CycleActivity extends AppCompatActivity {
 
     private void setCreateCycleButton() {
         ((Button)findViewById(R.id.completecreatecycleButton)).setText("Create A New Cycle");
+        ((Button)findViewById(R.id.completecreatecycleButton)).setBackgroundResource(R.drawable.blueborder);
         findViewById(R.id.completecreatecycleButton).setOnClickListener(new CreateCycleOnClickListener());
         findViewById(R.id.constraintLayout2).setOnClickListener(null);
     }
 
     private void setCompleteCycleButton() {
         ((Button)findViewById(R.id.completecreatecycleButton)).setText("Complete Cycle");
+        ((Button)findViewById(R.id.completecreatecycleButton)).setBackgroundResource(R.drawable.darkgreenborder);
         findViewById(R.id.completecreatecycleButton).setOnClickListener(new CompleteCycleOnClickListener(this));
         if (null != notFinishedCycle)
             findViewById(R.id.constraintLayout2).setOnClickListener(new RoutineOnClickListener(this, notFinishedCycle, userId, DOB));

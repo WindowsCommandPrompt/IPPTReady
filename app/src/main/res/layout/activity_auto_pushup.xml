@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <!--Toolbar for the user-->
     <ScrollView
         android:layout_width="match_parent"
@@ -30,17 +30,19 @@
                     android:textSize="120px" />
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:background='@color/sd'
-                        android:orientation="vertical">
-                        <!--First section consists of the time remaining and the distance travelled
-                             1) Create rounded corners for each of the box
-                             2) Create a relative layout so as to stack drawables on top of one another
-                        -->
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.185">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -51,11 +53,12 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity = "center">
-                                <!--Modify the layout for this element -->
+
                                 <LinearLayout
                                     android:layout_height = "wrap_content"
                                     android:layout_width = "match_parent"
                                     android:orientation = "horizontal">
+
                                     <TextView
                                         android:id="@+id/textViewIdentifier"
                                         android:layout_width="wrap_content"
@@ -73,10 +76,33 @@
                                         android:textStyle = "bold"
                                         android:text = "12"/>
                                 </LinearLayout>
+                                <LinearLayout
+                                    android:layout_height = "wrap_content"
+                                    android:layout_width = "match_parent"
+                                    android:orientation = "horizontal">
+
+                                    <TextView
+                                        android:id="@+id/numberOfPushUpsCountIdentifier"
+                                        android:layout_width="251dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="15dp"
+                                        android:gravity="center"
+                                        android:text="Number of push ups done: "
+                                        android:textSize="20dp" />
+
+                                    <TextView
+                                        android:id = "@+id/numberOfPushUpsCount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="200px"
+                                        android:gravity = "center"
+                                        android:textSize = "102px"
+                                        android:textStyle = "bold"
+                                        android:text = "0"/>
+                                </LinearLayout>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="500dp"
+                                    android:layout_height="1200px"
                                     android:gravity="center">
                                     <!--android:elevation is set to 1 here by default-->
                                     <ImageView
@@ -148,6 +174,30 @@
                                 android:layout_height="150px"
                                 android:clickable="true"
                                 android:orientation="horizontal">
+                                <LinearLayout
+                                    android:id="@+id/manualTracker"
+                                    android:layout_width="0px"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:background="@color/blue"
+                                    android:clickable="true"
+                                    android:gravity="center">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Manual Tracker"
+                                        android:textColor="@color/white"
+                                        android:textSize="45px"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="150px"
+                                android:clickable="true"
+                                android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:id="@+id/resetTimer"
@@ -206,14 +256,16 @@
                     android:textStyle = "bold"
                     android:textSize = "20dp"
                     android:gravity = "center"
-                    android:text = "Enter the number of push-ups that you did in 1 minute just now"/>
-                <EditText
-                    android:id = "@+id/numberOfPushUpsThatTheUserDid"
-                    android:layout_marginTop = "25dp"
-                    android:layout_width="306dp"
-                    android:textSize = "100px"
-                    android:inputType="number"
-                    android:layout_height="wrap_content" />
+                    android:text = "Number of repetitions of push-ups completed:"/>
+
+                <TextView
+                    android:id="@+id/numberOfPushUpsThatTheUserDid"
+                    android:layout_width="match_parent"
+                    android:layout_height="200px"
+                    android:gravity = "center"
+                    android:textSize = "102px"
+                    android:textStyle = "bold"
+                    android:text = ""/>
                 <LinearLayout
                     android:layout_width = "306dp"
                     android:layout_height = "wrap_content"

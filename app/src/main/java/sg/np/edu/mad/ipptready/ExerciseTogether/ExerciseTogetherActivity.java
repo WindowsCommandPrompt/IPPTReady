@@ -16,15 +16,26 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together);
 
+        Intent homeIntent = getIntent();
+        String userId = homeIntent.getStringExtra("userId");
+
         Button createBtn = findViewById(R.id.createExTgtSession);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent homeintent = getIntent();
-                String userId = homeintent.getStringExtra("userId");
                 Intent createIntent = new Intent(ExerciseTogetherActivity.this, ExerciseTogetherCreateActivity.class);
                 createIntent.putExtra("userId", userId);
                 startActivity(createIntent);
+            }
+        });
+
+        Button joinBtn = findViewById(R.id.joinExTgtSession);
+        joinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent joinIntent = new Intent(ExerciseTogetherActivity.this, ExerciseTogetherJoinActivity.class);
+                joinIntent.putExtra("userId", userId);
+                startActivity(joinIntent);
             }
         });
 

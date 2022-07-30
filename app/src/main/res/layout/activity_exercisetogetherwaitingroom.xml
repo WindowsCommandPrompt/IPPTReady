@@ -23,52 +23,99 @@
             android:textSize="40dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/exercisetgtinformation2"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="2dp"
-            android:text="Please wait for others to join the session.\n"
-            android:textSize="12dp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/refreshWaitingRoomTextView"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/refreshWaitingRoomTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="7dp"
+                    android:text="Refreshing in: 10s"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/exercisetgtinformation2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="2dp"
+                    android:text="Please wait for others to join the session.\n"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/TextViewPeopleList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/carter_one"
+                    android:text="People joining for Session: "
+                    android:textColor="@color/greendark2"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/SessionNameWaitingRoom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:fontFamily="@font/carter_one"
+                    android:text="session"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <ImageButton
+                    android:id="@+id/leaveWaitingRoomButton"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/navbuttonred"
+                    android:padding="15dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/logout" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPeopleWaiting"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="7dp"
-            android:text="Refreshing in: 10s"
-            android:textSize="12dp" />
+            android:layout_height="180dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/white">
 
-        <TextView
-            android:id="@+id/TextViewPeopleList"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/carter_one"
-            android:text="People joining for Session: "
-            android:textColor="@color/greendark2"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exerciseTogetherRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
 
-        <TextView
-            android:id="@+id/SessionNameWaitingRoom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginBottom="5dp"
-            android:fontFamily="@font/carter_one"
-            android:text="session"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="15dp"
             android:background="@drawable/darkgreenborder">
 
             <ImageView
@@ -102,12 +149,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/exerciseTogetherRecyclerView"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/startExerciseExTgt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"/>
-
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@color/success"
+            android:padding="15dp"
+            android:text="Start Exercise"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </ScrollView>
 

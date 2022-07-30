@@ -62,8 +62,8 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:padding="15dp"
                     android:background="@color/whitesmoke"
+                    android:padding="15dp"
                     android:textAlignment="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -90,9 +90,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="21dp"
                     android:ems="10"
-                    android:maxLength="50"
-                    android:inputType="textPersonName"
                     android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:maxLength="50"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,6 +110,19 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/loadingCreatingSession"
+                    android:layout_width="wrap_content"
+                    android:layout_height="204dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/exerciseSpinner"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    app:lottie_rawRes="@raw/edupia_loading" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

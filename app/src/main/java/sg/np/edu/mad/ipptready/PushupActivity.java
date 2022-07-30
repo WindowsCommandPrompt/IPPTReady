@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.*;
 import android.view.View;
 import android.widget.*;
@@ -20,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class PushupActivity extends AppCompatActivity {
+public class PushupActivity extends AppCompatActivity implements SensorEventListener {
 
     Vibrator vibrator;
 
@@ -28,6 +32,10 @@ public class PushupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pushup);
+
+        SensorManager manager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        
 
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
         //AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
@@ -178,5 +186,15 @@ public class PushupActivity extends AppCompatActivity {
                     Toast.makeText(this, "Unexpected error occured", Toast.LENGTH_SHORT).show();
                 })
                 .addOnCompleteListener(onCompleteVoidListener);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }
