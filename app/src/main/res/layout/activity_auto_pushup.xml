@@ -186,7 +186,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Manual Tracker"
+                                        android:text="Switch to Manual Tracker"
                                         android:textColor="@color/white"
                                         android:textSize="45px"
                                         android:textStyle="bold" />
