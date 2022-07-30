@@ -1,5 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -15,6 +16,16 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.uk.tastytoasty.TastyToasty;
+
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherRecordScoreActivity;
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherResultsActivity;
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherWaitingRoomActivity;
+import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 
 public class SitupActivity extends AppCompatActivity {
 
@@ -98,10 +109,10 @@ public class SitupActivity extends AppCompatActivity {
 
         // Set up alert
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("1 minute is up! Have you reached your target?");
         builder.setCancelable(false);
         if (!ExerciseTogether)
         {
+            builder.setMessage("1 minute is up! Have you reached your target?");
             // Prepare intent to key in situp score
             builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
                 @Override
@@ -130,9 +141,11 @@ public class SitupActivity extends AppCompatActivity {
         }
         else
         {
+            builder.setMessage("1 minute is up! It's time to record your score!");
             builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent exerciseFinish = new Intent(SitupActivity.this, ExerciseTogetherRecordScoreActivity.class);
 
                     Bundle exerciseBundle = new Bundle();
                     exerciseBundle.putString("date", getIntent().getStringExtra("date"));
@@ -142,11 +155,12 @@ public class SitupActivity extends AppCompatActivity {
                     exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
                     exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
                     exerciseBundle.putString("ExerciseTogetherSession", "yes");
-
+                    exerciseFinish.putExtras(exerciseBundle);
+                    startActivity(exerciseFinish);
+                    finish();
                 }
             });
         }
-
 
         AlertDialog alert = builder.create();
         alert.setTitle("Times Up!");
@@ -169,5 +183,44 @@ public class SitupActivity extends AppCompatActivity {
             }
         };
         myCountDown.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (ExerciseTogether)
+        {
+            leaveSession();
+        }
+    }
+
+    public void leaveSession()
+    {
+        AlertDialog.Builder leaveAlert = new AlertDialog.Builder(SitupActivity.this);
+        leaveAlert
+                .setTitle("Leave Session")
+                .setMessage("Are you sure you want to leave this session?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(getIntent().getStringExtra("userId"), getIntent().getStringExtra("QRString"), "Left");
+                                firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful())
+                                        {
+                                            TastyToasty.blue(SitupActivity.this, "You have left the session", null).show();
+                                            Intent failedIntent = new Intent(SitupActivity.this, ExerciseTogetherSession.class);
+                                            failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                .setNegativeButton("No", null);
+        leaveAlert.create().show();
     }
 }
