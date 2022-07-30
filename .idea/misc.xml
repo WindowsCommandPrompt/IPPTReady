@@ -27,8 +27,10 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_detailed_information.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_create.xml" value="0.264" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_joining_process.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_no_internet.xml" value="0.25" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_pushup.xml" value="0.20277777777777778" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_results.xml" value="0.2" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercisetogether.xml" value="0.25" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercisetogetherwaitingroom.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_friend.xml" value="0.25416666666666665" />
@@ -46,6 +48,7 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_watch_video.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/cycle_recycleview.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/exercisetogether_recycler.xml" value="0.25416666666666665" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/exercisetogetherresults_recycler.xml" value="0.17864583333333334" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/fragment_nav.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/fragment_weather.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/routine_recycleview.xml" value="0.4" />

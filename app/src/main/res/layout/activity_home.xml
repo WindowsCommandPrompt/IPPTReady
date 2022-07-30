@@ -25,7 +25,7 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView11"
+                    android:id="@+id/IPPTReadyLogoHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
@@ -38,13 +38,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/logoRunningManHome"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.102"
-                    app:layout_constraintStart_toEndOf="@+id/textView11"
+                    app:layout_constraintStart_toEndOf="@+id/IPPTReadyLogoHome"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/man" />
             </androidx.constraintlayout.widget.ConstraintLayout>

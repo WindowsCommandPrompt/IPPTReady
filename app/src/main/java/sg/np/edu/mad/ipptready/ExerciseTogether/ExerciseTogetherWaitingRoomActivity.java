@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,11 +30,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import sg.np.edu.mad.ipptready.AutoPushupActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
 import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 import sg.np.edu.mad.ipptready.InternetConnectivity.Internet;
+import sg.np.edu.mad.ipptready.PushupActivity;
 import sg.np.edu.mad.ipptready.R;
+import sg.np.edu.mad.ipptready.SitupActivity;
 import sg.np.edu.mad.ipptready.VideoActivity;
 import sg.np.edu.mad.ipptready.VideoAdapter;
 
@@ -62,6 +66,48 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             QRCode.setVisibility(View.GONE);
         }
 
+        updateParticipants(receivedIntent);
+
+        ImageButton leaveRoomBtn = findViewById(R.id.leaveWaitingRoomButton);
+        leaveRoomBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leaveSession();
+            }
+        });
+
+        Button startExerciseBtn = findViewById(R.id.startExerciseExTgt);
+        startExerciseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String exercise = receivedIntent.getStringExtra("exercise");
+
+                Bundle exerciseBundle = new Bundle();
+                exerciseBundle.putString("date", getIntent().getStringExtra("date"));
+                exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+                exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+                exerciseBundle.putString("userId", getIntent().getStringExtra("userId"));
+                exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+                exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
+                exerciseBundle.putString("ExerciseTogetherSession", "yes");
+
+                if (exercise.equals("Push-ups"))
+                {
+                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, PushupActivity.class);
+                    exerciseIntent.putExtras(exerciseBundle);
+                }
+                else if (exercise.equals("Sit-ups"))
+                {
+                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, SitupActivity.class);
+                    exerciseIntent.putExtras(exerciseBundle);
+                }
+            }
+        });
+
+    }
+
+    public void updateParticipants(Intent receivedIntent)
+    {
         ExerciseTogetherSession.getCurrentSessionParticipants(receivedIntent.getStringExtra("QRString")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -131,40 +177,6 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                 }
             }
         });
-
-        ImageButton leaveRoomBtn = findViewById(R.id.leaveWaitingRoomButton);
-        leaveRoomBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder leaveAlert = new AlertDialog.Builder(ExerciseTogetherWaitingRoomActivity.this);
-                leaveAlert
-                        .setTitle("Leave Session")
-                        .setMessage("Are you sure you want to leave this session?")
-                        .setCancelable(true)
-                        .setPositiveButton(
-                                "Yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(receivedIntent.getStringExtra("userId"), receivedIntent.getStringExtra("QRString"), "Left");
-                                        firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful())
-                                                {
-                                                    TastyToasty.blue(ExerciseTogetherWaitingRoomActivity.this, "You have left the session", null).show();
-                                                    Intent failedIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, ExerciseTogetherSession.class);
-                                                    failedIntent.putExtra("userId", receivedIntent.getStringExtra("userId"));
-                                                    finish();
-                                                }
-                                            }
-                                        });
-                                    }
-                                })
-                        .setNegativeButton("No", null);
-                leaveAlert.create().show();
-            }
-        });
     }
 
     private void countDownTimer(){
@@ -201,5 +213,41 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             startActivity(noConnectionIntent);
             finish();
         }
+    }
+
+    public void leaveSession()
+    {
+        AlertDialog.Builder leaveAlert = new AlertDialog.Builder(ExerciseTogetherWaitingRoomActivity.this);
+        leaveAlert
+                .setTitle("Leave Session")
+                .setMessage("Are you sure you want to leave this session?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(getIntent().getStringExtra("userId"), getIntent().getStringExtra("QRString"), "Left");
+                                firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful())
+                                        {
+                                            TastyToasty.blue(ExerciseTogetherWaitingRoomActivity.this, "You have left the session", null).show();
+                                            Intent failedIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, ExerciseTogetherSession.class);
+                                            failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                .setNegativeButton("No", null);
+        leaveAlert.create().show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        leaveSession();
     }
 }

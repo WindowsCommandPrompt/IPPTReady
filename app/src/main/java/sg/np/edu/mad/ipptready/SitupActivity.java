@@ -25,6 +25,7 @@ public class SitupActivity extends AppCompatActivity {
     CountDownTimer myCountDown;
     boolean isRunning = false;
     Vibrator vibrator;
+    boolean ExerciseTogether = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,17 @@ public class SitupActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.stopSitup);
         remainingSeconds = findViewById(R.id.situpSecondsRemaining);
         TextView targetSitupsTextView = findViewById(R.id.targetNumberOfSitups);
-        targetSitupsTextView.setText(String.valueOf(getIntent().getExtras().getInt("Target Situps")));
+        try {
+            String exerciseTogether = getIntent().getStringExtra("ExerciseTogetherSession");
+            if (!exerciseTogether.equals(null))
+            {
+                ExerciseTogether = true;
+                targetSitupsTextView.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e) {
+            targetSitupsTextView.setText(String.valueOf(getIntent().getExtras().getInt("Target Situps")));
+        }
 
         // If the start button is pressed
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -89,31 +100,53 @@ public class SitupActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("1 minute is up! Have you reached your target?");
         builder.setCancelable(false);
-        // Prepare intent to key in situp score
-        builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(SitupActivity.this, SitupTargetActivity.class);
-                Bundle bundle = new Bundle();
-                Bundle receivedBundle = getIntent().getExtras();
-                bundle.putString("Email", receivedBundle.getString("Email"));
-                bundle.putString("IPPTCycleId", receivedBundle.getString("IPPTCycleId"));
-                bundle.putString("IPPTRoutineId", receivedBundle.getString("IPPTRoutineId"));
-                bundle.putBoolean("SitupTargetSet", true);
-                bundle.putInt("Target Situps", receivedBundle.getInt("Target Situps"));
-                intent.putExtras(bundle);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            }
-        });
-        // Return to sit-up target
-        builder.setNegativeButton("Return to Sit-Up Target", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
+        if (!ExerciseTogether)
+        {
+            // Prepare intent to key in situp score
+            builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(SitupActivity.this, SitupTargetActivity.class);
+                    Bundle bundle = new Bundle();
+                    Bundle receivedBundle = getIntent().getExtras();
+                    bundle.putString("Email", receivedBundle.getString("Email"));
+                    bundle.putString("IPPTCycleId", receivedBundle.getString("IPPTCycleId"));
+                    bundle.putString("IPPTRoutineId", receivedBundle.getString("IPPTRoutineId"));
+                    bundle.putBoolean("SitupTargetSet", true);
+                    bundle.putInt("Target Situps", receivedBundle.getInt("Target Situps"));
+                    intent.putExtras(bundle);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            // Return to sit-up target
+            builder.setNegativeButton("Return to Sit-Up Target", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+        }
+        else
+        {
+            builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    Bundle exerciseBundle = new Bundle();
+                    exerciseBundle.putString("date", getIntent().getStringExtra("date"));
+                    exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+                    exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+                    exerciseBundle.putString("userId", getIntent().getStringExtra("userId"));
+                    exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+                    exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
+                    exerciseBundle.putString("ExerciseTogetherSession", "yes");
+
+                }
+            });
+        }
+
 
         AlertDialog alert = builder.create();
         alert.setTitle("Times Up!");

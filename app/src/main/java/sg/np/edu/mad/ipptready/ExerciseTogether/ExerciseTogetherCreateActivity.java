@@ -42,6 +42,9 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_create);
 
+        com.airbnb.lottie.LottieAnimationView loading = findViewById(R.id.loadingCreatingSession);
+        loading.setVisibility(View.GONE);
+
         EditText sessionName = findViewById(R.id.sessionNameEditText);
 
         Spinner exercisesSpinner = (Spinner) findViewById(R.id.exerciseSpinner);
@@ -59,6 +62,8 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                     sessionName.setError("Please enter a session name!");
                     return;
                 }
+                loading.setVisibility(View.VISIBLE);
+                createBtn.setVisibility(View.GONE);
                 String sessionNameText = sessionName.getText().toString();
                 String selectedExercise = String.valueOf(exercisesSpinner.getSelectedItem());
 
