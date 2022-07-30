@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <!--Toolbar for the user-->
     <ScrollView
         android:layout_width="match_parent"
@@ -30,19 +30,13 @@
                     android:textSize="120px" />
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background='@color/sd'
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.185">
+                        android:orientation="vertical">
                         <!--First section consists of the time remaining and the distance travelled
                              1) Create rounded corners for each of the box
                              2) Create a relative layout so as to stack drawables on top of one another
@@ -57,12 +51,11 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
                                 android:gravity = "center">
-
+                                <!--Modify the layout for this element -->
                                 <LinearLayout
                                     android:layout_height = "wrap_content"
                                     android:layout_width = "match_parent"
                                     android:orientation = "horizontal">
-
                                     <TextView
                                         android:id="@+id/textViewIdentifier"
                                         android:layout_width="wrap_content"
@@ -83,7 +76,7 @@
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="1500px"
+                                    android:layout_height="500dp"
                                     android:gravity="center">
                                     <!--android:elevation is set to 1 here by default-->
                                     <ImageView

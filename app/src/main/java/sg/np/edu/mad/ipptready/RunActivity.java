@@ -376,12 +376,14 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
                     for (float f : resultContainer) {
                         Log.d("WhatIsIt?", "" + new ArrayList<Float>(Arrays.asList(resultContainer[0], resultContainer[1], resultContainer[2], resultContainer[3])));
                     }
-                    //float currentDistance = Float.parseFloat(((TextView) findViewById(R.id.DistanceCounter)).getText().toString()) + resultContainer[0];
-                    //((TextView) findViewById(R.id.DistanceCounter)).setText(Float.toString(currentDistance));
-                }
-            }
-            else {
+                    //Get from the kilometer one
+                    String kilometerbox = ((TextView) findViewById(R.id.kilometerIndicator)).getText().toString();
+                    String meterbox = ((TextView) findViewById(R.id.meterIndicator)).getText().toString();
+                    float distanceCurrent = (Float.parseFloat(kilometerbox) * 1000) + (Float.parseFloat(meterbox) * 1000) + resultContainer[0];
+                    //convert it back
+                    ((TextView) findViewById(R.id.kilometerIndicator)).setText(Float.toString(distanceCurrent / 1000));
 
+                }
             }
         }
     }
