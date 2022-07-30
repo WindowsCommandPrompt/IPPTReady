@@ -95,10 +95,27 @@
             </LinearLayout>
         </LinearLayout>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPeopleWaiting"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/exerciseTogetherRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="15dp"
             android:background="@drawable/darkgreenborder">
 
             <ImageView
@@ -132,12 +149,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/exerciseTogetherRecyclerView"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/startExerciseExTgt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"/>
-
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="15dp"
+            android:background="@color/success"
+            android:padding="15dp"
+            android:text="Start Exercise"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </ScrollView>
 

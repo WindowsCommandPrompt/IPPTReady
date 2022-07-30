@@ -127,6 +127,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                                             bundle.putString("exercise", session.exercise);
                                                                             bundle.putString("userId", userId);
                                                                             bundle.putParcelable("QRImage", finalBitmap);
+                                                                            bundle.putString("QRString", qrdetails);
                                                                             Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                                                             TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + session.sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
                                                                             beginSession.putExtras(bundle);

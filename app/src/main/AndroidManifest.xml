@@ -30,30 +30,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IPPTReady">
-
+        <activity
+            android:name=".ExerciseTogether.ExerciseTogetherPushupActivity"
+            android:exported="false" />
         <activity
             android:name=".AutoPushupActivity"
             android:exported="false" />
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherJoiningProcessActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherJoinActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherCreateActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherNoInternetActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ExerciseTogether.ExerciseTogetherWaitingRoomActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SitupTargetActivity"
             android:exported="false" />

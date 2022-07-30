@@ -2,6 +2,7 @@ package sg.np.edu.mad.ipptready.FirebaseDAL;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,6 +32,11 @@ public class IPPTUser implements Serializable {
         DoB = ((Timestamp) userMap.get(DOB)).toDate();
     }
 
+    public static CollectionReference getUsersCollection()
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return db.collection("IPPTUser");
+    }
 
     public static DocumentReference getUserDocFromId(String userDocId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();

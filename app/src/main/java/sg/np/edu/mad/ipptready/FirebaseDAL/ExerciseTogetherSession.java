@@ -40,6 +40,12 @@ public class ExerciseTogetherSession {
         return db.collection("IPPTUser").document(userID).collection("Exercise Together");
     }
 
+    public static CollectionReference getCurrentSessionParticipants(String qrCode)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return db.collection("Exercise Together").document(qrCode).collection("Users");
+    }
+
     public static FirebaseDocChange createNewSession(String EmailAddress, ExerciseTogetherSession session) {
         FirebaseDocChange newSession = new FirebaseDocChange();
         FirebaseFirestore db = FirebaseFirestore.getInstance();

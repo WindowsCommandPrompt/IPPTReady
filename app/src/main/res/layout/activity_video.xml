@@ -31,7 +31,7 @@
         android:text="Please note that these videos do not belong to us and we follow strictly to the terms and conditions for using YouTube API services." />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/exerciseTogetherRecyclerView"
+        android:id="@+id/videosRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="639dp" />
 
