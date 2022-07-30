@@ -67,6 +67,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                             bundle.putString("exercise", getIntent().getStringExtra("exercise"));
                                             bundle.putString("userId", getIntent().getStringExtra("userId"));
                                             bundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+                                            bundle.putString("QRString", getIntent().getStringExtra("QRString"));
 
                                             Intent beginSession = new Intent(ExerciseTogetherNoInternetActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                             beginSession.putExtras(bundle);

@@ -113,6 +113,32 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                             try {
                                                                 BitMatrix bitMatrix = qrCodeWriter.encode(qrdetails, BarcodeFormat.QR_CODE, 400, 400);
                                                                 bitmap = CreateImage(bitMatrix);
+
+                                                                FirebaseDocChange firebaseDocChangeJoinSession = ExerciseTogetherSession.joinSession(userId, qrdetails);
+                                                                Bitmap finalBitmap = bitmap;
+                                                                firebaseDocChangeJoinSession.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful())
+                                                                        {
+                                                                            Bundle bundle = new Bundle();
+                                                                            bundle.putString("date", session.dateCreated);
+                                                                            bundle.putString("sessionName", session.sessionName);
+                                                                            bundle.putString("exercise", session.exercise);
+                                                                            bundle.putString("userId", userId);
+                                                                            bundle.putParcelable("QRImage", finalBitmap);
+                                                                            Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
+                                                                            TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + session.sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
+                                                                            beginSession.putExtras(bundle);
+                                                                            startActivity(beginSession);
+                                                                            finish();
+                                                                        }
+                                                                        else {
+                                                                            TastyToasty.error(ExerciseTogetherJoiningProcessActivity.this, "Unexpected error occurred").show();
+                                                                            finish();
+                                                                        }
+                                                                    }
+                                                                });
                                                             }
                                                             catch (WriterException we)
                                                             {
@@ -122,17 +148,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                                 finish();
                                                             }
 
-                                                            Bundle bundle = new Bundle();
-                                                            bundle.putString("date", session.dateCreated);
-                                                            bundle.putString("sessionName", session.sessionName);
-                                                            bundle.putString("exercise", session.exercise);
-                                                            bundle.putString("userId", userId);
-                                                            bundle.putParcelable("QRImage", bitmap);
-                                                            Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
-                                                            TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + session.sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
-                                                            beginSession.putExtras(bundle);
-                                                            startActivity(beginSession);
-                                                            finish();
+
                                                         }
                                                         else {
                                                             TastyToasty.error(ExerciseTogetherJoiningProcessActivity.this, "Unexpected error occurred").show();
@@ -152,6 +168,33 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                 try {
                                                     BitMatrix bitMatrix = qrCodeWriter.encode(qrdetails, BarcodeFormat.QR_CODE, 400, 400);
                                                     bitmap = CreateImage(bitMatrix);
+
+                                                    FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(userId, qrdetails, "Joined");
+                                                    Bitmap finalBitmap = bitmap;
+                                                    firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful())
+                                                            {
+                                                                Bundle bundle = new Bundle();
+                                                                bundle.putString("date", finalDateCreated);
+                                                                bundle.putString("sessionName", sessionName);
+                                                                bundle.putString("exercise", exercise);
+                                                                bundle.putString("userId", userId);
+                                                                bundle.putParcelable("QRImage", finalBitmap);
+                                                                bundle.putString("QRString", qrdetails);
+                                                                Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
+                                                                TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
+                                                                beginSession.putExtras(bundle);
+                                                                startActivity(beginSession);
+                                                                finish();
+                                                            }
+                                                            else {
+                                                                TastyToasty.error(ExerciseTogetherJoiningProcessActivity.this, "Unexpected error occurred").show();
+                                                                finish();
+                                                            }
+                                                        }
+                                                    });
                                                 }
                                                 catch (WriterException we)
                                                 {
@@ -163,17 +206,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                     finish();
                                                 }
 
-                                                Bundle bundle = new Bundle();
-                                                bundle.putString("date", finalDateCreated);
-                                                bundle.putString("sessionName", sessionName);
-                                                bundle.putString("exercise", exercise);
-                                                bundle.putString("userId", userId);
-                                                bundle.putParcelable("QRImage", bitmap);
-                                                Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
-                                                TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
-                                                beginSession.putExtras(bundle);
-                                                startActivity(beginSession);
-                                                finish();
+
                                             }
                                         }
                                         else

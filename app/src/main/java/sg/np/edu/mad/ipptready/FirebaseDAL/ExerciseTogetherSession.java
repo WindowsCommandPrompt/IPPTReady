@@ -6,6 +6,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,5 +55,31 @@ public class ExerciseTogetherSession {
 
         newSession.changeTask = newSession.documentReference.set(newSessionMap);
         return newSession;
+    }
+
+    public static FirebaseDocChange joinSession(String userid, String qrCode)
+    {
+        FirebaseDocChange joinASession = new FirebaseDocChange();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        joinASession.documentReference = db.collection("Exercise Together").document(qrCode).collection("Users").document(userid);
+
+        Map<String, Object> newJoinSessionMap = new HashMap<>();
+        newJoinSessionMap.put("status", "Joined");
+
+        joinASession.changeTask = joinASession.documentReference.set(newJoinSessionMap);
+        return joinASession;
+    }
+
+    public static FirebaseDocChange updateJoinStatus(String userid, String qrCode, String status)
+    {
+        FirebaseDocChange updateTheJoinStatus = new FirebaseDocChange();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        updateTheJoinStatus.documentReference = db.collection("Exercise Together").document(qrCode).collection("Users").document(userid);
+
+        Map<String, Object> updateJoinSessionMap = new HashMap<>();
+        updateJoinSessionMap.put("status", status);
+
+        updateTheJoinStatus.changeTask = updateTheJoinStatus.documentReference.set(updateJoinSessionMap, SetOptions.merge());
+        return updateTheJoinStatus;
     }
 }

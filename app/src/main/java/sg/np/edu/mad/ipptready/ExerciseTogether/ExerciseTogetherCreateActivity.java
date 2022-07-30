@@ -93,24 +93,39 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                             try {
                                 BitMatrix bitMatrix = qrCodeWriter.encode(qrdetails, BarcodeFormat.QR_CODE, 400, 400);
                                 bitmap = CreateImage(bitMatrix);
+                                FirebaseDocChange firebaseDocChangeJoinSession = ExerciseTogetherSession.joinSession(EmailAddress, qrdetails);
+                                Bitmap finalBitmap = bitmap;
+                                firebaseDocChangeJoinSession.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful())
+                                        {
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("date", session.dateCreated);
+                                            bundle.putString("sessionName", session.sessionName);
+                                            bundle.putString("exercise", session.exercise);
+                                            bundle.putString("userId", EmailAddress);
+                                            bundle.putParcelable("QRImage", finalBitmap);
+                                            bundle.putString("QRString", qrdetails);
+                                            Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
+                                            TastyToasty.makeText(ExerciseTogetherCreateActivity.this, "Session created!", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
+                                            beginSession.putExtras(bundle);
+                                            startActivity(beginSession);
+                                            finish();
+                                        }
+                                        else {
+                                            TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unexpected error occurred").show();
+                                            finish();
+                                        }
+                                    }
+                                });
                             }
                             catch (WriterException we)
                             {
                                 Log.e("Error", "Unable to create QR code.");
-                                TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unable to generate QR code.").show();
+                                TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unable to generate QR code. Please try again.").show();
+                                return;
                             }
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("date", session.dateCreated);
-                            bundle.putString("sessionName", session.sessionName);
-                            bundle.putString("exercise", session.exercise);
-                            bundle.putString("userId", EmailAddress);
-                            bundle.putParcelable("QRImage", bitmap);
-                            Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
-                            TastyToasty.makeText(ExerciseTogetherCreateActivity.this, "Session created!", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
-                            beginSession.putExtras(bundle);
-                            startActivity(beginSession);
-                            finish();
                         }
                         else {
                             TastyToasty.error(ExerciseTogetherCreateActivity.this, "Unexpected error occurred").show();

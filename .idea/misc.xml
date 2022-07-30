@@ -3,13 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/bluebordeghostwhitebg.xml" value="0.221" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/blueborder.xml" value="0.2185" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/blueborderwhitebg.xml" value="0.2185" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/border.xml" value="0.251" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/circleborder.xml" value="0.132" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/createaccount_button.xml" value="0.221" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/createcycle_button.xml" value="0.221" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/cycleroutine_button.xml" value="0.221" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/darkgreenborder.xml" value="0.2185" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/navButtonRed.xml" value="0.221" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/navbutton.xml" value="0.1825" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/play_button.xml" value="0.251" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/record_button.xml" value="0.221" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/redborder.xml" value="0.2185" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/verticaldivider.xml" value="0.222" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/drawable/weatherbackgroundlinearlayout.xml" value="0.222" />
@@ -23,7 +29,7 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_create.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together_no_internet.xml" value="0.25" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercisetogether.xml" value="0.25" />
-        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercisetogetherwaitingroom.xml" value="0.264" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercisetogetherwaitingroom.xml" value="0.4678811121764142" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_friend.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_home.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_information.xml" value="0.25416666666666665" />
