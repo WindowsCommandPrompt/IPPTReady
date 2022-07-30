@@ -351,12 +351,17 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         }
     }
 
+    private class Convert {
+        public void ToSexagesimals(String bearing){
+
+        }
+    }
+
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        //((TextView) findViewById(R.id.location1)).setText(msg);
+        //Put the latitudes and longitudes into their respective TextViews
+        ((TextView) findViewById(R.id.latitudeBox)).setText(Double.toString(location.getLatitude()));
+        ((TextView) findViewById(R.id.longitudeBox)).setText(Double.toString(location.getLongitude()));
         Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "This method has been called and now the location is being updated at a speed between 150ms to 950ms", Toast.LENGTH_SHORT).show();
         coordinateArray.add(location); //stores an array of Location objects...
         Log.d("TAG", "" + coordinateArray.size());
@@ -381,8 +386,8 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
                     String meterbox = ((TextView) findViewById(R.id.meterIndicator)).getText().toString();
                     float distanceCurrent = (Float.parseFloat(kilometerbox) * 1000) + (Float.parseFloat(meterbox) * 1000) + resultContainer[0];
                     //convert it back
-                    ((TextView) findViewById(R.id.kilometerIndicator)).setText(Float.toString(distanceCurrent / 1000));
-
+                    ((TextView) findViewById(R.id.kilometerIndicator)).setText(Double.toString(Math.floor(distanceCurrent / 1000)));
+                    ((TextView) findViewById(R.id.meterIndicator)).setText("");
                 }
             }
         }
