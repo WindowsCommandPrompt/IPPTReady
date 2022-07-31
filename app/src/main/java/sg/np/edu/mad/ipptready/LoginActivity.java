@@ -178,18 +178,19 @@ public class LoginActivity extends AppCompatActivity {
                                                             if (task.isSuccessful())
                                                             {
                                                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                                                Map<String, Object> data =documentSnapshot.getData();
-                                                                long time = data.containsKey("RoutineTime")? (long) data.get("RoutineTime") :
-                                                                        -1L;
-                                                                if (-1L != time) {
-                                                                    int hour = (int) (time/60);
-                                                                    FCMReceiver.setAlarm(LoginActivity.this, hour,
-                                                                            (int)(time - 60*hour));
-                                                                    FCMReceiver.setNotification(LoginActivity.this, "IPPTReady",
-                                                                            "Alarm set!");
-                                                                }
+
 
                                                                 if (documentSnapshot.exists()) {
+                                                                    Map<String, Object> data =documentSnapshot.getData();
+                                                                    long time = data.containsKey("RoutineTime")? (long) data.get("RoutineTime") :
+                                                                            -1L;
+                                                                    if (-1L != time) {
+                                                                        int hour = (int) (time/60);
+                                                                        FCMReceiver.setAlarm(LoginActivity.this, hour,
+                                                                                (int)(time - 60*hour));
+                                                                        FCMReceiver.setNotification(LoginActivity.this, "IPPTReady",
+                                                                                "Alarm set!");
+                                                                    }
                                                                     goToHomePage(documentSnapshot, account.getId());
                                                                 }
                                                                 else {
