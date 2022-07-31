@@ -379,21 +379,28 @@ public class ProfileActivity extends AppCompatActivity {
                                     }
                                 });
 
+                                // set alarm settings button
                                 findViewById(R.id.imageView7)
                                         .setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
+                                                // create a timedialog when the button is clicked
                                                 TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this,
                                                         new TimePickerDialog.OnTimeSetListener() {
                                                             @Override
                                                             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                                                // set alarm if time is being set
                                                                 int time = hour * 60 + minute;
+
+                                                                // update firebase first
                                                                 IPPTUser.setTime(IPPTUser.getUserDocFromId(EmailAddress),
                                                                         time)
                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                 if (task.isSuccessful()) {
+
+                                                                                    // if successful update to firebase, send request to sync alarm
                                                                                     Toast.makeText(ProfileActivity.this, "Time set!", Toast.LENGTH_SHORT)
                                                                                             .show();
                                                                                     RequestQueue queue = Volley.newRequestQueue(ProfileActivity.this);
@@ -426,6 +433,8 @@ public class ProfileActivity extends AppCompatActivity {
                                                                         });
                                                             }
                                                         }, 12, 0, true);
+
+                                                // show dialog after creation
                                                 timePickerDialog.show();
                                             }
                                         });

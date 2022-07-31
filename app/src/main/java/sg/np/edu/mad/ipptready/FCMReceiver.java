@@ -27,13 +27,18 @@ public class FCMReceiver extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Map<String, String> data = remoteMessage.getData();
         int time = Integer.parseInt(data.get("_routineAlarm"));
+
+        // vibrate and get hour and minute from FCM message
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(300);
         int hour = time/60;
-        int minute = (time -60*hour)%60;
+        int minute = time -60*hour;
+
+        // remove previous alarm
         removeAlarm();
         setAlarm(this, hour, minute);
 
+        // set notification
         setNotification(this, "IPPTReady", "Routine Alarm set to go off at " +
                         String.format("%02d:%02d", hour, minute));
     }
@@ -41,26 +46,31 @@ public class FCMReceiver extends FirebaseMessagingService {
     public static void setNotification(Context context,
                                 String ContentTitle,
                                 String ContentText) {
-
+        // create the notification
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.appicon)
                 .setContentTitle(ContentTitle)
                 .setContentText(ContentText);
 
+        // requirement to maintain compat with higher api versions
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, "FCMChannel", importance);
             notificationManager.createNotificationChannel(mChannel);
         }
+
+        // build and launch the notification
         notificationManager.notify(100, notificationBuilder.build());
     }
 
     public static void setAlarm(Context context ,int hour, int minute) {
+        // put the hour and minute in the intent to be used to reset the alarm
         Intent routineAlertIntent = new Intent(context, RoutineAlertReceiver.class);
         routineAlertIntent.putExtra("hour", hour);
         routineAlertIntent.putExtra("minute", minute);
 
+        // create the pending for broadcast and set alarm in alarmManager
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 400, routineAlertIntent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
@@ -74,6 +84,7 @@ public class FCMReceiver extends FirebaseMessagingService {
     }
 
     private void removeAlarm() {
+        // get the previously set alarm and cancel it
         Intent routineAlertIntent = new Intent(this, RoutineAlertReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 400, routineAlertIntent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

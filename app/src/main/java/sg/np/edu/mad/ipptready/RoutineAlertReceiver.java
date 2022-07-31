@@ -20,6 +20,8 @@ public class RoutineAlertReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(2000);
+
+        // notify and reset alarm
         FCMReceiver.setNotification(context, "IPPTReady",
                 "Time To Do your Routine!");
         setNextAlarm(context, intent.getIntExtra("hour", 12),
@@ -31,6 +33,7 @@ public class RoutineAlertReceiver extends BroadcastReceiver {
         routineAlertIntent.putExtra("hour", hour);
         routineAlertIntent.putExtra("minute", minute);
 
+        // same as FCMReceiver but set it to the next day
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 400, routineAlertIntent, PendingIntent.FLAG_IMMUTABLE);
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
