@@ -194,6 +194,8 @@ public class SitupActivity extends AppCompatActivity {
         {
             leaveSession();
         }
+        else
+            super.onBackPressed();
     }
 
     // For Exercise Together, if user presses the back button, user will be prompted to leave session
