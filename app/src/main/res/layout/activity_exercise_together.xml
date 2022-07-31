@@ -145,7 +145,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/backtoHomefromExTgt"
-                android:layout_width="160dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
                 android:background="@drawable/redborder"
@@ -164,7 +164,7 @@
                 android:layout_marginTop="64dp"
                 android:fontFamily="@font/carter_one"
                 android:text="Select an option to begin"
-                android:textColor="@color/black"
+                android:textColor="@color/greendark2"
                 android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"

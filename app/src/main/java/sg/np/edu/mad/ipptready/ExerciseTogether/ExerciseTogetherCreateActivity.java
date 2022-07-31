@@ -35,6 +35,9 @@ import sg.np.edu.mad.ipptready.R;
 
 
 public class ExerciseTogetherCreateActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     String EmailAddress;
 
     @Override
@@ -42,15 +45,26 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_create);
 
+        // Hide loading lottie animation first
         com.airbnb.lottie.LottieAnimationView loading = findViewById(R.id.loadingCreatingSession);
         loading.setVisibility(View.GONE);
 
         EditText sessionName = findViewById(R.id.sessionNameEditText);
 
+        // Set exercise array into spinner for user to select exercise
         Spinner exercisesSpinner = (Spinner) findViewById(R.id.exerciseSpinner);
         ArrayAdapter<CharSequence> exercisesArrayAdapter = ArrayAdapter.createFromResource(this, R.array.exercises_array, android.R.layout.simple_spinner_item);
         exercisesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         exercisesSpinner.setAdapter(exercisesArrayAdapter);
+
+        // --- Create ---
+        // Upon clicking create, first check if session name is empty.
+        // If validation pass, add new session to user's individual Exercise Together collection in Firestore
+        // Create QR Code (string contains userid + date that session was created) using ZXing (“Zebra Crossing”) library - QRCodeWriter
+        // QRCodeWriter helps to encode the string and size of qrcode into BitMatrix
+        // Create Bitmap object using the BitMatrix
+        // Send join session details to Exercise Together collection (global) in Firestore and send user to waiting room
+        // --------------
 
         Button createBtn = findViewById(R.id.createSessionExTgt);
         createBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,16 +86,6 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                 EmailAddress = intent.getStringExtra("userId");
                 Log.d("DEBUG", EmailAddress);
 
-                // Get user's Name to be used in encoding for QR code
-                final String[] name = {""};
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("IPPTUser").document(EmailAddress).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) name[0] = task.getResult().get("Name").toString();
-                    }
-                });
-
                 // Create Exercise Together Session object and add session to firestore.
                 ExerciseTogetherSession session = new ExerciseTogetherSession("", sessionNameText, selectedExercise, EmailAddress);
                 String qrdetails = session.hostUserID + "&" + session.dateCreated;
@@ -92,19 +96,21 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("DEBUG", qrdetails);
+                            // QRCodeWriter to encode qrdetails into a QR Code (BitMatrix)
                             QRCodeWriter qrCodeWriter = new QRCodeWriter();
                             Bitmap bitmap = null;
 
                             try {
                                 BitMatrix bitMatrix = qrCodeWriter.encode(qrdetails, BarcodeFormat.QR_CODE, 400, 400);
-                                bitmap = CreateImage(bitMatrix);
-                                FirebaseDocChange firebaseDocChangeJoinSession = ExerciseTogetherSession.joinSession(EmailAddress, qrdetails);
+                                bitmap = CreateImage(bitMatrix); // Create Bitmap from BitMatrix
+                                FirebaseDocChange firebaseDocChangeJoinSession = ExerciseTogetherSession.joinSession(EmailAddress, qrdetails); // Join Session
                                 Bitmap finalBitmap = bitmap;
                                 firebaseDocChangeJoinSession.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful())
                                         {
+                                            // Bundle of session details (needs to be passed between activities)
                                             Bundle bundle = new Bundle();
                                             bundle.putString("date", session.dateCreated);
                                             bundle.putString("sessionName", session.sessionName);
@@ -142,6 +148,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
             }
         });
 
+        // Return to Exercise Together main page
         Button returnBtn = findViewById(R.id.cancelCreateExTgt);
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +158,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
         });
     }
 
+    // Item selected in spinner
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         String item = parent.getItemAtPosition(pos).toString();
         Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
@@ -158,6 +166,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
 
     public void onNothingSelected(AdapterView<?> parent) { }
 
+    // Create Bitmap by setting pixels from bitMatrix
     public Bitmap CreateImage(BitMatrix bitMatrix) {
         int height = bitMatrix.getHeight();
         int width = bitMatrix.getWidth();

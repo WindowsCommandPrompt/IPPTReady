@@ -148,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
             String personEmail = account.getEmail();
             String personName = account.getDisplayName();
 
+            // Get registration id for FCM later
             HashMap<String, String> RequestMap = new HashMap<>();
             RequestMap.put("IPPTUserId", account.getId());
             FirebaseMessaging.getInstance()
@@ -157,6 +158,9 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<String> task) {
                             if (task.isSuccessful()) {
                                 RequestMap.put("RegisterId", task.getResult());
+
+                                // Make a request to the server with the registration and google user id
+                                // to store the user device in the server
 
                                 JSONObject jsonObject = new JSONObject(RequestMap);
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
@@ -171,6 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                                             else
                                                 getTime = response.getBoolean("isFirstTime");
 
+                                            boolean finalGetTime = getTime;
                                             IPPTUser.getUserFromEmail(personEmail)
                                                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                                         @Override
@@ -178,18 +183,24 @@ public class LoginActivity extends AppCompatActivity {
                                                             if (task.isSuccessful())
                                                             {
                                                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                                                Map<String, Object> data =documentSnapshot.getData();
-                                                                long time = data.containsKey("RoutineTime")? (long) data.get("RoutineTime") :
-                                                                        -1L;
-                                                                if (-1L != time) {
-                                                                    int hour = (int) (time/60);
-                                                                    FCMReceiver.setAlarm(LoginActivity.this, hour,
-                                                                            (int)(time - 60*hour));
-                                                                    FCMReceiver.setNotification(LoginActivity.this, "IPPTReady",
-                                                                            "Alarm set!");
-                                                                }
+
 
                                                                 if (documentSnapshot.exists()) {
+
+                                                                    // set alarm if first time setting
+                                                                    Map<String, Object> data =documentSnapshot.getData();
+                                                                    long time = data.containsKey("RoutineTime")? (long) data.get("RoutineTime") :
+                                                                            -1L;
+                                                                    if (-1L != time &&
+                                                                            finalGetTime) {
+                                                                        int hour = (int) (time/60);
+
+                                                                        // set notification and alarm
+                                                                        FCMReceiver.setAlarm(LoginActivity.this, hour,
+                                                                                (int)(time - 60*hour));
+                                                                        FCMReceiver.setNotification(LoginActivity.this, "IPPTReady",
+                                                                                "Alarm set!");
+                                                                    }
                                                                     goToHomePage(documentSnapshot, account.getId());
                                                                 }
                                                                 else {
