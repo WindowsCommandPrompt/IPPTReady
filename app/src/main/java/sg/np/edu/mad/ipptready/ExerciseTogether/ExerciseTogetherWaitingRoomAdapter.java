@@ -19,10 +19,12 @@ public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<Exe
     ArrayList<String> names = new ArrayList<>();
     String hostUserName;
     Context ctx;
+    Boolean started;
 
-    public ExerciseTogetherWaitingRoomAdapter(ArrayList<String> Names, String HostUserName, Context Ctx) {
+    public ExerciseTogetherWaitingRoomAdapter(ArrayList<String> Names, String HostUserName, boolean Started, Context Ctx) {
         names = Names;
         hostUserName = HostUserName;
+        started = Started;
         ctx = Ctx;
     }
 
@@ -37,8 +39,16 @@ public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<Exe
     public void onBindViewHolder(@NonNull ExerciseTogetherWaitingRoomViewHolder holder, int position) {
         if (names.get(position).equals(hostUserName))
         {
-            holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.priblue));
-            holder.sessionParticipantNameTextView.setText("(Host) - " + names.get(position));
+            if (started)
+            {
+                holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.success));
+                holder.sessionParticipantNameTextView.setText("(Host has started!) - " + names.get(position));
+            }
+            else
+            {
+                holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.priblue));
+                holder.sessionParticipantNameTextView.setText("(Host) - " + names.get(position));
+            }
         }
         else
         {
