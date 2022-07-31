@@ -378,63 +378,63 @@ public class ProfileActivity extends AppCompatActivity {
                                         builder.show();
                                     }
                                 });
+
+                                findViewById(R.id.imageView7)
+                                        .setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this,
+                                                        new TimePickerDialog.OnTimeSetListener() {
+                                                            @Override
+                                                            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                                                int time = hour * 60 + minute;
+                                                                IPPTUser.setTime(IPPTUser.getUserDocFromId(EmailAddress),
+                                                                        time)
+                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                if (task.isSuccessful()) {
+                                                                                    Toast.makeText(ProfileActivity.this, "Time set!", Toast.LENGTH_SHORT)
+                                                                                            .show();
+                                                                                    RequestQueue queue = Volley.newRequestQueue(ProfileActivity.this);
+                                                                                    HashMap<String, Object> routineAlarmRequestMap = new HashMap<>();
+                                                                                    routineAlarmRequestMap.put("IPPTUserId", Id);
+                                                                                    routineAlarmRequestMap.put("TimeOfDay", String.valueOf(time));
+
+                                                                                    JSONObject jsonObject = new JSONObject(routineAlarmRequestMap);
+
+                                                                                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                                                                                            "https://watelier.xyz/routine_alarm.php",
+                                                                                            jsonObject, new Response.Listener<JSONObject>() {
+                                                                                        @Override
+                                                                                        public void onResponse(JSONObject response) {
+                                                                                            Log.d("ServerMessage", response.toString());
+                                                                                        }
+                                                                                    }, new Response.ErrorListener() {
+                                                                                        @Override
+                                                                                        public void onErrorResponse(VolleyError error) {
+                                                                                            Log.d("ServerMessage", error.getMessage());
+                                                                                        }
+                                                                                    });
+                                                                                    queue.add(jsonObjectRequest);
+                                                                                }
+                                                                                else {
+                                                                                    Toast.makeText(ProfileActivity.this, "Failed to set time! Please try again.", Toast.LENGTH_SHORT)
+                                                                                            .show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }, 12, 0, true);
+                                                timePickerDialog.show();
+                                            }
+                                        });
                             }
                             else {
                                 Log.v("IPPTUser", "Task not successful::" + pathReference);
                             }
                         }
                     });
-
-            findViewById(R.id.imageView7)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(ProfileActivity.this,
-                                new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                                        int time = hour * 60 + minute;
-                                        IPPTUser.setTime(IPPTUser.getUserDocFromId(EmailAddress),
-                                                time)
-                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        if (task.isSuccessful()) {
-                                                            Toast.makeText(ProfileActivity.this, "Time set!", Toast.LENGTH_SHORT)
-                                                                .show();
-                                                            RequestQueue queue = Volley.newRequestQueue(ProfileActivity.this);
-                                                            HashMap<String, Object> routineAlarmRequestMap = new HashMap<>();
-                                                            routineAlarmRequestMap.put("IPPTUserId", Id);
-                                                            routineAlarmRequestMap.put("TimeOfDay", String.valueOf(time));
-
-                                                            JSONObject jsonObject = new JSONObject(routineAlarmRequestMap);
-
-                                                            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                                                                    "https://watelier.xyz/routine_alarm.php",
-                                                                    jsonObject, new Response.Listener<JSONObject>() {
-                                                                @Override
-                                                                public void onResponse(JSONObject response) {
-                                                                    Log.d("ServerMessage", response.toString());
-                                                                }
-                                                            }, new Response.ErrorListener() {
-                                                                @Override
-                                                                public void onErrorResponse(VolleyError error) {
-                                                                    Log.d("ServerMessage", error.getMessage());
-                                                                }
-                                                            });
-                                                            queue.add(jsonObjectRequest);
-                                                        }
-                                                        else {
-                                                            Toast.makeText(ProfileActivity.this, "Failed to set time! Please try again.", Toast.LENGTH_SHORT)
-                                                                    .show();
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                }, 12, 0, true);
-                        timePickerDialog.show();
-                    }
-                });
         }
         else {
             // missing data in intent or saveInstanceState
