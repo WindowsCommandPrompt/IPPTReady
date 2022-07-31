@@ -84,13 +84,13 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
 
                 // Create Exercise Together Session object and add session to firestore.
                 ExerciseTogetherSession session = new ExerciseTogetherSession("", sessionNameText, selectedExercise, EmailAddress);
+                String qrdetails = session.hostUserID + "&" + session.dateCreated;
+                session.qrString = qrdetails;
                 FirebaseDocChange firebaseDocChange = ExerciseTogetherSession.createNewSession(EmailAddress, session);
                 firebaseDocChange.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-
-                            String qrdetails = session.hostUserID + "&" + session.dateCreated;
                             Log.d("DEBUG", qrdetails);
                             QRCodeWriter qrCodeWriter = new QRCodeWriter();
                             Bitmap bitmap = null;
@@ -112,6 +112,7 @@ public class ExerciseTogetherCreateActivity extends AppCompatActivity implements
                                             bundle.putString("userId", EmailAddress);
                                             bundle.putParcelable("QRImage", finalBitmap);
                                             bundle.putString("QRString", qrdetails);
+                                            bundle.putString("hostUserId", session.hostUserID);
                                             Intent beginSession = new Intent(ExerciseTogetherCreateActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                             TastyToasty.makeText(ExerciseTogetherCreateActivity.this, "Session created!", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
                                             beginSession.putExtras(bundle);

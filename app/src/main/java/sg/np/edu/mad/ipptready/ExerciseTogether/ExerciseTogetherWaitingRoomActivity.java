@@ -79,34 +79,34 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         startExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String exercise = receivedIntent.getStringExtra("exercise");
-
-                Bundle exerciseBundle = new Bundle();
-                exerciseBundle.putString("date", getIntent().getStringExtra("date"));
-                exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
-                exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
-                exerciseBundle.putString("userId", getIntent().getStringExtra("userId"));
-                exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
-                exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
-                exerciseBundle.putString("ExerciseTogetherSession", "yes");
-
-                if (exercise.equals("Push-ups"))
+                String userId = receivedIntent.getStringExtra("userId");
+                String hostUserId = receivedIntent.getStringExtra("hostUserId");
+                String date = receivedIntent.getStringExtra("date");
+                if (!userId.equals(hostUserId))
                 {
-                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, PushupActivity.class);
-                    exerciseIntent.putExtras(exerciseBundle);
-                    startActivity(exerciseIntent);
-                    finish();
+                    ExerciseTogetherSession.getSessionsbyUserID(hostUserId)
+                            .document(date)
+                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                if (documentSnapshot.getData().get("status").equals("Started")) startSession(receivedIntent);
+                                else
+                                {
+                                    TastyToasty.blue(ExerciseTogetherWaitingRoomActivity.this, "Host has not started session!", null).show();
+                                    return;
+                                }
+
+                            }
+                        }
+                    });
                 }
-                else if (exercise.equals("Sit-ups"))
-                {
-                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, SitupActivity.class);
-                    exerciseIntent.putExtras(exerciseBundle);
-                    startActivity(exerciseIntent);
-                    finish();
-                }
+                else startSession(receivedIntent);
+
             }
         });
-
     }
 
     public void updateParticipants(Intent receivedIntent)
@@ -126,6 +126,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful())
                             {
+                                String hostUserName = "";
                                 QuerySnapshot querySnapshot1 = task.getResult();
                                 int completedCount = 0;
                                 for (DocumentSnapshot documentSnapshot : querySnapshot1)
@@ -135,6 +136,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                         if (documentSnapshot.getId().equals(user))
                                         {
                                             names.add((String) documentSnapshot.getData().get("Name"));
+                                            if (documentSnapshot.getId().equals(receivedIntent.getStringExtra("hostUserId"))) hostUserName = (String) documentSnapshot.getData().get("Name");
                                             completedCount++;
                                             break;
                                         }
@@ -149,7 +151,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                 if (!names.isEmpty())
                                 {
                                     // ExerciseTogetherWaitingRoomAdapter initialized
-                                    ExerciseTogetherWaitingRoomAdapter adapter = new ExerciseTogetherWaitingRoomAdapter(names);
+                                    ExerciseTogetherWaitingRoomAdapter adapter = new ExerciseTogetherWaitingRoomAdapter(names, hostUserName, ExerciseTogetherWaitingRoomActivity.this);
 
                                     // RecyclerView
                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ExerciseTogetherWaitingRoomActivity.this);
@@ -199,6 +201,60 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         myCountDown.start();
     }
 
+    private void startSession(Intent receivedIntent)
+    {
+        String exercise = receivedIntent.getStringExtra("exercise");
+        String userId = receivedIntent.getStringExtra("userId");
+        String date = receivedIntent.getStringExtra("date");
+        String qrstring = getIntent().getStringExtra("QRString");
+
+        Bundle exerciseBundle = new Bundle();
+        exerciseBundle.putString("date", date);
+        exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+        exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+        exerciseBundle.putString("userId", userId);
+        exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+        exerciseBundle.putString("QRString", qrstring);
+        exerciseBundle.putString("ExerciseTogetherSession", "yes");
+
+        TastyToasty.makeText(ExerciseTogetherWaitingRoomActivity.this, "Starting Session...", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
+
+        ExerciseTogetherSession.startSession(userId, date)
+                .changeTask
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful())
+                        {
+                            ExerciseTogetherSession.updateJoinStatus(userId, qrstring, "Started")
+                                    .changeTask
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful())
+                                            {
+                                                if (exercise.equals("Push-ups"))
+                                                {
+                                                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, PushupActivity.class);
+                                                    exerciseIntent.putExtras(exerciseBundle);
+                                                    startActivity(exerciseIntent);
+                                                    finish();
+                                                }
+                                                else if (exercise.equals("Sit-ups"))
+                                                {
+                                                    Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, SitupActivity.class);
+                                                    exerciseIntent.putExtras(exerciseBundle);
+                                                    startActivity(exerciseIntent);
+                                                    finish();
+                                                }
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
     private void recreateActivity()
     {
         if (internet.isOnline(ExerciseTogetherWaitingRoomActivity.this)) recreate();
@@ -212,6 +268,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             noConnectBundle.putString("userId", getIntent().getStringExtra("userId"));
             noConnectBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
             noConnectBundle.putString("QRString", getIntent().getStringExtra("QRString"));
+            noConnectBundle.putString("hostUserId", getIntent().getStringExtra("hostUserId"));
             noConnectionIntent.putExtras(noConnectBundle);
             startActivity(noConnectionIntent);
             finish();

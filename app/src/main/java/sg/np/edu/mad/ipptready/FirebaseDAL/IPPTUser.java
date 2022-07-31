@@ -6,6 +6,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,6 +22,7 @@ public class IPPTUser implements Serializable {
     private static final String DOB = "DOB";
     private static final String IMAGE_KEY = "ImageKey";
     private static final String EMAIL_ADDRESS = "EmailAddress";
+    private static final String ROUTINE_TIME = "RoutineTime";
 
     public Date DoB;
     public String Name;
@@ -72,9 +74,6 @@ public class IPPTUser implements Serializable {
                                         String imageKey,
                                         byte[] data) {
 
-        FirebaseDocChange updateUser = new FirebaseDocChange();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         Map<String, Object> updatedUserMap = new HashMap<>();
         updatedUserMap.put(NAME, Name);
         updatedUserMap.put(DOB, Dob);
@@ -93,7 +92,15 @@ public class IPPTUser implements Serializable {
         UploadTask uploadTask = userRef.putBytes(data);
 
 
-        return updateUser.changeTask = userDocRef.set(updatedUserMap);
+        return userDocRef.set(updatedUserMap, SetOptions.merge());
+    }
+
+    public static Task<Void> setTime(DocumentReference userDocRef,
+                                     int Time) {
+        Map<String, Object> updateTimeMap = new HashMap<>();
+        updateTimeMap.put(ROUTINE_TIME, Time);
+
+        return userDocRef.set(updateTimeMap, SetOptions.merge());
     }
 
     public static Task<Void> deleteUser(DocumentReference userDocRef) {

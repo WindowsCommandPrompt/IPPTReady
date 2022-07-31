@@ -19,6 +19,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     public static final String IPPTUSER_COLUMN_ID = "Id";
     public static final String IPPTUSER_COLUMN_NAME = "Name";
     public static final String IPPTUSER_COLUMN_DOB = "DOB";
+    public static final String IPPTUSER_COLUMN_ALARM = "Alarm";
 
     public static final String TABLE_IPPTCYCLE = "IPPTCycle";
     public static final String IPPTCYCLE_COLUMN_IPPTUSER_ID = "IPPTUserId";
@@ -33,7 +34,6 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
     public static final String IPPTROUTINE_COLUMN_DATE_CREATED = "DateCreated";
     public static final String IPPTROUTINE_COLUMN_IPPTSCORE = "IPPTScore";
 
-
     public SQLiteDBHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
@@ -44,7 +44,8 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
                 TABLE_IPPTUSER +
                 "(" + IPPTUSER_COLUMN_ID + " TEXT PRIMARY KEY," +
                 IPPTUSER_COLUMN_NAME + " TEXT," +
-                IPPTUSER_COLUMN_DOB + " INTEGER)";
+                IPPTUSER_COLUMN_DOB + " INTEGER," +
+                IPPTUSER_COLUMN_ALARM + " INTEGER)";
 
         String CREATE_IPPTCYCLE_TABLE = "CREATE TABLE " +
                 TABLE_IPPTCYCLE +
@@ -80,6 +81,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
         values.put(IPPTUSER_COLUMN_ID, user.Id);
         values.put(IPPTUSER_COLUMN_NAME, user.Name);
         values.put(IPPTUSER_COLUMN_DOB, user.DoB.getTime());
+        values.put(IPPTUSER_COLUMN_ALARM, user.Alarm);
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.insert(TABLE_IPPTUSER, null, values);
@@ -98,6 +100,7 @@ public class SQLiteDBHandler extends SQLiteOpenHelper {
             ipptUser.Id  = Id;
             ipptUser.Name = cursor.getString(1);
             ipptUser.DoB = new Date(cursor.getInt(2));
+            ipptUser.Alarm = cursor.getInt(3);
             cursor.close();
         }
         else {

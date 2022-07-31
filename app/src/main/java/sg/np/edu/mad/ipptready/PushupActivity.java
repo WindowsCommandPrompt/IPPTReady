@@ -57,6 +57,7 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
             {
                 ExerciseTogether = true;
                 targetNumberOfPushUpsTextView.setVisibility(View.GONE);
+                findViewById(R.id.textViewIdentifier).setVisibility(View.GONE);
             }
         }
         catch (Exception e) {
