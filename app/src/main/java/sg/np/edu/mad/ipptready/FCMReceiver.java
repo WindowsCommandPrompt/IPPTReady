@@ -68,7 +68,9 @@ public class FCMReceiver extends FirebaseMessagingService {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() +
+                (calendar.getTimeInMillis() < System.currentTimeMillis() ? INTERVAL_DAY :
+                        0), pendingIntent);
     }
 
     private void removeAlarm() {
