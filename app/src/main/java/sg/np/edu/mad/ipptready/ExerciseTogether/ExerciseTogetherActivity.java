@@ -26,19 +26,26 @@ import sg.np.edu.mad.ipptready.InternetConnectivity.Internet;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherActivity extends AppCompatActivity {
-    boolean uncompletedSessionFlag;
-    List<DocumentSnapshot> documents;
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
+    boolean uncompletedSessionFlag; // Flag if user has an uncompleted session
+    List<DocumentSnapshot> documents; // Store documents of user sessions
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together);
 
+        // Internet object
         Internet internet = new Internet();
 
+        // Get Intent
         Intent homeIntent = getIntent();
         String userId = homeIntent.getStringExtra("userId");
 
+        // If there is no Internet connection, show a no connection alert.
+        // If there is an Internet connection, get user sessions from Firestore
         uncompletedSessionFlag = false;
         if (!internet.isOnline(this)){
             internet.noConnectionAlert(this);
@@ -62,6 +69,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                     });
         }
 
+        // Creating a new Exercise Together Session
         Button createBtn = findViewById(R.id.createExTgtSession);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +80,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             }
         });
 
+        // Joining an Exercise Together Session
         Button joinBtn = findViewById(R.id.joinExTgtSession);
         joinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +91,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             }
         });
 
+        // Return to home activity
         Button returnBtn = findViewById(R.id.backtoHomefromExTgt);
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +101,8 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
         });
     }
 
+    // This will check the status of all the session documents (obtained from Firestore)
+    // If session checked is marked as not completed or has not started, alert dialog will appear, informing the user about the abrupt leaving of session
     private void checkSessionCompletion()
     {
         Log.d("DocumentSize", String.valueOf(documents.size()));
@@ -102,6 +114,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             String sessionName = (String) ds.getData().get("sessionName");
             if (!status.equals("Completed") && !status.equals("Started") && !status.equals("Left"))
             {
+                // Set the status of uncompleted sessions as "Left"
                 ExerciseTogetherSession.updateIndividualJoinStatus(ds.getReference(), "Left")
                         .changeTask
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -119,6 +132,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                                    // After checking the document, remove the document from the list.
                                                     documents.remove(0);
                                                     checkSessionCompletion();
                                                 }
@@ -131,6 +145,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             }
             else
             {
+                // After checking the document, remove the document from the list.
                 documents.remove(0);
                 checkSessionCompletion();
             }

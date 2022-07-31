@@ -36,6 +36,9 @@ import sg.np.edu.mad.ipptready.LoginActivity;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherJoinActivity extends AppCompatActivity {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private Button qrCodeFoundButton;
     private String qrCode;
@@ -50,13 +53,14 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_join);
 
-        SensorManager manager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
+        // Scan Button to scan QR Code is hidden when camera not directed at a QR Code
+        // When Scan button is clicked, device vibrates and user is led to joining process activity (to process the QR Code)
         qrCodeFoundButton = findViewById(R.id.qrCodeFoundButton);
         qrCodeFoundButton.setVisibility(View.INVISIBLE);
         qrCodeFoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Vibrate when QR Code is scanned
                 final VibrationEffect vibrationEffect1;
                 vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -66,6 +70,7 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
                     vibrator.vibrate(vibrationEffect1);
                 }
 
+                // Intent to Joining Process activity
                 Intent joinIntent = new Intent(ExerciseTogetherJoinActivity.this, ExerciseTogetherJoiningProcessActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("userId", getIntent().getStringExtra("userId"));
@@ -78,12 +83,14 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
             }
         });
 
+        // Get Preview View and set up ProcessCameraProvider
         cameraPreviewView = findViewById(R.id.previewCameraJoinSession);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
         requestCamera();
     }
 
+    // Get user's permission to enable camera
     private void requestCamera() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera();
@@ -92,13 +99,16 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
         }
     }
 
+    // Get Permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            // Start camera if permission is granted
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 startCamera();
             } else {
+                // Display toast message if permission not granted.
                 TastyToasty.error(this, "Camera Permission Denied").show();
             }
         }
@@ -118,19 +128,22 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
     private void bindCameraPreview(@NonNull ProcessCameraProvider cameraProvider) {
         cameraPreviewView.setPreferredImplementationMode(PreviewView.ImplementationMode.SURFACE_VIEW);
 
+        // Set Surface Provider (Use case receives data from camera)
         Preview preview = new Preview.Builder().build();
+        preview.setSurfaceProvider(cameraPreviewView.createSurfaceProvider());
 
+        // Select camera (set camera requirements)
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
 
-        preview.setSurfaceProvider(cameraPreviewView.createSurfaceProvider());
-
+        // Analyse the QR Code on the screen
         ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                 .setTargetResolution(new Size(1280, 720))
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
+        // If QR Code is found, set scan QR code button to visible for a few seconds
         imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), new QRCodeImageAnalyzer(new QRCodeFoundListener() {
             @Override
             public void onQRCodeFound(String _qrCode) {
@@ -143,15 +156,18 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
                 }
             }
 
+            // Set scan QR code button to invisible after countdown ends
             @Override
             public void qrCodeNotFound() {
                 if (!countdownExecuted) qrCodeFoundButton.setVisibility(View.INVISIBLE);
             }
         }));
 
+        // Binds use case to LifecycleOwner
         Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, imageAnalysis, preview);
     }
 
+    // Countdown for scan qr button to be visible
     private void countDownTimer(){
         myCountDown = new CountDownTimer(2500, 1000) {
             @Override
