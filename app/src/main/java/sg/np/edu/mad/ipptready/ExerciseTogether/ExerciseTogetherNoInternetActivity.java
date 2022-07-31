@@ -59,7 +59,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                     {
                                         DocumentSnapshot document = task.getResult();
                                         String status = (String) document.getData().get("status");
-                                        if (status.equals("Created"))
+                                        if (!status.equals("Started") && !status.equals("Completed"))
                                         {
                                             Bundle bundle = new Bundle();
                                             bundle.putString("date", getIntent().getStringExtra("date"));
@@ -68,6 +68,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                             bundle.putString("userId", getIntent().getStringExtra("userId"));
                                             bundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
                                             bundle.putString("QRString", getIntent().getStringExtra("QRString"));
+                                            bundle.putString("hostUserId", getIntent().getStringExtra("hostUserId"));
 
                                             Intent beginSession = new Intent(ExerciseTogetherNoInternetActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                             beginSession.putExtras(bundle);

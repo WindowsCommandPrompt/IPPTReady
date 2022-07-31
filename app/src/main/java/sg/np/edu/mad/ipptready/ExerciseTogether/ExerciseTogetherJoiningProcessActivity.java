@@ -99,13 +99,13 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                         {
                                             if (!finalHostUserId.equals(userId)) {
                                                 ExerciseTogetherSession session = new ExerciseTogetherSession(finalDateCreated, sessionName, exercise, finalHostUserId);
+                                                String qrdetails = session.hostUserID + "&" + session.dateCreated;
+                                                session.qrString = qrdetails;
                                                 FirebaseDocChange firebaseDocChange = ExerciseTogetherSession.createNewSession(userId, session);
                                                 firebaseDocChange.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         if (task.isSuccessful()) {
-
-                                                            String qrdetails = session.hostUserID + "&" + session.dateCreated;
                                                             Log.d("DEBUG", qrdetails);
                                                             QRCodeWriter qrCodeWriter = new QRCodeWriter();
                                                             Bitmap bitmap = null;
@@ -128,6 +128,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                                             bundle.putString("userId", userId);
                                                                             bundle.putParcelable("QRImage", finalBitmap);
                                                                             bundle.putString("QRString", qrdetails);
+                                                                            bundle.putString("hostUserId", session.hostUserID);
                                                                             Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                                                             TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + session.sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
                                                                             beginSession.putExtras(bundle);
@@ -184,6 +185,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                                                 bundle.putString("userId", userId);
                                                                 bundle.putParcelable("QRImage", finalBitmap);
                                                                 bundle.putString("QRString", qrdetails);
+                                                                bundle.putString("hostUserId", userId);
                                                                 Intent beginSession = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherWaitingRoomActivity.class);
                                                                 TastyToasty.makeText(ExerciseTogetherJoiningProcessActivity.this, "Joined Session: " + sessionName, TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
                                                                 beginSession.putExtras(bundle);

@@ -37,9 +37,6 @@
             android:name=".ExerciseTogether.ExerciseTogetherResultsActivity"
             android:exported="false" />
         <activity
-            android:name=".ExerciseTogether.ExerciseTogetherPushupActivity"
-            android:exported="false" />
-        <activity
             android:name=".AutoPushupActivity"
             android:exported="false" />
         <activity

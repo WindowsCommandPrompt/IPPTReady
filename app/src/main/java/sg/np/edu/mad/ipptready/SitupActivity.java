@@ -55,6 +55,7 @@ public class SitupActivity extends AppCompatActivity {
             {
                 ExerciseTogether = true;
                 targetSitupsTextView.setVisibility(View.GONE);
+                findViewById(R.id.textViewsituptarget).setVisibility(View.GONE);
             }
         }
         catch (Exception e) {
