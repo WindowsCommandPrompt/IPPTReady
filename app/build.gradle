@@ -37,6 +37,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
     def lottieVersion = "5.2.0"
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation "com.airbnb.android:lottie:$lottieVersion"
