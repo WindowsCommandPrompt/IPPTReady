@@ -270,13 +270,6 @@ public class RecordActivity extends AppCompatActivity {
                 });
     }
 
-    private void removeAlarm() {
-        Intent routineAlertIntent = new Intent(this, RoutineAlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, routineAlertIntent, 0);
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        manager.cancel(pendingIntent);
-    }
-
     // formats the seconds to a nice string for display
     private String SecondstoString(int seconds) {
         if (seconds == 0) {
