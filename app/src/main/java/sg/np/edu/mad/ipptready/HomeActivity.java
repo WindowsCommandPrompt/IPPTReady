@@ -1,5 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     public String EmailAddress;
     public IPPTUser user;
     public String Id;
+    ActivityResultLauncher<Intent> homeActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,8 @@ public class HomeActivity extends AppCompatActivity {
                     ProfileIntent.putExtra("Email", EmailAddress);
                     ProfileIntent.putExtra("User", user);
                     ProfileIntent.putExtra("Id", Id);
-                    startActivity(ProfileIntent);
+                    
+                    homeActivityResultLauncher.launch(ProfileIntent);
                 }};
             findViewById(R.id.cardHomeWelcome).setOnClickListener(profileActivityOCL);
             findViewById(R.id.profileButton).setOnClickListener(profileActivityOCL);
@@ -125,6 +129,8 @@ public class HomeActivity extends AppCompatActivity {
                 alert.create().show();
             }
         });
+        homeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                (result) -> { recreate(); });
     }
 
     private void signOut() {
@@ -150,5 +156,13 @@ public class HomeActivity extends AppCompatActivity {
         outState.putString("Id", Id);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != homeActivityResultLauncher) {
+            homeActivityResultLauncher.unregister();
+        }
+        super.onDestroy();
     }
 }
