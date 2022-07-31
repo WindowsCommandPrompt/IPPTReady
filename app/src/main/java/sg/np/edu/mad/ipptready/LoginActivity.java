@@ -120,8 +120,11 @@ public class LoginActivity extends AppCompatActivity {
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                     updateUI(task.getResult());
                 }
+                else
+                {
+                    internet.noConnectionAlert(this);
+                }
             }
-            if (!result.isSuccess() || loginSuccess == false) internet.noConnectionAlert(this);
         }
     }
 
