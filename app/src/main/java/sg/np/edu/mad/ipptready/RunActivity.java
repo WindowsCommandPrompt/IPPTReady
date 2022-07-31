@@ -28,6 +28,11 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,7 +45,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RunActivity extends AppCompatActivity implements LocationListener {
+public class RunActivity extends AppCompatActivity implements LocationListener, OnMapReadyCallback {
 
     CountDownTimer mainStopwatch;
 
@@ -58,21 +63,21 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
     public void onBackPressed()  {
         AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
         confirmQuit
-                .setTitle("Confirm end cycle?")
-                .setMessage("Are you sure you want to terminate the current run routine? Do note that your progress will not be saved.")
-                .setPositiveButton(
-                        "YES",
-                        (DialogInterface di, int i) -> {
-                            super.onBackPressed(); //Quits the current activity
-                        }
-                )
-                .setNegativeButton(
-                        "NO",
-                        (DialogInterface di, int i) -> {
-                            di.dismiss();
-                        }
-                )
-                .setCancelable(false);
+            .setTitle("Confirm end cycle?")
+            .setMessage("Are you sure you want to terminate the current run routine? Do note that your progress will not be saved.")
+            .setPositiveButton(
+                "YES",
+                (DialogInterface di, int i) -> {
+                    super.onBackPressed(); //Quits the current activity
+                }
+            )
+            .setNegativeButton(
+                "NO",
+                (DialogInterface di, int i) -> {
+                    di.dismiss();
+                }
+            )
+            .setCancelable(false);
         confirmQuit.create().show();
     }
 
@@ -272,27 +277,27 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         Run.put("TimeTakenFinished", totalSeconds);
 
         db.collection("IPPTUser")
-                .document(EmailAddress)
-                .collection("IPPTCycle")
-                .document(IPPTCycleId)
-                .collection("IPPTRoutine")
-                .document(IPPTRoutineId)
-                .collection("IPPTRecord")
-                .document("RunRecord")
-                .set(Run)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(RunActivity.this, "Run timing recorded!", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(RunActivity.this, "Error recording run timing", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnCompleteListener(onCompleteVoidListener);
+            .document(EmailAddress)
+            .collection("IPPTCycle")
+            .document(IPPTCycleId)
+            .collection("IPPTRoutine")
+            .document(IPPTRoutineId)
+            .collection("IPPTRecord")
+            .document("RunRecord")
+            .set(Run)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(RunActivity.this, "Run timing recorded!", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(RunActivity.this, "Error recording run timing", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .addOnCompleteListener(onCompleteVoidListener);
     }
 
 
@@ -350,16 +355,15 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         }
     }
 
-    private class Convert {
-        public void ToSexagesimals(String bearing){
-
-        }
+    public static void ToSexagesimals(String bearing){
+        //This method will be responsible for converting the
     }
 
     @Override
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
         super.onMultiWindowModeChanged(isInMultiWindowMode);
         //Temporarily stop the timer when the user is in multitask mode
+
     }
 
     @Override
@@ -476,5 +480,16 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         }
     }
 
-    //This is the thing is able to
+    private GoogleMap mMap;
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng singapore = new LatLng(1.3521, 103.8198);
+
+        mMap.addMarker(new MarkerOptions().position(singapore).title("Marker in Singapore"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(singapore));
+    }
 }

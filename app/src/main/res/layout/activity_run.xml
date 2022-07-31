@@ -27,7 +27,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
+                <!--Insert an overlay message into the run activity to serve as a mapview IDK-->
+                <!--This fragment will be responsible for rendering and displaying the google maps-->
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="1100px"
+                    android:id = "@+id/googleMapFragment"
+                    android:layout_alignParentBottom="true"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
