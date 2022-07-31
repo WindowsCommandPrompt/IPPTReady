@@ -74,6 +74,21 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                             startActivity(beginSession);
                                             finish();
                                         }
+                                        else if (status.equals("Completed"))
+                                        {
+                                            Intent noConnectionIntent = new Intent(ExerciseTogetherNoInternetActivity.this, ExerciseTogetherResultsActivity.class);
+                                            Bundle exerciseBundle = new Bundle();
+                                            exerciseBundle.putString("date", getIntent().getStringExtra("date"));
+                                            exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+                                            exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+                                            exerciseBundle.putString("userId", getIntent().getStringExtra("userId"));
+                                            exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+                                            exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
+                                            exerciseBundle.putString("ExerciseTogetherSession", "yes");
+                                            noConnectionIntent.putExtras(exerciseBundle);
+                                            startActivity(noConnectionIntent);
+                                            finish();
+                                        }
                                     }
                                 }
                             });

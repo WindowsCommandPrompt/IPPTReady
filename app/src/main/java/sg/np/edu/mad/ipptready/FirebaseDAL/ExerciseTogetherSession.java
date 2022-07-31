@@ -88,4 +88,30 @@ public class ExerciseTogetherSession {
         updateTheJoinStatus.changeTask = updateTheJoinStatus.documentReference.set(updateJoinSessionMap, SetOptions.merge());
         return updateTheJoinStatus;
     }
+
+    public static FirebaseDocChange updateUserSessionComplete(String userid, String date, int score)
+    {
+        FirebaseDocChange updateUserSessionComplete = new FirebaseDocChange();
+        updateUserSessionComplete.documentReference = getSessionsbyUserID(userid).document(date);
+        Map<String, Object> updateUserMap = new HashMap<>();
+        updateUserMap.put("score", score);
+        updateUserMap.put("status", "Completed");
+
+        updateUserSessionComplete.changeTask = updateUserSessionComplete.documentReference.set(updateUserMap, SetOptions.merge());
+        return updateUserSessionComplete;
+    }
+
+    public static FirebaseDocChange recordScore(String userid, String qrCode, int score)
+    {
+        FirebaseDocChange recordScore = new FirebaseDocChange();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        recordScore.documentReference = db.collection("Exercise Together").document(qrCode).collection("Users").document(userid);
+
+        Map<String, Object> recordScoreMap = new HashMap<>();
+        recordScoreMap.put("score", String.valueOf(score));
+        recordScoreMap.put("status", "Completed");
+
+        recordScore.changeTask = recordScore.documentReference.set(recordScoreMap, SetOptions.merge());
+        return recordScore;
+    }
 }

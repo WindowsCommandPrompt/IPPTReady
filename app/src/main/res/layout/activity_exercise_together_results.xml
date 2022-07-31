@@ -7,29 +7,42 @@
     tools:context=".ExerciseTogether.ExerciseTogetherResultsActivity">
 
 
+    <ImageButton
+        android:id="@+id/leaveResultsRoomBtn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:background="@drawable/navbuttonred"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ExTgtResultsRecyclerView"
+        app:srcCompat="@drawable/logout" />
+
     <TextView
-        android:id="@+id/ExTgtResultsTextView"
+        android:id="@+id/ExerciseTogetherResultsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="@font/carter_one"
         android:text="Results"
         android:textColor="@color/black"
         android:textSize="40dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ExTgtResultsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="448dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="145dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ExTgtResultsTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/ExerciseTogetherResultsTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

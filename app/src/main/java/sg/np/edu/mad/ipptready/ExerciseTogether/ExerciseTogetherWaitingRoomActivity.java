@@ -42,7 +42,6 @@ import sg.np.edu.mad.ipptready.VideoActivity;
 import sg.np.edu.mad.ipptready.VideoAdapter;
 
 public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
-    Intent noInternetIntent = new Intent();
     Internet internet;
     CountDownTimer myCountDown;
     int secondsLeft;
@@ -95,11 +94,15 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                 {
                     Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, PushupActivity.class);
                     exerciseIntent.putExtras(exerciseBundle);
+                    startActivity(exerciseIntent);
+                    finish();
                 }
                 else if (exercise.equals("Sit-ups"))
                 {
                     Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, SitupActivity.class);
                     exerciseIntent.putExtras(exerciseBundle);
+                    startActivity(exerciseIntent);
+                    finish();
                 }
             }
         });
