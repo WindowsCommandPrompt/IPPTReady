@@ -95,7 +95,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                                         sessionName = (String) documentSnapshot.getData().get("sessionName");
                                         status = (String) documentSnapshot.getData().get("status");
 
-                                        if (status.equals("Created"))
+                                        if (!status.equals("Started") && !status.equals("Completed"))
                                         {
                                             if (!finalHostUserId.equals(userId)) {
                                                 ExerciseTogetherSession session = new ExerciseTogetherSession(finalDateCreated, sessionName, exercise, finalHostUserId);

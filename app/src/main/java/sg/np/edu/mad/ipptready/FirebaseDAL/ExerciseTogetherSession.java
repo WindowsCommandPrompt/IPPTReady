@@ -18,7 +18,7 @@ public class ExerciseTogetherSession {
     public String dateJoined;
     public String sessionName;
     public String exercise;
-    public String status = "Created";
+    public String status = "Joined";
     public String hostUserID;
     public String qrString;
 

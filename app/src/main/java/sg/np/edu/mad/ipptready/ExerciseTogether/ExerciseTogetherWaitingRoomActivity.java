@@ -48,6 +48,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
     TextView secondsLeftTextView;
     ArrayList<String> userIds = new ArrayList<>();
     ArrayList<String> names = new ArrayList<>();
+    boolean started = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +66,6 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             QRCode.setVisibility(View.GONE);
         }
 
-        updateParticipants(receivedIntent);
-
         ImageButton leaveRoomBtn = findViewById(R.id.leaveWaitingRoomButton);
         leaveRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,13 +74,14 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             }
         });
 
+        String userId = receivedIntent.getStringExtra("userId");
+        String hostUserId = receivedIntent.getStringExtra("hostUserId");
+        String date = receivedIntent.getStringExtra("date");
+
         Button startExerciseBtn = findViewById(R.id.startExerciseExTgt);
         startExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userId = receivedIntent.getStringExtra("userId");
-                String hostUserId = receivedIntent.getStringExtra("hostUserId");
-                String date = receivedIntent.getStringExtra("date");
                 if (!userId.equals(hostUserId))
                 {
                     ExerciseTogetherSession.getSessionsbyUserID(hostUserId)
@@ -104,12 +104,26 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                     });
                 }
                 else startSession(receivedIntent);
+            }
+        });
 
+        ExerciseTogetherSession.getSessionsbyUserID(hostUserId)
+                .document(date)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful())
+                {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    if (documentSnapshot.getData().get("status").equals("Started")) started = true;
+                    else started = false;
+                    updateParticipants(receivedIntent, started);
+                }
             }
         });
     }
 
-    public void updateParticipants(Intent receivedIntent)
+    public void updateParticipants(Intent receivedIntent, boolean started)
     {
         ExerciseTogetherSession.getCurrentSessionParticipants(receivedIntent.getStringExtra("QRString")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -119,7 +133,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                     QuerySnapshot querySnapshot = task.getResult();
                     for (DocumentSnapshot documentSnapshot : querySnapshot)
                     {
-                        if(documentSnapshot.getData().get("status").equals("Joined")) userIds.add(documentSnapshot.getId().toString());
+                        if(!documentSnapshot.getData().get("status").equals("Left")) userIds.add(documentSnapshot.getId().toString());
                     }
                     IPPTUser.getUsersCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -151,7 +165,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                 if (!names.isEmpty())
                                 {
                                     // ExerciseTogetherWaitingRoomAdapter initialized
-                                    ExerciseTogetherWaitingRoomAdapter adapter = new ExerciseTogetherWaitingRoomAdapter(names, hostUserName, ExerciseTogetherWaitingRoomActivity.this);
+                                    ExerciseTogetherWaitingRoomAdapter adapter = new ExerciseTogetherWaitingRoomAdapter(names, hostUserName, started, ExerciseTogetherWaitingRoomActivity.this);
 
                                     // RecyclerView
                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ExerciseTogetherWaitingRoomActivity.this);

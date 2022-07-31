@@ -1,5 +1,7 @@
 package sg.np.edu.mad.ipptready.ExerciseTogether;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
     // Global variables
     boolean uncompletedSessionFlag; // Flag if user has an uncompleted session
     List<DocumentSnapshot> documents; // Store documents of user sessions
+    ActivityResultLauncher<Intent> ExTgtActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
         // Get Intent
         Intent homeIntent = getIntent();
         String userId = homeIntent.getStringExtra("userId");
+
+        // Recreate activity after coming back here from an activity
+        ExTgtActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), (result) -> { recreate(); });
 
         // If there is no Internet connection, show a no connection alert.
         // If there is an Internet connection, get user sessions from Firestore
@@ -76,7 +82,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent createIntent = new Intent(ExerciseTogetherActivity.this, ExerciseTogetherCreateActivity.class);
                 createIntent.putExtra("userId", userId);
-                startActivity(createIntent);
+                ExTgtActivityResultLauncher.launch(createIntent);
             }
         });
 
@@ -87,7 +93,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent joinIntent = new Intent(ExerciseTogetherActivity.this, ExerciseTogetherJoinActivity.class);
                 joinIntent.putExtra("userId", userId);
-                startActivity(joinIntent);
+                ExTgtActivityResultLauncher.launch(joinIntent);
             }
         });
 
@@ -126,7 +132,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                                     Context ctx = ExerciseTogetherActivity.this;
                                     AlertDialog.Builder alertNoComplete = new AlertDialog.Builder(ctx);
                                     alertNoComplete
-                                            .setTitle("Uncompleted Session Tracked: " + sessionName)
+                                            .setTitle("Left Session: " + sessionName)
                                             .setMessage("You have left a session that has not been started or completed.")
                                             .setCancelable(false)
                                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -150,5 +156,13 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                 checkSessionCompletion();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != ExTgtActivityResultLauncher) {
+            ExTgtActivityResultLauncher.unregister();
+        }
+        super.onDestroy();
     }
 }
