@@ -32,10 +32,10 @@ public class FCMReceiver extends FirebaseMessagingService {
         int hour = time/60;
         int minute = (time -60*hour)%60;
         removeAlarm();
-        setAlarm(hour, minute);
+        setAlarm(this, hour, minute);
 
         setNotification(this, "IPPTReady", "Routine Alarm set to go off at " +
-                        String.format("02%d:%02d", hour, minute));
+                        String.format("%02d:%02d", hour, minute));
     }
 
     public static void setNotification(Context context,
@@ -56,13 +56,13 @@ public class FCMReceiver extends FirebaseMessagingService {
         notificationManager.notify(100, notificationBuilder.build());
     }
 
-    private void setAlarm(int hour, int minute) {
-        Intent routineAlertIntent = new Intent(this, RoutineAlertReceiver.class);
+    public static void setAlarm(Context context ,int hour, int minute) {
+        Intent routineAlertIntent = new Intent(context, RoutineAlertReceiver.class);
         routineAlertIntent.putExtra("hour", hour);
         routineAlertIntent.putExtra("minute", minute);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 400, routineAlertIntent, PendingIntent.FLAG_IMMUTABLE);
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 400, routineAlertIntent, PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);

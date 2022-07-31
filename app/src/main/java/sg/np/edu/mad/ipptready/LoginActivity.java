@@ -57,6 +57,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
@@ -156,13 +157,48 @@ public class LoginActivity extends AppCompatActivity {
 
                                 JSONObject jsonObject = new JSONObject(RequestMap);
                                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                                        "http://watelier.xyz/register_device.php",
+                                        "https://watelier.xyz/register_device.php",
                                         jsonObject, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         try {
+                                            boolean getTime = false;
                                             if (response.getString("Response").equals("Failure"))
                                                 Log.d("ServerResponse", response.getString("ErrorMessage"));
+                                            else
+                                                getTime = response.getBoolean("isFirstTime");
+
+                                            IPPTUser.getUserFromEmail(personEmail)
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful())
+                                                            {
+                                                                DocumentSnapshot documentSnapshot = task.getResult();
+                                                                Map<String, Object> data =documentSnapshot.getData();
+                                                                long time = data.containsKey("RoutineTime")? (long) data.get("RoutineTime") :
+                                                                        -1L;
+                                                                if (-1L != time) {
+                                                                    int hour = (int) (time/60);
+                                                                    FCMReceiver.setAlarm(LoginActivity.this, hour,
+                                                                            (int)(time - 60*hour));
+                                                                    FCMReceiver.setNotification(LoginActivity.this, "IPPTReady",
+                                                                            "Alarm set!");
+                                                                }
+
+                                                                if (documentSnapshot.exists()) {
+                                                                    goToHomePage(documentSnapshot, account.getId());
+                                                                }
+                                                                else {
+                                                                    createAccount(personEmail, personName);
+                                                                }
+                                                            }
+                                                            else {
+                                                                Toast.makeText(LoginActivity.this, "An error occured, please try again.",
+                                                                        Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -175,30 +211,10 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                                 queue.add(jsonObjectRequest);
-
-                                IPPTUser.getUserFromEmail(personEmail)
-                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                if (task.isSuccessful())
-                                                {
-                                                    DocumentSnapshot documentSnapshot = task.getResult();
-                                                    if (documentSnapshot.exists()) {
-                                                        goToHomePage(documentSnapshot, account.getId());
-                                                    }
-                                                    else {
-                                                        createAccount(personEmail, personName);
-                                                    }
-                                                }
-                                                else {
-                                                    Toast.makeText(LoginActivity.this, "An error occured, please try again.",
-                                                            Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
                             }
                             else {
-
+                                Toast.makeText(LoginActivity.this, "An Error occured. Please try again!", Toast.LENGTH_SHORT)
+                                        .show();
                             }
                         }
                     });

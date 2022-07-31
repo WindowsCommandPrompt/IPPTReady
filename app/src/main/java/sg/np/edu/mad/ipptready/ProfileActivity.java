@@ -308,7 +308,7 @@ public class ProfileActivity extends AppCompatActivity {
                                                             JSONObject jsonObject = new JSONObject(routineAlarmRequestMap);
 
                                                             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                                                                    "http://watelier.xyz/routine_alarm.php",
+                                                                    "https://watelier.xyz/routine_alarm.php",
                                                                     jsonObject, new Response.Listener<JSONObject>() {
                                                                 @Override
                                                                 public void onResponse(JSONObject response) {
