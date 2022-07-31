@@ -118,6 +118,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             DocumentSnapshot ds = documents.get(0);
             String status = (String) ds.getData().get("status");
             String sessionName = (String) ds.getData().get("sessionName");
+            String qrString = (String) ds.getData().get("qrString");
             if (!status.equals("Completed") && !status.equals("Started") && !status.equals("Left"))
             {
                 // Set the status of uncompleted sessions as "Left"
@@ -128,22 +129,29 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful())
                                 {
-                                    Log.d("Success3", "I am successful!");
-                                    Context ctx = ExerciseTogetherActivity.this;
-                                    AlertDialog.Builder alertNoComplete = new AlertDialog.Builder(ctx);
-                                    alertNoComplete
-                                            .setTitle("Left Session: " + sessionName)
-                                            .setMessage("You have left a session that has not been started or completed.")
-                                            .setCancelable(false)
-                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    ExerciseTogetherSession.updateJoinStatus(getIntent().getStringExtra("userId"), qrString, "Left")
+                                            .changeTask
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    // After checking the document, remove the document from the list.
-                                                    documents.remove(0);
-                                                    checkSessionCompletion();
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Log.d("Success3", "I am successful!");
+                                                    Context ctx = ExerciseTogetherActivity.this;
+                                                    AlertDialog.Builder alertNoComplete = new AlertDialog.Builder(ctx);
+                                                    alertNoComplete
+                                                            .setTitle("Left Session: " + sessionName)
+                                                            .setMessage("You have left a session that has not been started or completed.")
+                                                            .setCancelable(false)
+                                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                                    // After checking the document, remove the document from the list.
+                                                                    documents.remove(0);
+                                                                    checkSessionCompletion();
+                                                                }
+                                                            });
+                                                    alertNoComplete.create().show();
                                                 }
                                             });
-                                    alertNoComplete.create().show();
                                 }
                                 else Log.d("Fail2", "I am a failure!");
                             }

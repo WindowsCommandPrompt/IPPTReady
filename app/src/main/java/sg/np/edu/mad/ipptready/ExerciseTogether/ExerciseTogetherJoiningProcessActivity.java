@@ -263,7 +263,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
                     // If no internet, show alert and bring user back to ExerciseTogetherJoinActivity
                     internet.noConnectionAlert(ExerciseTogetherJoiningProcessActivity.this);
                     Log.d("joinfail6", "I failed!");
-                    Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherJoinActivity.class);
+                    Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherActivity.class);
                     failedIntent.putExtra("userId", userId);
                     startActivity(failedIntent);
                     finish();
@@ -273,7 +273,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
             {
                 // If qr code is empty
                 Log.d("joinfail7", "I failed!");
-                Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherJoinActivity.class);
+                Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherActivity.class);
                 failedIntent.putExtra("userId", userId);
                 startActivity(failedIntent);
                 finish();
@@ -283,7 +283,7 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
         {
             // if reading Qr code leads to error
             TastyToasty.error(ExerciseTogetherJoiningProcessActivity.this, "QR Code cannot be used in IPPTReady").show();
-            Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherJoinActivity.class);
+            Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherActivity.class);
             failedIntent.putExtra("userId", userId);
             startActivity(failedIntent);
             finish();
@@ -302,17 +302,6 @@ public class ExerciseTogetherJoiningProcessActivity extends AppCompatActivity {
             }
         }
         return bitmap;
-    }
-
-    // User should not leave during the joining process...
-    @Override
-    protected void onPause()
-    {
-        Intent failedIntent = new Intent(ExerciseTogetherJoiningProcessActivity.this, ExerciseTogetherJoinActivity.class);
-        failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));
-        startActivity(failedIntent);
-        finish();
-        super.onPause();
     }
 
 }
