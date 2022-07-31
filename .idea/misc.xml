@@ -17,6 +17,8 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout-land/activity_routine.xml" value="0.2635416666666667" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.4" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_create_account.xml" value="0.1" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle.xml" value="0.2" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_cycle_recycleview.xml" value="0.19537037037037036" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_detailed_information.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_exercise_together.xml" value="0.264" />
@@ -32,7 +34,7 @@
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_pushup.xml" value="0.2" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_pushuptarget.xml" value="0.25416666666666665" />
-        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.264" />
+        <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_record.xml" value="0.4" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_routine.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_situp.xml" value="0.264" />
         <entry key="..\:/MADPracticals/IPPTReady/app/src/main/res/layout/activity_video.xml" value="0.2" />

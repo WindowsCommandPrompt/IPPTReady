@@ -14,7 +14,7 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/carter_one"
         android:text="Previous Routines"
-        android:textColor="@color/design_default_color_primary"
+        android:textColor="@color/greendark2"
         android:textSize="28dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
