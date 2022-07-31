@@ -48,6 +48,7 @@ public class QRCodeImageAnalyzer implements ImageAnalysis.Analyzer {
 
             BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
 
+            // Decode the QR Code
             try {
                 Result result = new QRCodeMultiReader().decode(binaryBitmap);
                 listener.onQRCodeFound(result.getText());
