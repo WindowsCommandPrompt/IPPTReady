@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherWaitingRoomActiv
 import sg.np.edu.mad.ipptready.InternetConnectivity.Internet;
 
 public class NavFragment extends Fragment {
+    ActivityResultLauncher<Intent> homeActivityResultLauncher;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -24,6 +27,9 @@ public class NavFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nav, container, false);
         Context ctx = view.getContext();
         Internet internet = new Internet();
+
+        homeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                (result) -> { getActivity().recreate(); });
 
         // Onclicklistener for Cycle feature
         view.findViewById(R.id.cycleButtonNav).setOnClickListener(new View.OnClickListener() {
@@ -35,7 +41,7 @@ public class NavFragment extends Fragment {
 
                     CycleIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
                     CycleIntent.putExtra("DOB", ((HomeActivity)getActivity()).user.DoB);
-                    startActivity(CycleIntent);
+                    homeActivityResultLauncher.launch(CycleIntent);
                 }
                 else internet.noConnectionAlert(ctx);
             }
@@ -48,7 +54,7 @@ public class NavFragment extends Fragment {
                 if (internet.isOnline(ctx))
                 {
                     Intent VideoIntent = new Intent(getActivity(), VideoActivity.class);
-                    startActivity(VideoIntent);
+                    homeActivityResultLauncher.launch(VideoIntent);
                 }
                 else internet.noConnectionAlert(ctx);
             }
@@ -59,7 +65,7 @@ public class NavFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent InformationIntent = new Intent(getActivity(), InformationActivity.class);
-                startActivity(InformationIntent);
+                homeActivityResultLauncher.launch(InformationIntent);
             }
         });
 
@@ -71,7 +77,7 @@ public class NavFragment extends Fragment {
                 {
                     Intent ExTgtIntent = new Intent(getActivity(), ExerciseTogetherActivity.class);
                     ExTgtIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
-                    startActivity(ExTgtIntent);
+                    homeActivityResultLauncher.launch(ExTgtIntent);
                 }
                 else internet.noConnectionAlert(ctx);
             }
