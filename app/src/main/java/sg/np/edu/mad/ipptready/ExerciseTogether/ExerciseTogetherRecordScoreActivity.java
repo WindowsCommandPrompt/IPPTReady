@@ -1,8 +1,11 @@
 package sg.np.edu.mad.ipptready.ExerciseTogether;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,8 +15,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.uk.tastytoasty.TastyToasty;
 
 import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 import sg.np.edu.mad.ipptready.R;
 import sg.np.edu.mad.ipptready.SitupActivity;
 
@@ -79,5 +84,42 @@ public class ExerciseTogetherRecordScoreActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        leaveSession();
+    }
+
+    public void leaveSession()
+    {
+        Context ctx = ExerciseTogetherRecordScoreActivity.this;
+        AlertDialog.Builder leaveAlert = new AlertDialog.Builder(ctx);
+        leaveAlert
+                .setTitle("Leave Session")
+                .setMessage("Are you sure you want to leave this session?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(getIntent().getStringExtra("userId"), getIntent().getStringExtra("QRString"), "Left");
+                                firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful())
+                                        {
+                                            TastyToasty.blue(ctx, "You have left the session", null).show();
+                                            Intent failedIntent = new Intent(ctx, ExerciseTogetherSession.class);
+                                            failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                .setNegativeButton("No", null);
+        leaveAlert.create().show();
     }
 }

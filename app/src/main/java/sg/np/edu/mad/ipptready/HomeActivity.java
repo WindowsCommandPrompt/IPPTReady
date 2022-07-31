@@ -1,5 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +29,8 @@ import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 public class HomeActivity extends AppCompatActivity {
     public String EmailAddress;
     public IPPTUser user;
+    public String Id;
+    ActivityResultLauncher<Intent> homeActivityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +63,12 @@ public class HomeActivity extends AppCompatActivity {
 
             EmailAddress = intent.getStringExtra("Email");
             user = (IPPTUser)intent.getSerializableExtra("User");
+            Id = intent.getStringExtra("Id");
         }
         else if (null != savedInstanceState) {
             EmailAddress = savedInstanceState.getString("Email");
             user = (IPPTUser)savedInstanceState.getSerializable("User");
+            Id = savedInstanceState.getString("Id");
         }
         else {
             // If all else fails..
@@ -84,7 +91,9 @@ public class HomeActivity extends AppCompatActivity {
 
                     ProfileIntent.putExtra("Email", EmailAddress);
                     ProfileIntent.putExtra("User", user);
-                    startActivity(ProfileIntent);
+                    ProfileIntent.putExtra("Id", Id);
+                    
+                    homeActivityResultLauncher.launch(ProfileIntent);
                 }};
             findViewById(R.id.cardHomeWelcome).setOnClickListener(profileActivityOCL);
             findViewById(R.id.profileButton).setOnClickListener(profileActivityOCL);
@@ -120,6 +129,8 @@ public class HomeActivity extends AppCompatActivity {
                 alert.create().show();
             }
         });
+        homeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                (result) -> { recreate(); });
     }
 
     private void signOut() {
@@ -142,7 +153,16 @@ public class HomeActivity extends AppCompatActivity {
         // write code here!
         outState.putString("Email", EmailAddress);
         outState.putSerializable("User", user);
+        outState.putString("Id", Id);
         // make sure to call super after writing code ...
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (null != homeActivityResultLauncher) {
+            homeActivityResultLauncher.unregister();
+        }
+        super.onDestroy();
     }
 }
