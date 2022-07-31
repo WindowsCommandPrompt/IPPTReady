@@ -13,10 +13,14 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.util.Size;
 import android.view.View;
@@ -39,17 +43,29 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private CountDownTimer myCountDown;
     private boolean countdownExecuted = false;
+    Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_join);
 
+        SensorManager manager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
         qrCodeFoundButton = findViewById(R.id.qrCodeFoundButton);
         qrCodeFoundButton.setVisibility(View.INVISIBLE);
         qrCodeFoundButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final VibrationEffect vibrationEffect1;
+                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    vibrationEffect1 = VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE);
+                    vibrator.cancel();
+                    vibrator.vibrate(vibrationEffect1);
+                }
+
                 Intent joinIntent = new Intent(ExerciseTogetherJoinActivity.this, ExerciseTogetherJoiningProcessActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("userId", getIntent().getStringExtra("userId"));

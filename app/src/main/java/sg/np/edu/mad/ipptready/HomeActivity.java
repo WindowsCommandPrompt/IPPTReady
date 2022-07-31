@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.uk.tastytoasty.TastyToasty;
 
-import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherCreateActivity;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
 
 public class HomeActivity extends AppCompatActivity {

@@ -20,6 +20,7 @@ public class ExerciseTogetherSession {
     public String exercise;
     public String status = "Created";
     public String hostUserID;
+    public String qrString;
 
     public ExerciseTogetherSession(String DateCreated, String SessionName, String Exercise, String HostUserID) {
         if (DateCreated.equals("")) dateCreated = getDate(); else dateCreated = DateCreated;
@@ -58,6 +59,7 @@ public class ExerciseTogetherSession {
         newSessionMap.put("sessionName", session.sessionName);
         newSessionMap.put("status", session.status);
         newSessionMap.put("hostUserID", session.hostUserID);
+        newSessionMap.put("qrString", session.qrString);
 
         newSession.changeTask = newSession.documentReference.set(newSessionMap);
         return newSession;
@@ -87,5 +89,53 @@ public class ExerciseTogetherSession {
 
         updateTheJoinStatus.changeTask = updateTheJoinStatus.documentReference.set(updateJoinSessionMap, SetOptions.merge());
         return updateTheJoinStatus;
+    }
+
+    public static FirebaseDocChange updateIndividualJoinStatus(DocumentReference docRef, String status)
+    {
+        FirebaseDocChange updateIJS = new FirebaseDocChange();
+        updateIJS.documentReference = docRef;
+
+        Map<String, Object> updateStatusMap = new HashMap<>();
+        updateStatusMap.put("status", status);
+
+        updateIJS.changeTask = updateIJS.documentReference.set(updateStatusMap, SetOptions.merge());
+        return updateIJS;
+    }
+
+    public static FirebaseDocChange startSession(String userid, String date)
+    {
+        FirebaseDocChange startSession = new FirebaseDocChange();
+        startSession.documentReference = getSessionsbyUserID(userid).document(date);
+        Map<String, Object> updateUserMap = new HashMap<>();
+        updateUserMap.put("status", "Started");
+        startSession.changeTask = startSession.documentReference.set(updateUserMap, SetOptions.merge());
+        return startSession;
+    }
+
+    public static FirebaseDocChange updateUserSessionComplete(String userid, String date, int score)
+    {
+        FirebaseDocChange updateUserSessionComplete = new FirebaseDocChange();
+        updateUserSessionComplete.documentReference = getSessionsbyUserID(userid).document(date);
+        Map<String, Object> updateUserMap = new HashMap<>();
+        updateUserMap.put("score", score);
+        updateUserMap.put("status", "Completed");
+
+        updateUserSessionComplete.changeTask = updateUserSessionComplete.documentReference.set(updateUserMap, SetOptions.merge());
+        return updateUserSessionComplete;
+    }
+
+    public static FirebaseDocChange recordScore(String userid, String qrCode, int score)
+    {
+        FirebaseDocChange recordScore = new FirebaseDocChange();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        recordScore.documentReference = db.collection("Exercise Together").document(qrCode).collection("Users").document(userid);
+
+        Map<String, Object> recordScoreMap = new HashMap<>();
+        recordScoreMap.put("score", String.valueOf(score));
+        recordScoreMap.put("status", "Completed");
+
+        recordScore.changeTask = recordScore.documentReference.set(recordScoreMap, SetOptions.merge());
+        return recordScore;
     }
 }

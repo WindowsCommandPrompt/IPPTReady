@@ -1,5 +1,6 @@
 package sg.np.edu.mad.ipptready;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import sg.np.edu.mad.ipptready.Cycle.CycleActivity;
 import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherActivity;
 import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherWaitingRoomActivity;
+import sg.np.edu.mad.ipptready.InternetConnectivity.Internet;
 
 public class NavFragment extends Fragment {
 
@@ -20,16 +22,22 @@ public class NavFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_nav, container, false);
+        Context ctx = view.getContext();
+        Internet internet = new Internet();
 
         // Onclicklistener for Cycle feature
         view.findViewById(R.id.cycleButtonNav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent CycleIntent = new Intent(getActivity(), CycleActivity.class);
+                if (internet.isOnline(ctx))
+                {
+                    Intent CycleIntent = new Intent(getActivity(), CycleActivity.class);
 
-                CycleIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
-                CycleIntent.putExtra("DOB", ((HomeActivity)getActivity()).user.DoB);
-                startActivity(CycleIntent);
+                    CycleIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
+                    CycleIntent.putExtra("DOB", ((HomeActivity)getActivity()).user.DoB);
+                    startActivity(CycleIntent);
+                }
+                else internet.noConnectionAlert(ctx);
             }
         });
 
@@ -37,8 +45,12 @@ public class NavFragment extends Fragment {
         view.findViewById(R.id.videoButtonNav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent VideoIntent = new Intent(getActivity(), VideoActivity.class);
-                startActivity(VideoIntent);
+                if (internet.isOnline(ctx))
+                {
+                    Intent VideoIntent = new Intent(getActivity(), VideoActivity.class);
+                    startActivity(VideoIntent);
+                }
+                else internet.noConnectionAlert(ctx);
             }
         });
 
@@ -55,9 +67,13 @@ public class NavFragment extends Fragment {
         view.findViewById(R.id.ExTgtButtonNav).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent ExTgtIntent = new Intent(getActivity(), ExerciseTogetherActivity.class);
-                ExTgtIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
-                startActivity(ExTgtIntent);
+                if (internet.isOnline(ctx))
+                {
+                    Intent ExTgtIntent = new Intent(getActivity(), ExerciseTogetherActivity.class);
+                    ExTgtIntent.putExtra("userId", ((HomeActivity) getActivity()).EmailAddress);
+                    startActivity(ExTgtIntent);
+                }
+                else internet.noConnectionAlert(ctx);
             }
         });
 

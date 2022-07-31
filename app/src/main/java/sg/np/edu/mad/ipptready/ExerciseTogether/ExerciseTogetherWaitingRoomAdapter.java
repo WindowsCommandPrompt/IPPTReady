@@ -1,10 +1,13 @@
 package sg.np.edu.mad.ipptready.ExerciseTogether;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -14,9 +17,13 @@ import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<ExerciseTogetherWaitingRoomViewHolder> {
     ArrayList<String> names = new ArrayList<>();
+    String hostUserName;
+    Context ctx;
 
-    public ExerciseTogetherWaitingRoomAdapter(ArrayList<String> Names) {
+    public ExerciseTogetherWaitingRoomAdapter(ArrayList<String> Names, String HostUserName, Context Ctx) {
         names = Names;
+        hostUserName = HostUserName;
+        ctx = Ctx;
     }
 
     @NonNull
@@ -28,7 +35,16 @@ public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<Exe
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseTogetherWaitingRoomViewHolder holder, int position) {
-        holder.sessionParticipantNameTextView.setText(names.get(position));
+        if (names.get(position).equals(hostUserName))
+        {
+            holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.priblue));
+            holder.sessionParticipantNameTextView.setText("(Host) - " + names.get(position));
+        }
+        else
+        {
+            holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.black));
+            holder.sessionParticipantNameTextView.setText(names.get(position));
+        }
     }
 
     @Override

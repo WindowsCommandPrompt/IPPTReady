@@ -21,12 +21,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.uk.tastytoasty.TastyToasty;
 
 import java.util.HashMap;
+
+import sg.np.edu.mad.ipptready.ExerciseTogether.ExerciseTogetherRecordScoreActivity;
+import sg.np.edu.mad.ipptready.FirebaseDAL.ExerciseTogetherSession;
+import sg.np.edu.mad.ipptready.FirebaseDAL.FirebaseDocChange;
 
 public class PushupActivity extends AppCompatActivity implements SensorEventListener {
 
     Vibrator vibrator;
+    boolean ExerciseTogether = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,8 +40,6 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
         setContentView(R.layout.activity_pushup);
 
         SensorManager manager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        
 
         AlertDialog.Builder timeIsUp = new AlertDialog.Builder(this);
         //AlertDialog.Builder confirmationNotSaveData = new AlertDialog.Builder(this);
@@ -46,7 +50,19 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
         String email = intent.getStringExtra("Email");
         int NumPushups = intent.getIntExtra("NumPushups", 0);
 
-        ((TextView) findViewById(R.id.targetNumberOfPushUps)).setText(String.valueOf(NumPushups));
+        TextView targetNumberOfPushUpsTextView = findViewById(R.id.targetNumberOfPushUps);
+        try {
+            String exerciseTogether = getIntent().getStringExtra("ExerciseTogetherSession");
+            if (!exerciseTogether.equals(null))
+            {
+                ExerciseTogether = true;
+                targetNumberOfPushUpsTextView.setVisibility(View.GONE);
+                findViewById(R.id.textViewIdentifier).setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e) {
+            targetNumberOfPushUpsTextView.setText(String.valueOf(NumPushups));
+        }
 
         timeIsUp
             .setTitle("Times up!")
@@ -100,7 +116,34 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
                     vibrator.vibrate(vibrationEffect1);
                 }
 
-                timeIsUp.create().show();
+                if (!ExerciseTogether) timeIsUp.create().show();
+                else
+                {
+                    AlertDialog.Builder alertExTgtBuilder = new AlertDialog.Builder(PushupActivity.this);
+                    alertExTgtBuilder.setCancelable(false);
+                    alertExTgtBuilder.setMessage("1 minute is up! It's time to record your score!");
+                    alertExTgtBuilder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent exerciseFinish = new Intent(PushupActivity.this, ExerciseTogetherRecordScoreActivity.class);
+
+                            Bundle exerciseBundle = new Bundle();
+                            exerciseBundle.putString("date", getIntent().getStringExtra("date"));
+                            exerciseBundle.putString("sessionName", getIntent().getStringExtra("sessionName"));
+                            exerciseBundle.putString("exercise", getIntent().getStringExtra("exercise"));
+                            exerciseBundle.putString("userId", getIntent().getStringExtra("userId"));
+                            exerciseBundle.putParcelable("QRImage", getIntent().getExtras().getParcelable("QRImage"));
+                            exerciseBundle.putString("QRString", getIntent().getStringExtra("QRString"));
+                            exerciseBundle.putString("ExerciseTogetherSession", "yes");
+                            exerciseFinish.putExtras(exerciseBundle);
+                            startActivity(exerciseFinish);
+                            finish();
+                        }
+                    });
+                    AlertDialog alert = alertExTgtBuilder.create();
+                    alert.setTitle("Times Up!");
+                    alert.show();
+                }
             }
         };
 
@@ -126,24 +169,32 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
 
     @Override
     public void onBackPressed()  {
-        AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
-        confirmQuit
-                .setTitle("Confirm end push-ups?")
-                .setMessage("Are you sure you want to terminate the current push-ups? Do note that your progress will not be saved.")
-                .setPositiveButton(
-                        "Yes",
-                        (DialogInterface di, int i) -> {
-                            finish();
-                        }
-                )
-                .setNegativeButton(
-                        "No",
-                        (DialogInterface di, int i) -> {
-                            di.dismiss();
-                        }
-                )
-                .setCancelable(false);
-        confirmQuit.create().show();
+        if (!ExerciseTogether)
+        {
+            AlertDialog.Builder confirmQuit = new AlertDialog.Builder(this);
+            confirmQuit
+                    .setTitle("Confirm end push-ups?")
+                    .setMessage("Are you sure you want to terminate the current push-ups? Do note that your progress will not be saved.")
+                    .setPositiveButton(
+                            "Yes",
+                            (DialogInterface di, int i) -> {
+                                finish();
+                            }
+                    )
+                    .setNegativeButton(
+                            "No",
+                            (DialogInterface di, int i) -> {
+                                di.dismiss();
+                            }
+                    )
+                    .setCancelable(false);
+            confirmQuit.create().show();
+        }
+        else
+        {
+            leaveSession();
+        }
+
     }
 
     @Override
@@ -196,5 +247,36 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public void leaveSession()
+    {
+        AlertDialog.Builder leaveAlert = new AlertDialog.Builder(PushupActivity.this);
+        leaveAlert
+                .setTitle("Leave Session")
+                .setMessage("Are you sure you want to leave this session?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                FirebaseDocChange firebaseDocChangeJoinSessionStatus = ExerciseTogetherSession.updateJoinStatus(getIntent().getStringExtra("userId"), getIntent().getStringExtra("QRString"), "Left");
+                                firebaseDocChangeJoinSessionStatus.changeTask.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful())
+                                        {
+                                            TastyToasty.blue(PushupActivity.this, "You have left the session", null).show();
+                                            Intent failedIntent = new Intent(PushupActivity.this, ExerciseTogetherSession.class);
+                                            failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));
+                                            finish();
+                                        }
+                                    }
+                                });
+                            }
+                        })
+                .setNegativeButton("No", null);
+        leaveAlert.create().show();
     }
 }

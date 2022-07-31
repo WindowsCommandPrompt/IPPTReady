@@ -6,22 +6,21 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.google.type.DateTime;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.jar.Attributes;
 
 public class IPPTUser implements Serializable {
     public static final String colFrom = "IPPTUser";
     private static final String NAME = "Name";
     private static final String DOB = "DOB";
+    private static final String IMAGE_KEY = "ImageKey";
+    private static final String EMAIL_ADDRESS = "EmailAddress";
     private static final String ROUTINE_TIME = "RoutineTime";
 
     public Date DoB;
@@ -70,11 +69,27 @@ public class IPPTUser implements Serializable {
 
     public static Task<Void> updateUser(DocumentReference userDocRef,
                                         String Name,
-                                        Date Dob) {
+                                        Date Dob,
+                                        String imageKey,
+                                        byte[] data) {
 
         Map<String, Object> updatedUserMap = new HashMap<>();
         updatedUserMap.put(NAME, Name);
         updatedUserMap.put(DOB, Dob);
+        updatedUserMap.put(IMAGE_KEY, imageKey);
+
+
+
+        FirebaseStorage storage;
+        StorageReference storageReference;
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        StorageReference userRef = storageReference.child("profilePictures/" + imageKey);
+
+        UploadTask uploadTask = userRef.putBytes(data);
+
 
         return userDocRef.set(updatedUserMap, SetOptions.merge());
     }
