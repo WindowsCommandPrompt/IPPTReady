@@ -32,6 +32,9 @@ import sg.np.edu.mad.ipptready.InternetConnectivity.Internet;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherResultsActivity extends AppCompatActivity {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     Internet internet;
     CountDownTimer myCountDown;
     ArrayList<String> userIds = new ArrayList<>();
@@ -43,8 +46,10 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_results);
 
-        updateParticipants(getIntent());
+        // update results (get data from Firestore and set it on RecyclerView)
+        updateResults(getIntent());
 
+        // Button to leave session
         ImageButton leaveRoomBtn = findViewById(R.id.leaveResultsRoomBtn);
         leaveRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +59,8 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
         });
     }
 
-    public void updateParticipants(Intent receivedIntent)
+    // Get results from Firestore and set it on RecyclerView
+    public void updateResults(Intent receivedIntent)
     {
         ExerciseTogetherSession.getCurrentSessionParticipants(receivedIntent.getStringExtra("QRString")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -64,6 +70,7 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
                     QuerySnapshot querySnapshot = task.getResult();
                     for (DocumentSnapshot documentSnapshot : querySnapshot)
                     {
+                        // Append userid and score to userIds ArrayList and scores ArrayList respectively (for users who have completed the session)
                         if(documentSnapshot.getData().get("status").equals("Completed"))
                         {
                             userIds.add(documentSnapshot.getId().toString());
@@ -80,6 +87,7 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
                                 int completedCount = 0;
                                 for (DocumentSnapshot documentSnapshot : querySnapshot1)
                                 {
+                                    // Get names of users from userIds ArrayList
                                     for (String user : userIds)
                                     {
                                         if (documentSnapshot.getId().equals(user))
@@ -93,12 +101,13 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
                                 }
                                 Log.d("Names size (results)", String.valueOf(names.size()));
 
+                                // update RecyclerView
                                 if (!names.isEmpty())
                                 {
                                     // ExerciseTogetherWaitingRoomAdapter initialized
                                     ExerciseTogetherResultsAdapter adapter = new ExerciseTogetherResultsAdapter(names, scores);
 
-                                    // RecyclerView
+                                    // Set RecyclerView
                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ExerciseTogetherResultsActivity.this);
                                     RecyclerView recyclerView = findViewById(R.id.ExTgtResultsRecyclerView);
                                     recyclerView.setLayoutManager(layoutManager);
@@ -121,6 +130,7 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
         });
     }
 
+    // Countdown to refresh
     private void countDownTimer(){
 
         myCountDown = new CountDownTimer(9000, 1000) {
@@ -137,9 +147,11 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
 
     private void recreateActivity()
     {
+        // recreate activity when there is Internet
         if (internet.isOnline(ExerciseTogetherResultsActivity.this)) recreate();
         else
         {
+            // If no Internet connection, send user to ExerciseTogetherNoInternetActivity
             Intent noConnectionIntent = new Intent(ExerciseTogetherResultsActivity.this, ExerciseTogetherNoInternetActivity.class);
             Bundle exerciseBundle = new Bundle();
             exerciseBundle.putString("date", getIntent().getStringExtra("date"));
@@ -155,6 +167,7 @@ public class ExerciseTogetherResultsActivity extends AppCompatActivity {
         }
     }
 
+    // If user presses the back button, user will be prompted to leave session.
     public void leaveSession()
     {
         AlertDialog.Builder leaveAlert = new AlertDialog.Builder(ExerciseTogetherResultsActivity.this);

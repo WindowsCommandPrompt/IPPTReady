@@ -23,6 +23,9 @@ import sg.np.edu.mad.ipptready.LoginActivity;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     Internet internet;
 
     @Override
@@ -30,8 +33,10 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_no_internet);
 
+        // Internet object
         internet = new Internet();
 
+        // User can return to login page
         Button returnBtn = findViewById(R.id.returntologinExTgt);
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +48,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
             }
         });
 
+        // If user clicks on rejoin button, checks internet
         Button rejoinBtn = findViewById(R.id.rejoin);
         rejoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +65,8 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                     {
                                         DocumentSnapshot document = task.getResult();
                                         String status = (String) document.getData().get("status");
+
+                                        // If user comes from waiting room, bring them back to waiting room
                                         if (!status.equals("Started") && !status.equals("Completed"))
                                         {
                                             Bundle bundle = new Bundle();
@@ -75,7 +83,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                                             startActivity(beginSession);
                                             finish();
                                         }
-                                        else if (status.equals("Completed"))
+                                        else if (status.equals("Completed")) // If user comes from results page, bring user back to results page
                                         {
                                             Intent noConnectionIntent = new Intent(ExerciseTogetherNoInternetActivity.this, ExerciseTogetherResultsActivity.class);
                                             Bundle exerciseBundle = new Bundle();
@@ -96,6 +104,7 @@ public class ExerciseTogetherNoInternetActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    // If no internet, show no connection alert dialog
                     internet.noConnectionAlert(ExerciseTogetherNoInternetActivity.this);
                 }
             }

@@ -23,12 +23,14 @@ import sg.np.edu.mad.ipptready.R;
 import sg.np.edu.mad.ipptready.SitupActivity;
 
 public class ExerciseTogetherRecordScoreActivity extends AppCompatActivity {
+    // Exercise Together feature done by: BRYAN KOH
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_together_record_score);
 
+        // Hide loading lottie animation first
         com.airbnb.lottie.LottieAnimationView loading = findViewById(R.id.loadingRecordingSession);
         loading.setVisibility(View.GONE);
 
@@ -36,6 +38,7 @@ public class ExerciseTogetherRecordScoreActivity extends AppCompatActivity {
         TextView exerciseText = findViewById(R.id.exerciseRecordExTgtTextView);
         Button recordButton = findViewById(R.id.recordResultsExTgtBtn);
         exerciseText.setText("Number of " + getIntent().getStringExtra("exercise") + " completed:");
+        // When record button is clicked, check if there is a value entered. If
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +85,11 @@ public class ExerciseTogetherRecordScoreActivity extends AppCompatActivity {
                         }
                     });
                 }
+                else
+                {
+                    TastyToasty.blue(ExerciseTogetherRecordScoreActivity.this, "Please enter your repetitions", null).show();
+                    return;
+                }
             }
         });
     }
@@ -91,6 +99,7 @@ public class ExerciseTogetherRecordScoreActivity extends AppCompatActivity {
         leaveSession();
     }
 
+    // If user presses the back button, user will be prompted to leave session. If user leaves session, updates the user's status to "Left" on Firestore Exercise Together collection's record of the session
     public void leaveSession()
     {
         Context ctx = ExerciseTogetherRecordScoreActivity.this;

@@ -142,6 +142,7 @@ public class SitupActivity extends AppCompatActivity {
         }
         else
         {
+            // For Exercise Together (after timer ends), display Alert Dialog
             builder.setMessage("1 minute is up! It's time to record your score!");
             builder.setPositiveButton("Record Results", new DialogInterface.OnClickListener() {
                 @Override
@@ -188,12 +189,14 @@ public class SitupActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // for Exercise Together, if back press, prompt user to leave session
         if (ExerciseTogether)
         {
             leaveSession();
         }
     }
 
+    // For Exercise Together, if user presses the back button, user will be prompted to leave session
     public void leaveSession()
     {
         AlertDialog.Builder leaveAlert = new AlertDialog.Builder(SitupActivity.this);

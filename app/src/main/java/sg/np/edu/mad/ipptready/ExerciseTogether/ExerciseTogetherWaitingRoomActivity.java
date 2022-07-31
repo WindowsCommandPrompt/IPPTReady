@@ -42,6 +42,9 @@ import sg.np.edu.mad.ipptready.VideoActivity;
 import sg.np.edu.mad.ipptready.VideoAdapter;
 
 public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     Internet internet;
     CountDownTimer myCountDown;
     int secondsLeft;
@@ -55,9 +58,13 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercisetogetherwaitingroom);
 
+        // Get Intent
         Intent receivedIntent = getIntent();
+
+        // Set Session Name and Exercise Name on TextView
         TextView sessionNameTextView = findViewById(R.id.SessionNameWaitingRoom);
         sessionNameTextView.setText("\"" + receivedIntent.getStringExtra("sessionName") + "\" , " + receivedIntent.getStringExtra("exercise"));
+        // Set QR Code Bitmap on ImageView
         ImageView QRCode = findViewById(R.id.QRcode);
         try {
             QRCode.setImageBitmap(receivedIntent.getExtras().getParcelable("QRImage"));
@@ -66,6 +73,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
             QRCode.setVisibility(View.GONE);
         }
 
+        // Leave Room Button to allow user to leave Session
         ImageButton leaveRoomBtn = findViewById(R.id.leaveWaitingRoomButton);
         leaveRoomBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +86,14 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         String hostUserId = receivedIntent.getStringExtra("hostUserId");
         String date = receivedIntent.getStringExtra("date");
 
+        // --- Start Exercise Btn ---
+        // A Participant can only start his/her exercise after the host starts.
+        // --------------------------
         Button startExerciseBtn = findViewById(R.id.startExerciseExTgt);
         startExerciseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // If user is not the host, check if host has started his exercise already
                 if (!userId.equals(hostUserId))
                 {
                     ExerciseTogetherSession.getSessionsbyUserID(hostUserId)
@@ -95,6 +107,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                 if (documentSnapshot.getData().get("status").equals("Started")) startSession(receivedIntent);
                                 else
                                 {
+                                    // Inform user to wait
                                     TastyToasty.blue(ExerciseTogetherWaitingRoomActivity.this, "Host has not started session!", null).show();
                                     return;
                                 }
@@ -103,10 +116,11 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                         }
                     });
                 }
-                else startSession(receivedIntent);
+                else startSession(receivedIntent); // If user is host, starts exercise
             }
         });
 
+        // If host has started his exercise, value "started" is recorded to reflect to users that host has started
         ExerciseTogetherSession.getSessionsbyUserID(hostUserId)
                 .document(date)
                 .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -123,6 +137,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         });
     }
 
+    // Get participants from Firestore and set it on RecyclerView
     public void updateParticipants(Intent receivedIntent, boolean started)
     {
         ExerciseTogetherSession.getCurrentSessionParticipants(receivedIntent.getStringExtra("QRString")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -133,6 +148,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                     QuerySnapshot querySnapshot = task.getResult();
                     for (DocumentSnapshot documentSnapshot : querySnapshot)
                     {
+                        // Add userid to userIds ArrayList for users who have not left the session
                         if(!documentSnapshot.getData().get("status").equals("Left")) userIds.add(documentSnapshot.getId().toString());
                     }
                     IPPTUser.getUsersCollection().get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -145,6 +161,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                 int completedCount = 0;
                                 for (DocumentSnapshot documentSnapshot : querySnapshot1)
                                 {
+                                    // Get users' names from Firestore. Set hostUserName variable if userid is the same as hostUserId.
                                     for (String user : userIds)
                                     {
                                         if (documentSnapshot.getId().equals(user))
@@ -167,13 +184,14 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                     // ExerciseTogetherWaitingRoomAdapter initialized
                                     ExerciseTogetherWaitingRoomAdapter adapter = new ExerciseTogetherWaitingRoomAdapter(names, hostUserName, started, ExerciseTogetherWaitingRoomActivity.this);
 
-                                    // RecyclerView
+                                    // Set RecyclerView
                                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ExerciseTogetherWaitingRoomActivity.this);
                                     RecyclerView recyclerView = findViewById(R.id.exerciseTogetherRecyclerView);
                                     recyclerView.setLayoutManager(layoutManager);
                                     recyclerView.setItemAnimator(new DefaultItemAnimator());
                                     recyclerView.setAdapter(adapter);
 
+                                    // Initial variables
                                     secondsLeft = 11;
                                     internet = new Internet();
                                     secondsLeftTextView = findViewById(R.id.refreshWaitingRoomTextView);
@@ -198,6 +216,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         });
     }
 
+    // Countdown to refresh
     private void countDownTimer(){
 
         myCountDown = new CountDownTimer(11000, 1000) {
@@ -215,6 +234,10 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         myCountDown.start();
     }
 
+    // --- Start session ---
+    // Update Firestore that user has started the session
+    // Check exercise name and lead user to the respective exercises
+    // ---------------------
     private void startSession(Intent receivedIntent)
     {
         String exercise = receivedIntent.getStringExtra("exercise");
@@ -233,6 +256,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
 
         TastyToasty.makeText(ExerciseTogetherWaitingRoomActivity.this, "Starting Session...", TastyToasty.SHORT, null, R.color.success, R.color.white, false).show();
 
+        // Update Firestore (user's record of the session) that user has started session
         ExerciseTogetherSession.startSession(userId, date)
                 .changeTask
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -240,6 +264,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful())
                         {
+                            // Update Firestore (ExerciseTogether collection's record of the session) that user has started session
                             ExerciseTogetherSession.updateJoinStatus(userId, qrstring, "Started")
                                     .changeTask
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -247,6 +272,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful())
                                             {
+                                                // Go to Push-up timer
                                                 if (exercise.equals("Push-ups"))
                                                 {
                                                     Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, PushupActivity.class);
@@ -254,6 +280,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                                     startActivity(exerciseIntent);
                                                     finish();
                                                 }
+                                                // Go to Sit-up timer
                                                 else if (exercise.equals("Sit-ups"))
                                                 {
                                                     Intent exerciseIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, SitupActivity.class);
@@ -269,6 +296,9 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                 });
     }
 
+    // Recreate this activity after countdown timer ends.
+    // If there is no Internet Connection, send user to ExerciseTogetherNoInternetActivity
+    // If there is Internet Connection, recreate the activity (refreshing the activity)
     private void recreateActivity()
     {
         if (internet.isOnline(ExerciseTogetherWaitingRoomActivity.this)) recreate();
@@ -289,6 +319,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
         }
     }
 
+    // When user presses back button or leave room button, prompt user to leave room. If user leaves room, update Firestore (Exercise Together collection's record of this session) that user has left the session
     public void leaveSession()
     {
         AlertDialog.Builder leaveAlert = new AlertDialog.Builder(ExerciseTogetherWaitingRoomActivity.this);
@@ -307,6 +338,7 @@ public class ExerciseTogetherWaitingRoomActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful())
                                         {
+                                            // Bring user back to ExerciseTogether main activity
                                             TastyToasty.blue(ExerciseTogetherWaitingRoomActivity.this, "You have left the session", null).show();
                                             Intent failedIntent = new Intent(ExerciseTogetherWaitingRoomActivity.this, ExerciseTogetherSession.class);
                                             failedIntent.putExtra("userId", getIntent().getStringExtra("userId"));

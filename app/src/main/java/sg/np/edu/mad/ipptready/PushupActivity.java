@@ -119,6 +119,7 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
                 if (!ExerciseTogether) timeIsUp.create().show();
                 else
                 {
+                    // For Exercise Together (after timer ends), display Alert Dialog
                     AlertDialog.Builder alertExTgtBuilder = new AlertDialog.Builder(PushupActivity.this);
                     alertExTgtBuilder.setCancelable(false);
                     alertExTgtBuilder.setMessage("1 minute is up! It's time to record your score!");
@@ -192,6 +193,7 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
         }
         else
         {
+            // for Exercise Together, if back press, prompt user to leave session
             leaveSession();
         }
 
@@ -249,6 +251,7 @@ public class PushupActivity extends AppCompatActivity implements SensorEventList
 
     }
 
+    // For Exercise Together, if user presses the back button, user will be prompted to leave session
     public void leaveSession()
     {
         AlertDialog.Builder leaveAlert = new AlertDialog.Builder(PushupActivity.this);

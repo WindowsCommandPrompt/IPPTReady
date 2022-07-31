@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherResultsAdapter extends RecyclerView.Adapter<ExerciseTogetherResultsViewHolder>{
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> results = new ArrayList<>();
 
@@ -26,6 +29,7 @@ public class ExerciseTogetherResultsAdapter extends RecyclerView.Adapter<Exercis
 
     @Override
     public void onBindViewHolder(@NonNull ExerciseTogetherResultsViewHolder holder, int position) {
+        // Bind Name and score to ViewHolder
         holder.sessionParticipantNameResult.setText(names.get(position));
         holder.sessionParticipantResultResult.setText(results.get(position));
     }

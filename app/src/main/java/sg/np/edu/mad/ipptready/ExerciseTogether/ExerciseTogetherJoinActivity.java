@@ -37,6 +37,7 @@ import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherJoinActivity extends AppCompatActivity {
     // Exercise Together feature done by: BRYAN KOH
+    // Took some reference from https://github.com/learntodroid/AndroidQRCodeScanner
 
     // Global variables
     private static final int PERMISSION_REQUEST_CAMERA = 0;
@@ -143,7 +144,7 @@ public class ExerciseTogetherJoinActivity extends AppCompatActivity {
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build();
 
-        // If QR Code is found, set scan QR code button to visible for a few seconds
+        // If QR Code is found, set scanned string into qrCode string variable, and set scan QR code button to visible for a few seconds
         imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(this), new QRCodeImageAnalyzer(new QRCodeFoundListener() {
             @Override
             public void onQRCodeFound(String _qrCode) {

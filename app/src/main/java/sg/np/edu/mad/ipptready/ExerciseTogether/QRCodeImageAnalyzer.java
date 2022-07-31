@@ -20,6 +20,8 @@ import static android.graphics.ImageFormat.YUV_422_888;
 import static android.graphics.ImageFormat.YUV_444_888;
 
 public class QRCodeImageAnalyzer implements ImageAnalysis.Analyzer {
+    // Took reference from https://github.com/learntodroid/AndroidQRCodeScanner
+
     private QRCodeFoundListener listener;
 
     public QRCodeImageAnalyzer(QRCodeFoundListener listener) {

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherWaitingRoomViewHolder extends RecyclerView.ViewHolder {
+    // Exercise Together feature done by: BRYAN KOH
+
     protected TextView sessionParticipantNameTextView;
 
     public ExerciseTogetherWaitingRoomViewHolder(View v) {

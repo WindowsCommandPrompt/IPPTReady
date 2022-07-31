@@ -16,6 +16,9 @@ import java.util.List;
 import sg.np.edu.mad.ipptready.R;
 
 public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<ExerciseTogetherWaitingRoomViewHolder> {
+    // Exercise Together feature done by: BRYAN KOH
+
+    // Global variables
     ArrayList<String> names = new ArrayList<>();
     String hostUserName;
     Context ctx;
@@ -39,6 +42,7 @@ public class ExerciseTogetherWaitingRoomAdapter extends RecyclerView.Adapter<Exe
     public void onBindViewHolder(@NonNull ExerciseTogetherWaitingRoomViewHolder holder, int position) {
         if (names.get(position).equals(hostUserName))
         {
+            // For host, if he/she started his exercise, indicate on recyclerview that user has started the exercise
             if (started)
             {
                 holder.sessionParticipantNameTextView.setTextColor(ContextCompat.getColor(ctx, R.color.success));
