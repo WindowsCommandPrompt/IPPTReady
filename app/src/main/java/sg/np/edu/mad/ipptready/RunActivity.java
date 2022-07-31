@@ -374,7 +374,7 @@ public class RunActivity extends AppCompatActivity implements LocationListener {
         //Put the latitudes and longitudes into their respective TextViews
         ((TextView) findViewById(R.id.latitudeBox)).setText(Double.toString(location.getLatitude()));
         ((TextView) findViewById(R.id.longitudeBox)).setText(Double.toString(location.getLongitude()));
-        Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "This method has been called and now the location is being updated at a speed between 150ms to 950ms", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(sg.np.edu.mad.ipptready.RunActivity.this, "This method has been called and now the location is being updated at a speed between 150ms to 950ms", Toast.LENGTH_SHORT).show();
         coordinateArray.add(location); //stores an array of Location objects...
         Log.d("TAG", "" + coordinateArray.size());
         //Unfortunately you will have to calculate the distance inside this location listener lol
