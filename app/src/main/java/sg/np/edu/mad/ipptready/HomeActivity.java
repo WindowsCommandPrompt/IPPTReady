@@ -112,25 +112,30 @@ public class HomeActivity extends AppCompatActivity {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
-                alert
-                        .setTitle("Log out")
-                        .setMessage("Are you sure you want to log out?")
-                        .setCancelable(true)
-                        .setPositiveButton(
-                                "Yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        signOut();
-                                    }
-                                })
-                        .setNegativeButton("No", null);
-                alert.create().show();
+                signOutAlert();
             }
         });
         homeActivityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 (result) -> { recreate(); });
+    }
+
+    private void signOutAlert()
+    {
+        AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
+        alert
+                .setTitle("Log out")
+                .setMessage("Are you sure you want to log out?")
+                .setCancelable(true)
+                .setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                signOut();
+                            }
+                        })
+                .setNegativeButton("No", null);
+        alert.create().show();
     }
 
     private void signOut() {
@@ -164,5 +169,10 @@ public class HomeActivity extends AppCompatActivity {
             homeActivityResultLauncher.unregister();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        signOutAlert();
     }
 }
