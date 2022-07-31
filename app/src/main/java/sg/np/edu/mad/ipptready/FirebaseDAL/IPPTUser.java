@@ -1,11 +1,16 @@
 package sg.np.edu.mad.ipptready.FirebaseDAL;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -21,7 +26,6 @@ public class IPPTUser implements Serializable {
     private static final String NAME = "Name";
     private static final String DOB = "DOB";
     private static final String IMAGE_KEY = "ImageKey";
-    private static final String EMAIL_ADDRESS = "EmailAddress";
     private static final String ROUTINE_TIME = "RoutineTime";
 
     public Date DoB;
@@ -79,8 +83,6 @@ public class IPPTUser implements Serializable {
         updatedUserMap.put(DOB, Dob);
         updatedUserMap.put(IMAGE_KEY, imageKey);
 
-
-
         FirebaseStorage storage;
         StorageReference storageReference;
 
@@ -90,7 +92,6 @@ public class IPPTUser implements Serializable {
         StorageReference userRef = storageReference.child("profilePictures/" + imageKey);
 
         UploadTask uploadTask = userRef.putBytes(data);
-
 
         return userDocRef.set(updatedUserMap, SetOptions.merge());
     }
@@ -104,6 +105,59 @@ public class IPPTUser implements Serializable {
     }
 
     public static Task<Void> deleteUser(DocumentReference userDocRef) {
+        userDocRef.collection("Exercise Together").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                if (documentSnapshot.exists()) {
+                                    userDocRef.collection("Exercise Together").document(documentSnapshot.getId()).delete();
+                                }
+                            }
+                        }
+                    }
+                });
+
+        userDocRef.collection("IPPTCycle").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                if (documentSnapshot.exists()){
+                                    userDocRef.collection("IPPTCycle").document(documentSnapshot.getId()).collection("IPPTRoutine").get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task2) {
+                                                    if (task2.isSuccessful()){
+                                                        for (QueryDocumentSnapshot documentSnapshot2 : task2.getResult()){
+                                                            if (documentSnapshot2.exists()){
+                                                                userDocRef.collection("IPPTCycle").document(documentSnapshot.getId()).collection("IPPTRoutine").document(documentSnapshot2.getId()).collection("IPPTRecord").get()
+                                                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<QuerySnapshot> task3) {
+                                                                                if (task3.isSuccessful()){
+                                                                                    for (QueryDocumentSnapshot documentSnapshot3 : task3.getResult()){
+                                                                                        if (documentSnapshot3.exists()){
+                                                                                            userDocRef.collection("IPPTCycle").document(documentSnapshot.getId()).collection("IPPTRoutine").document(documentSnapshot2.getId()).collection("IPPTRecord").document(documentSnapshot3.getId()).delete();
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                userDocRef.collection("IPPTCycle").document(documentSnapshot.getId()).collection("IPPTRoutine").document(documentSnapshot2.getId()).delete();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                    userDocRef.collection("IPPTCycle").document(documentSnapshot.getId()).delete();
+                                }
+                            }
+                        }
+                    }
+                });
         return userDocRef.delete();
     }
 }

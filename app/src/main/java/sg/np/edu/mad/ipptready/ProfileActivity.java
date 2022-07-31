@@ -1,18 +1,7 @@
 package sg.np.edu.mad.ipptready;
 
-import static android.app.AlarmManager.INTERVAL_DAY;
-import static sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser.colFrom;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -52,10 +41,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,7 +55,6 @@ import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import sg.np.edu.mad.ipptready.FirebaseDAL.IPPTUser;
-import sg.np.edu.mad.ipptready.SQLiteDAL.SQLiteDBHandler;
 
 public class ProfileActivity extends AppCompatActivity {
     private String EmailAddress;
@@ -180,8 +166,8 @@ public class ProfileActivity extends AppCompatActivity {
                                             });
                                         }
                                         else{
-                                            String cameraIcon = "@drawable/cameraicon";
-                                            int imageResource = getResources().getIdentifier(cameraIcon, null, getPackageName());
+                                            String userIcon = "@drawable/user";
+                                            int imageResource = getResources().getIdentifier(userIcon, null, getPackageName());
                                             profilePicture.setImageDrawable(getResources().getDrawable(imageResource));
                                         }
                                     }
@@ -280,6 +266,41 @@ public class ProfileActivity extends AppCompatActivity {
                                                 dob.setVisibility(View.VISIBLE);
                                                 mode.setText("Profile");
                                                 profilePicture.setClickable(false);
+                                                DocumentSnapshot userDoc = task.getResult();
+                                                if (userDoc.exists()){
+                                                    Map<String, Object> userMap = userDoc.getData();
+                                                    String imageKey = null;
+                                                    try{
+                                                        if (userMap.containsKey("ImageKey"))
+                                                        {
+                                                            imageKey = userMap.get("ImageKey").toString();
+                                                            Log.v("IPPTUser", "IMAGE KEY::" + imageKey);
+
+                                                            storage = FirebaseStorage.getInstance();
+                                                            storageReference = storage.getReference();
+                                                            pathReference = storageReference.child("profilePictures/" + imageKey);
+                                                            final long maxBytes = 1024 * 1024;
+                                                            pathReference.getBytes(maxBytes).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                                @Override
+                                                                public void onSuccess(byte[] bytes) {
+                                                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                                                    profilePicture.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 150, 150, false));
+                                                                }
+                                                            });
+                                                        }
+                                                        else{
+                                                            String userIcon = "@drawable/user";
+                                                            int imageResource = getResources().getIdentifier(userIcon, null, getPackageName());
+                                                            profilePicture.setImageDrawable(getResources().getDrawable(imageResource));
+                                                        }
+                                                    }
+                                                    catch (NullPointerException n){
+                                                        n.printStackTrace();
+                                                    }
+                                                }
+                                                else {
+                                                    Log.v("IPPTUser", "Doc does not exist::" + pathReference);
+                                                }
                                             }
                                         });
                                         saveButton.setOnClickListener(new View.OnClickListener() {
