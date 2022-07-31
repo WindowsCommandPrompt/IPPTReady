@@ -119,7 +119,7 @@ public class ExerciseTogetherActivity extends AppCompatActivity {
             String status = (String) ds.getData().get("status");
             String sessionName = (String) ds.getData().get("sessionName");
             String qrString = (String) ds.getData().get("qrString");
-            if (!status.equals("Completed") && !status.equals("Started") && !status.equals("Left"))
+            if (!status.equals("Completed") && !status.equals("Left"))
             {
                 // Set the status of uncompleted sessions as "Left"
                 ExerciseTogetherSession.updateIndividualJoinStatus(ds.getReference(), "Left")
