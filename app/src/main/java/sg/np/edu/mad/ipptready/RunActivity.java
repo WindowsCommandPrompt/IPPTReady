@@ -3,6 +3,7 @@ package sg.np.edu.mad.ipptready;
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,11 +29,6 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,7 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class RunActivity extends AppCompatActivity implements LocationListener, OnMapReadyCallback {
+public class RunActivity extends AppCompatActivity implements LocationListener {
 
     CountDownTimer mainStopwatch;
 
@@ -81,14 +77,20 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
         confirmQuit.create().show();
     }
 
+    //Check whether the application that has been installed on the user's phone is able to gain access
+    //to the location services
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run);
 
-        //Try to modify the background color of the
-        //((CardView) findViewById(R.id.runningDistanceCard)).setCardBackgroundColor(null);
-
+        checkPermissions();
 
         AlertDialog.Builder confirmTerminateCycle = new AlertDialog.Builder(this);
         AlertDialog.Builder saveCycleData = new AlertDialog.Builder(this);
@@ -344,8 +346,8 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
             mLocationRequest.setInterval(150);
             mLocationRequest.setFastestInterval(300);
             Log.d("TRUE/FALSE", "" + mLocationRequest.isFastestIntervalExplicitlySet());
-
             getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                @SuppressLint("MissingPermission")
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     Log.d("ListenerRunning?", "Yes");
@@ -356,7 +358,8 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
     }
 
     public static void ToSexagesimals(String bearing){
-        //This method will be responsible for converting the
+        //This method will be responsible for converting the information into the
+
     }
 
     @Override
@@ -391,12 +394,16 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
                         Log.d("WhatIsIt?", "" + new ArrayList<Float>(Arrays.asList(resultContainer[0], resultContainer[1], resultContainer[2], resultContainer[3])));
                     }
                     //Get from the kilometer one
-                    String kilometerbox = ((TextView) findViewById(R.id.kilometerIndicator)).getText().toString();
-                    String meterbox = ((TextView) findViewById(R.id.meterIndicator)).getText().toString();
-                    float distanceCurrent = (Float.parseFloat(kilometerbox) * 1000) + (Float.parseFloat(meterbox) * 1000) + resultContainer[0];
+                    //String kilometerbox = ((TextView) findViewById(R.id.kilometerIndicator)).getText().toString();
+                    //String meterbox = ((TextView) findViewById(R.id.meterIndicator)).getText().toString();
+                    float distanceCurrent = 0F;
+                   /* if (!kilometerbox.equals("") && !meterbox.equals("")) {
+                        distanceCurrent = (Float.parseFloat(kilometerbox) * 1000) + (Float.parseFloat(meterbox) * 1000) + resultContainer[0];
+                    }*/
+                    Log.d("TotalDistance", String.valueOf(resultContainer[0]));
                     //convert it back
-                    ((TextView) findViewById(R.id.kilometerIndicator)).setText(Double.toString(Math.floor(distanceCurrent / 1000)));
-                    ((TextView) findViewById(R.id.meterIndicator)).setText("");
+                    //((TextView) findViewById(R.id.kilometerIndicator)).setText(Double.toString(Math.floor(distanceCurrent / 1000)));
+                    //((TextView) findViewById(R.id.meterIndicator)).setText(Double.toString((distanceCurrent - Math.floor(distanceCurrent / Float.parseFloat(Integer.toString(1000)) * 1000)) / Float.parseFloat(Integer.toString(1000))));
 
                     // Get bundle
                     Bundle bundle = getIntent().getExtras();
@@ -410,22 +417,22 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
                             .setTitle("Reached 2.4 km!")
                             .setMessage("Congratulations! You have successfully covered a total distance of 2.4 kilometres")
                             .setPositiveButton(
-                                    "YES",
-                                    (DialogInterface di, int i) -> {
-                                        //Record down the timing and pass it back to the record activity via an intent
-                                        // Get timing
-                                        String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
-                                        Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
-                                        int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
-                                        addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                // finish activity
-                                                Toast.makeText(RunActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                            }
-                                        });
-                                    }
+                                "YES",
+                                (DialogInterface di, int i) -> {
+                                    //Record down the timing and pass it back to the record activity via an intent
+                                    // Get timing
+                                    String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
+                                    Log.d("ManagedToGetTiming", "Yes I have managed to get the timing off the textview");
+                                    int totalSeconds = Integer.parseInt(capturedTiming.split(":")[0]) * 60 + Integer.parseInt(capturedTiming.split(":")[1]);
+                                    addRunToDatabase(totalSeconds, Email, IPPTCycleID, IPPTRoutineId, new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            // finish activity
+                                            Toast.makeText(RunActivity.this, "Directing to workout page", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+                                    });
+                                }
                             )
                             .setNegativeButton(
                                     "NO",
@@ -435,12 +442,12 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
                             )
                             .setCancelable(false);
 
-                    if (((TextView) findViewById(R.id.kilometerIndicator)).getText().equals("2") && ((TextView) findViewById(R.id.meterIndicator)).getText().equals("00")){
+        /*            if (((TextView) findViewById(R.id.kilometerIndicator)).getText().equals("2") && ((TextView) findViewById(R.id.meterIndicator)).getText().equals("00")){
                         arcdt.get().cancel(); //Cancel the timer as in "stop" the timer
                         reachedRequiredDistance.create().show();
                         Toast.makeText(this, "The timer has been paused", Toast.LENGTH_SHORT).show();
                         String capturedTiming = ((TextView) findViewById(R.id.timing_indicator_text)).getText().toString();
-                    }
+                    }*/
                 }
             }
         }
@@ -449,16 +456,11 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
     private void checkPermissions() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             //Prompt the user to
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
-                Log.d("SDLJF", "An alert dialog should show up prompting the user to allow this application to access location services");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-            }
-            else {
-                Log.d("IsThisSleeping?", "No");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-            }
+            Log.d("SDLJF", "An alert dialog should show up prompting the user to allow this application to access location services");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
         }
         else {
+            getCurrentLocation();
             Log.d("ElseStatement", "CodeReachedHere");
         }
     }
@@ -478,18 +480,5 @@ public class RunActivity extends AppCompatActivity implements LocationListener, 
                 checkPermissions();
             }
         }
-    }
-
-    private GoogleMap mMap;
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng singapore = new LatLng(1.3521, 103.8198);
-
-        mMap.addMarker(new MarkerOptions().position(singapore).title("Marker in Singapore"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(singapore));
     }
 }
