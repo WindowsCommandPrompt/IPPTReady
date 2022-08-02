@@ -166,7 +166,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
   <tr> 
     <td>Screenshot of the home page within the application</td> 
-    <td><img src = "https://play-lh.googleusercontent.com/cc2GvZyHtNu7-SPxvSrT817E2aYz7yL1jKKkyd7aRKv4Acm2jdLQWWHAwIFtWUz9nqc=w5120-h2880-rw" alt = "Screenshot 2(Home page)"</td> 
+    <td><img src = "https://static.wixstatic.com/media/3e6e93_701699bc42944166b84ef223cfbfc223~mv2.jpeg" alt = "Screenshot 2(Home page)"</td> 
     <td>To your left shows an image of the application's home page when the user has logged into the application. The user would be able to click on one of those icons and the user would be redirected to one of those activities within the application</td> 
   </tr> 
   <tr> 
