@@ -82,6 +82,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Added multiple user dialogs which prompts the user for permissions before actually performing an action programmatically within the application. This is to let the user what actually happens once the user clicks on a certain button, container, present within the layout</li> 
         <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized, meaning that the stopwatch would be able to start and stop upon the user's interaction with the run activity, and the countdown timer would be able to reset itself and go back to the initial value of 60 seconds for the countdown timer within the SitUp activity</li> 
         <li align = "justify">Ensured that the timing that is recorded within the Run activity and the number of push ups done from the PushUp activity has been successfully recorded and transferred from one intent to another and eventually into the Firebase Firestore database</li> 
+        <li align="justify">Conceptualized the design for how the weather API will be displaying on the </li> 
       </ol> 
     </td> 
   </tr> 
@@ -113,7 +114,10 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Implemented the YouTube API and ensured that the videos that were needed is able to show up within the recycler's view under the Video Activity</li>
         <li align = "justify">Implemented Videos and Watching Videos features</li>
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
-        <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>                   
+        <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>   
+        <li align = "justify">Conceptualized the design for the layout for the ExerciseTogether Activity within the application</li>
+        <li align = "justify">Successfully implemented the </li> 
+        <li align = "justify"></li> 
       </ol> 
     </td> 
   </tr> 
@@ -124,7 +128,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Conceptualized the initial design of the Information activity</li> 
         <li align = "justify">Implemented the user interface for the information activity based on the initial conceptualized design made earlier</li> 
         <li align = "justify">Ensured that the user is able to exit the information activity and navigate to the other activities</li>
-        <li align = "justify">Provided all the drawables (vector assets) needed to be implemented into the information activity layout</li>  
+        <li align = "justify">Provided all the drawables (vector assets) needed to be implemented into the information activity layout</li>
+        <li align = "justify">Successfully implemented the notifications for the </li> 
       </ol> 
     </td> 
   </tr> 
@@ -156,7 +161,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
   <tr> 
     <td>Screenshot of the login page within the application</td> 
-    <td><img src = "https://play-lh.googleusercontent.com/mSvZNqmucHyV_ftZbTvu2sV8FGsIkkgeXSxaFfHX_5JVwYz741PpWcJbuQzCHVWsjA=w5120-h2880-rw" alt = "Screenshot 1(Login page)"/></td> 
+    <td><img src = "https://static.wixstatic.com/media/3e6e93_0e679dc65fe747b094942cab9c8ff15b~mv2.jpeg" alt = "Screenshot 1(Login page)"/></td> 
     <td align = "justify">To your left shows an image where the user would be able to interact with the application and logs the user into the application. How does the user actually logs into application? The user can just simply tap on the 'Sign in with google' button to sign into the application with a valid google account. If the google account has not been registered with the application, the user can choose to register their gmail with the application</td> 
   </tr> 
   <tr> 
@@ -166,12 +171,12 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
   </tr> 
   <tr> 
     <td>Screenshot of a portion of the recycler's view in the information activity</td> 
-    <td><img src = "https://play-lh.googleusercontent.com/kcG9Whtl7AHdPIkBH-F8hRI7lfpPcWyaE8_xydYtJgM4G1FVnpisChAnjvv42FN6pQ=w5120-h2880-rw" alt = "Screenshot 3(Information activity recycler's view)" /></td> 
+    <td><img src = "https://static.wixstatic.com/media/3e6e93_319c4cb2112b479396758364678f748b~mv2.jpeg" alt = "Screenshot 3(Information activity recycler's view)" /></td> 
     <td align = "justify">To your left shows an image where the user would be able to learn more about the scoring criteria of the IPPT physical examination, what are some of the awards that the user can obtain upon meeting certain criteria for the IPPT physical assessment, and what are some of the tips that the user can read up on to ensure that they will be able to pass the IPPT assessment. Other information related to the IPPT assessment which includes the computation of the scores can also be found within the Information Activity </td> 
   </tr> 
   <tr> 
     <td>Screenshot of a portion of the recycler's view in the video activity</td> 
-    <td><img src = "https://play-lh.googleusercontent.com/IGpNuPOQCt_sCw9xQM2kh9YsbL3Uj-I3TuzXikQaGMvGPgzAW6RlgXf01mpQX2tqTiU=w1052-h592-rw" alt = "Screenshot 4(Video activity recycler's view)"/></td> 
+    <td><img src = "https://static.wixstatic.com/media/3e6e93_b924b28a0fbf4fe38346793722c9d240~mv2.jpeg" alt = "Screenshot 4(Video activity recycler's view)"/></td> 
     <td align = "justify">Users would be able to learn more about how to execute sit-ups and push-ups the standard way. Don't know how to train for the 2.4 km run? Don't worry. Just watch those videos and you should be good to go for the IPPT assessment</td> 
   </tr> 
 </table> 
