@@ -82,7 +82,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Added multiple user dialogs which prompts the user for permissions before actually performing an action programmatically within the application. This is to let the user what actually happens once the user clicks on a certain button, container, present within the layout</li> 
         <li align = "justify">Ensured that both the stopwatch and the countdown timer in the Run and PushUp activity is synchronized, meaning that the stopwatch would be able to start and stop upon the user's interaction with the run activity, and the countdown timer would be able to reset itself and go back to the initial value of 60 seconds for the countdown timer within the SitUp activity</li> 
         <li align = "justify">Ensured that the timing that is recorded within the Run activity and the number of push ups done from the PushUp activity has been successfully recorded and transferred from one intent to another and eventually into the Firebase Firestore database</li> 
-        <li align="justify">Conceptualized the design for how the weather API will be displaying on the </li> 
+        <li align="justify">Added FusedLocationProviderClient in the RunActivity</li> 
       </ol> 
     </td> 
   </tr> 
@@ -98,6 +98,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Implemented the account handling procedure within the application, which includes the creation of new IPPTReacy user profile accounts for the mobile application, and logging user in if they have already registered themselves under the application</li>
         <li align = "justify">Conceptualized the initial design of the account creation activity that the user can use to register with the application</li> 
         <li align = "justify">Implemented the initial design of the account creation activity</li>
+        <li align = "justify">Successfully implemented routine alarm on android, and on backend</li> 
+        <li align = "justify">Optimizations of the cycle activity within the activity </li> 
       </ol> 
     </td> 
   </tr> 
@@ -116,8 +118,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Conceptualized the initial design of the Video activity</li>
         <li align = "justify">Fixed buggy codes related to navigation between the activities to Record activity</li>   
         <li align = "justify">Conceptualized the design for the layout for the ExerciseTogether Activity within the application</li>
-        <li align = "justify">Successfully implemented the </li> 
-        <li align = "justify"></li> 
+        <li align="justify">Implemented QR code scanner along with using the Camera as a QR Code reader and scanner to scan QR codes to join exercise groups</li>
       </ol> 
     </td> 
   </tr> 
@@ -129,7 +130,7 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Implemented the user interface for the information activity based on the initial conceptualized design made earlier</li> 
         <li align = "justify">Ensured that the user is able to exit the information activity and navigate to the other activities</li>
         <li align = "justify">Provided all the drawables (vector assets) needed to be implemented into the information activity layout</li>
-        <li align = "justify">Successfully implemented the notifications for the </li> 
+        <li align = "justify">Successfully implemented the automatic push up counter using the proximity sensors </li> 
       </ol> 
     </td> 
   </tr> 
@@ -141,6 +142,8 @@ We have developed a mobile application called <b> IPPTReady </b> for Android for
         <li align = "justify">Implemented the user interface for the profile activity based on the initial conceptualized design made earlier</li> 
         <li align = "justify">Ensured that the user profile information is extracted from the Firebase Firestore database from the correct collection and the correct document and then displaying the required information in the correct TextView(s) within the activity layout</li> 
         <li align = "justify">Ensured that the user is able to exit the profile activity</li> 
+        <li align="justify">Implemented a feature whereby the user is able to access the phone's local storage to update his or her account's profile picture</li>
+        <li align="justify">User is now able to delete his or her accounts from the Firebase Firestore</li> 
       </ol> 
     </td> 
   </tr>  
